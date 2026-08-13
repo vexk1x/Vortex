@@ -75,6 +75,8 @@
             label5 = new Label();
             textBox2 = new TextBox();
             tabPage4 = new TabPage();
+            label22 = new Label();
+            label21 = new Label();
             label20 = new Label();
             label19 = new Label();
             label18 = new Label();
@@ -92,8 +94,6 @@
             label10 = new Label();
             label9 = new Label();
             label8 = new Label();
-            label21 = new Label();
-            label22 = new Label();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -134,8 +134,8 @@
             // 
             // button3
             // 
-            button3.ForeColor = Color.FromArgb(0, 192, 0);
-            button3.Location = new Point(703, 206);
+            button3.ForeColor = Color.Black;
+            button3.Location = new Point(693, 348);
             button3.Name = "button3";
             button3.Size = new Size(75, 53);
             button3.TabIndex = 6;
@@ -146,7 +146,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(684, 285);
+            pictureBox1.Location = new Point(96, 325);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(94, 82);
             pictureBox1.SizeMode = PictureBoxSizeMode.CenterImage;
@@ -214,7 +214,7 @@
             // checkBox20
             // 
             checkBox20.AutoSize = true;
-            checkBox20.ForeColor = Color.SlateBlue;
+            checkBox20.ForeColor = Color.Black;
             checkBox20.Location = new Point(606, 216);
             checkBox20.Name = "checkBox20";
             checkBox20.Size = new Size(62, 19);
@@ -226,7 +226,7 @@
             // checkBox19
             // 
             checkBox19.AutoSize = true;
-            checkBox19.ForeColor = Color.FromArgb(192, 255, 255);
+            checkBox19.ForeColor = Color.Black;
             checkBox19.Location = new Point(606, 191);
             checkBox19.Name = "checkBox19";
             checkBox19.Size = new Size(79, 19);
@@ -238,7 +238,7 @@
             // checkBox18
             // 
             checkBox18.AutoSize = true;
-            checkBox18.ForeColor = Color.FromArgb(64, 0, 0);
+            checkBox18.ForeColor = Color.Black;
             checkBox18.Location = new Point(606, 166);
             checkBox18.Name = "checkBox18";
             checkBox18.Size = new Size(83, 19);
@@ -250,7 +250,7 @@
             // checkBox17
             // 
             checkBox17.AutoSize = true;
-            checkBox17.ForeColor = Color.FromArgb(255, 128, 0);
+            checkBox17.ForeColor = Color.Black;
             checkBox17.Location = new Point(606, 141);
             checkBox17.Name = "checkBox17";
             checkBox17.Size = new Size(109, 19);
@@ -262,7 +262,7 @@
             // checkBox16
             // 
             checkBox16.AutoSize = true;
-            checkBox16.ForeColor = Color.FromArgb(128, 255, 128);
+            checkBox16.ForeColor = Color.Black;
             checkBox16.Location = new Point(606, 116);
             checkBox16.Name = "checkBox16";
             checkBox16.Size = new Size(69, 19);
@@ -274,7 +274,7 @@
             // checkBox15
             // 
             checkBox15.AutoSize = true;
-            checkBox15.ForeColor = Color.FromArgb(255, 255, 128);
+            checkBox15.ForeColor = Color.Black;
             checkBox15.Location = new Point(606, 91);
             checkBox15.Name = "checkBox15";
             checkBox15.Size = new Size(87, 19);
@@ -300,7 +300,7 @@
             // 
             checkBox13.AutoSize = true;
             checkBox13.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBox13.ForeColor = Color.FromArgb(192, 0, 192);
+            checkBox13.ForeColor = Color.Black;
             checkBox13.Location = new Point(391, 139);
             checkBox13.Name = "checkBox13";
             checkBox13.Size = new Size(100, 21);
@@ -313,7 +313,7 @@
             // 
             checkBox12.AutoSize = true;
             checkBox12.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBox12.ForeColor = Color.FromArgb(0, 0, 192);
+            checkBox12.ForeColor = Color.Black;
             checkBox12.Location = new Point(391, 116);
             checkBox12.Name = "checkBox12";
             checkBox12.Size = new Size(95, 21);
@@ -326,7 +326,7 @@
             // 
             checkBox11.AutoSize = true;
             checkBox11.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            checkBox11.ForeColor = Color.Orange;
+            checkBox11.ForeColor = Color.Black;
             checkBox11.Location = new Point(391, 89);
             checkBox11.Name = "checkBox11";
             checkBox11.Size = new Size(87, 21);
@@ -350,7 +350,7 @@
             // checkBox9
             // 
             checkBox9.AutoSize = true;
-            checkBox9.ForeColor = Color.FromArgb(64, 0, 64);
+            checkBox9.ForeColor = Color.Black;
             checkBox9.Location = new Point(14, 291);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(84, 19);
@@ -362,7 +362,7 @@
             // checkBox8
             // 
             checkBox8.AutoSize = true;
-            checkBox8.ForeColor = Color.FromArgb(192, 192, 0);
+            checkBox8.ForeColor = Color.Black;
             checkBox8.Location = new Point(14, 266);
             checkBox8.Name = "checkBox8";
             checkBox8.Size = new Size(66, 19);
@@ -374,7 +374,7 @@
             // checkBox7
             // 
             checkBox7.AutoSize = true;
-            checkBox7.ForeColor = Color.FromArgb(0, 0, 192);
+            checkBox7.ForeColor = Color.Black;
             checkBox7.Location = new Point(14, 241);
             checkBox7.Name = "checkBox7";
             checkBox7.Size = new Size(62, 19);
@@ -386,7 +386,7 @@
             // checkBox6
             // 
             checkBox6.AutoSize = true;
-            checkBox6.ForeColor = Color.FromArgb(192, 0, 0);
+            checkBox6.ForeColor = Color.Black;
             checkBox6.Location = new Point(14, 216);
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new Size(47, 19);
@@ -398,7 +398,7 @@
             // checkBox5
             // 
             checkBox5.AutoSize = true;
-            checkBox5.ForeColor = Color.FromArgb(255, 192, 128);
+            checkBox5.ForeColor = Color.Black;
             checkBox5.Location = new Point(14, 191);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(87, 19);
@@ -410,7 +410,7 @@
             // checkBox4
             // 
             checkBox4.AutoSize = true;
-            checkBox4.ForeColor = Color.FromArgb(0, 0, 64);
+            checkBox4.ForeColor = Color.Black;
             checkBox4.Location = new Point(14, 166);
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new Size(55, 19);
@@ -422,7 +422,7 @@
             // checkBox3
             // 
             checkBox3.AutoSize = true;
-            checkBox3.ForeColor = Color.FromArgb(192, 255, 255);
+            checkBox3.ForeColor = Color.Black;
             checkBox3.Location = new Point(14, 141);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(61, 19);
@@ -434,7 +434,7 @@
             // checkBox2
             // 
             checkBox2.AutoSize = true;
-            checkBox2.ForeColor = SystemColors.ActiveCaption;
+            checkBox2.ForeColor = SystemColors.ActiveCaptionText;
             checkBox2.Location = new Point(14, 116);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(60, 19);
@@ -446,7 +446,7 @@
             // checkBox1
             // 
             checkBox1.AutoSize = true;
-            checkBox1.ForeColor = SystemColors.AppWorkspace;
+            checkBox1.ForeColor = SystemColors.ActiveCaptionText;
             checkBox1.Location = new Point(14, 91);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(66, 19);
@@ -676,6 +676,24 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "tabPage4";
             // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(17, 147);
+            label22.Name = "label22";
+            label22.Size = new Size(210, 15);
+            label22.TabIndex = 5;
+            label22.Text = "2119 (211nine): Suggestions and Tester";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new Point(14, 116);
+            label21.Name = "label21";
+            label21.Size = new Size(47, 15);
+            label21.TabIndex = 4;
+            label21.Text = "Credits:";
+            // 
             // label20
             // 
             label20.AutoSize = true;
@@ -699,12 +717,12 @@
             // label18
             // 
             label18.AutoSize = true;
-            label18.ForeColor = SystemColors.ActiveCaption;
+            label18.ForeColor = SystemColors.ActiveCaptionText;
             label18.Location = new Point(14, 395);
             label18.Name = "label18";
-            label18.Size = new Size(44, 15);
+            label18.Size = new Size(53, 15);
             label18.TabIndex = 1;
-            label18.Text = "Ver: 1.0";
+            label18.Text = "Ver: 1.1.0";
             // 
             // label17
             // 
@@ -852,24 +870,6 @@
             label8.Size = new Size(144, 15);
             label8.TabIndex = 0;
             label8.Text = "Total Rare Biomes Found: ";
-            // 
-            // label21
-            // 
-            label21.AutoSize = true;
-            label21.Location = new Point(14, 116);
-            label21.Name = "label21";
-            label21.Size = new Size(47, 15);
-            label21.TabIndex = 4;
-            label21.Text = "Credits:";
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(17, 147);
-            label22.Name = "label22";
-            label22.Size = new Size(210, 15);
-            label22.TabIndex = 5;
-            label22.Text = "2119 (211nine): Suggestions and Tester";
             // 
             // Form1
             // 

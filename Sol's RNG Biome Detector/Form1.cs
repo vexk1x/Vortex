@@ -1,3 +1,6 @@
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
+
 namespace Sol_s_RNG_Biome_Detector
 {
     public partial class Form1 : Form
@@ -11,6 +14,24 @@ namespace Sol_s_RNG_Biome_Detector
         public static bool Start_Stop = false;
 
         private bool loadingSettings = false;
+
+        private Panel darkTabHeaderFill;
+
+        private readonly Color DarkBackground = Color.FromArgb(17, 19, 24);
+        private readonly Color DarkPanel = Color.FromArgb(25, 28, 35);
+        private readonly Color DarkInput = Color.FromArgb(32, 36, 45);
+        private readonly Color DarkBorder = Color.FromArgb(42, 47, 58);
+
+        private readonly Color MainText = Color.FromArgb(241, 243, 245);
+        private readonly Color SecondaryText = Color.FromArgb(156, 163, 175);
+
+        private readonly Color Accent = Color.FromArgb(123, 97, 255);
+
+
+
+
+        private readonly Stopwatch sessionTimer = new Stopwatch();
+        
 
         public Form1()
         {
@@ -34,10 +55,21 @@ namespace Sol_s_RNG_Biome_Detector
             textBox1.WordWrap = false;
             textBox1.Dock = DockStyle.Fill;
 
+
             loadingSettings = true;
+
+            if (Properties.Settings.Default.UpgradeRequired)
+            {
+                Properties.Settings.Default.Upgrade();
+
+                Properties.Settings.Default.UpgradeRequired = false;
+                Properties.Settings.Default.Save();
+            }
+
             LoadSettings();
             loadingSettings = false;
 
+            applystyle();
 
         }
 
@@ -433,43 +465,47 @@ namespace Sol_s_RNG_Biome_Detector
 
         }
 
-
-
         private void checkBox27_CheckedChanged(object sender, EventArgs e)
         {
-            tabPage1.BackColor = Color.FromArgb(45, 45, 45);
-            tabPage2.BackColor = Color.FromArgb(45, 45, 45);
-            tabPage3.BackColor = Color.FromArgb(45, 45, 45);
-            tabPage4.BackColor = Color.FromArgb(45, 45, 45);
-            tabPage5.BackColor = Color.FromArgb(45, 45, 45);
-            tabPage6.BackColor = Color.FromArgb(45, 45, 45);
-
-            if (!checkBox27.Checked)
+            if (checkBox27.Checked)
             {
-                tabPage1.BackColor = Color.FromArgb(255, 255, 255);
-                tabPage2.BackColor = Color.FromArgb(255, 255, 255);
-                tabPage3.BackColor = Color.FromArgb(255, 255, 255);
-                tabPage4.BackColor = Color.FromArgb(255, 255, 255);
-                tabPage5.BackColor = Color.FromArgb(255, 255, 255);
-                tabPage6.BackColor = Color.FromArgb(255, 255, 255);
+                ApplyDarkTheme(this);
+                EnableDarkTabs();
+            }
+            else
+            {
+                ApplyLightTheme(this);
+                DisableDarkTabs();
             }
 
             SettingChanged(sender, e);
         }
 
+        private string FormatSessionTime(TimeSpan time)
+        {
+            return $"{(int)time.TotalHours:D2}:{time.Minutes:D2}:{time.Seconds:D2}";
+        }
 
-        private void button3_Click(object sender, EventArgs e)
+        private async void button3_Click(object sender, EventArgs e)
         {
             if (!Start_Stop)
             {
                 Start_Stop = true;
 
+                sessionTimer.Restart();
+
                 button3.Text = "Stop";
-                button3.ForeColor = Color.Red;
+                button3.ForeColor = Color.White;
+                button3.BackColor = Color.FromArgb(220, 60, 70);
 
                 Task Biomes = BiomeDetector.Biomes(this);
 
                 PrintLogs("Started");
+
+                if (!string.IsNullOrWhiteSpace(textBox2.Text))
+                {
+                    await Program.StartStopWebhook(textBox2.Text, true, TimeSpan.Zero);
+                }
 
                 return;
             }
@@ -478,13 +514,274 @@ namespace Sol_s_RNG_Biome_Detector
             {
                 Start_Stop = false;
 
-                button3.Text = "Start";
-                button3.ForeColor = Color.Green;
+                sessionTimer.Stop();
 
-                PrintLogs("Stopped");
+                TimeSpan sessionTime = sessionTimer.Elapsed;
+
+                button3.Text = "Start";
+                button3.ForeColor = Color.White;
+                button3.BackColor = Accent;
+
+                PrintLogs($"Stopped - Session Time: {FormatSessionTime(sessionTime)}");
+
+                if (!string.IsNullOrWhiteSpace(textBox2.Text))
+                {
+                    await Program.StartStopWebhook(textBox2.Text, false, sessionTime);
+                }
 
                 return;
             }
+        }
+
+        private void applystyle()
+        {
+            button3.FlatStyle = FlatStyle.Flat;
+            button3.FlatAppearance.BorderSize = 0;
+
+            button3.BackColor = Accent;
+            button3.ForeColor = Color.White;
+
+            button3.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            button3.Cursor = Cursors.Hand;
+
+            button3.Size = new Size(150, 42);
+            button3.Left = ClientSize.Width - button3.Width - 20;
+
+            if (checkBox27.Checked)
+                ApplyDarkTheme(this);
+
+            ApplyCheckboxColor();
+        }
+
+
+        private void ApplyDarkTheme(Control parent)
+        {
+            parent.BackColor = DarkBackground;
+            parent.ForeColor = MainText;
+
+            foreach (Control control in parent.Controls)
+            {
+                switch (control)
+                {
+                    case TextBox textBox:
+                        textBox.BackColor = DarkInput;
+                        textBox.ForeColor = MainText;
+                        textBox.BorderStyle = BorderStyle.FixedSingle;
+                        break;
+
+                    case Button button:
+                        button.BackColor = Accent;
+                        button.ForeColor = Color.White;
+
+                        button.FlatStyle = FlatStyle.Flat;
+                        button.FlatAppearance.BorderSize = 0;
+
+                        button.Cursor = Cursors.Hand;
+                        break;
+
+                    case CheckBox checkBox:
+                        checkBox.ForeColor = MainText;
+                        checkBox.BackColor = DarkBackground;
+                        break;
+
+                    case Label label:
+                        label.ForeColor = MainText;
+                        label.BackColor = DarkBackground;
+                        break;
+
+                    case TabPage tabPage:
+                        tabPage.BackColor = DarkBackground;
+                        tabPage.ForeColor = MainText;
+                        break;
+
+                    case Panel panel:
+                        panel.BackColor = DarkPanel;
+                        panel.ForeColor = MainText;
+                        break;
+                }
+
+                if (control.HasChildren)
+                {
+                    ApplyDarkTheme(control);
+                }
+            }
+            ApplyCheckboxColor();
+        }
+
+        private void ApplyLightTheme(Control parent)
+        {
+            parent.BackColor = Color.White;
+            parent.ForeColor = Color.Black;
+
+            foreach (Control control in parent.Controls)
+            {
+                switch (control)
+                {
+                    case TextBox textBox:
+                        textBox.BackColor = Color.White;
+                        textBox.ForeColor = Color.Black;
+                        textBox.BorderStyle = BorderStyle.FixedSingle;
+                        break;
+
+                    case Button button:
+                        button.BackColor = Accent;
+                        button.ForeColor = Color.White;
+
+                        button.FlatStyle = FlatStyle.Flat;
+                        button.FlatAppearance.BorderSize = 0;
+
+                        button.Cursor = Cursors.Hand;
+                        break;
+
+                    case CheckBox checkBox:
+                        checkBox.ForeColor = Color.Black;
+                        checkBox.BackColor = Color.White;
+                        break;
+
+                    case Label label:
+                        label.ForeColor = Color.Black;
+                        label.BackColor = Color.White;
+                        break;
+
+                    case TabPage tabPage:
+                        tabPage.BackColor = Color.White;
+                        tabPage.ForeColor = Color.Black;
+                        break;
+
+                    case Panel panel:
+                        panel.BackColor = Color.White;
+                        panel.ForeColor = Color.Black;
+                        break;
+                }
+
+                if (control.HasChildren)
+                {
+                    ApplyLightTheme(control);
+                }
+            }
+            ApplyCheckboxColor();
+        }
+
+        private void EnableDarkTabs()
+        {
+            tabControl.DrawMode = TabDrawMode.OwnerDrawFixed;
+
+            tabControl.Appearance = TabAppearance.Normal;
+
+            tabControl.DrawItem -= TabControl_DrawItem;
+            tabControl.DrawItem += TabControl_DrawItem;
+
+            tabControl.Invalidate();
+
+            Rectangle lastTab = tabControl.GetTabRect(tabControl.TabPages.Count - 1);
+
+            if (darkTabHeaderFill == null)
+            {
+                darkTabHeaderFill = new Panel
+                {
+                    BackColor = DarkBackground
+                };
+
+                tabControl.Parent.Controls.Add(darkTabHeaderFill);
+            }
+
+            darkTabHeaderFill.BackColor = DarkBackground;
+
+            darkTabHeaderFill.Location = new Point(
+                tabControl.Left + lastTab.Right,
+                tabControl.Top
+            );
+
+            darkTabHeaderFill.Size = new Size(
+                tabControl.Width - lastTab.Right,
+                lastTab.Height
+            );
+
+            darkTabHeaderFill.Visible = true;
+            darkTabHeaderFill.BringToFront();
+        }
+
+        private void DisableDarkTabs()
+        {
+            tabControl.DrawItem -= TabControl_DrawItem;
+            tabControl.DrawMode = TabDrawMode.Normal;
+
+            if (darkTabHeaderFill != null)
+            {
+                darkTabHeaderFill.Visible = false;
+            }
+
+            tabControl.Invalidate();
+        }
+
+        private void TabControl_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            TabControl tabs = (TabControl)sender;
+            bool selected = e.Index == tabs.SelectedIndex;
+
+            Rectangle rect = e.Bounds;
+
+            rect.Inflate(2, 2);
+
+            Color background = selected
+                ? Color.FromArgb(32, 36, 45)
+                : DarkBackground;
+
+            using (SolidBrush backgroundBrush = new SolidBrush(background))
+            {
+                e.Graphics.FillRectangle(backgroundBrush, rect);
+            }
+
+            Rectangle textRect = e.Bounds;
+
+            TextRenderer.DrawText
+            (
+                e.Graphics,
+                tabs.TabPages[e.Index].Text,
+                new Font("Segoe UI", 9F, selected ? FontStyle.Bold : FontStyle.Regular),
+                textRect,
+                MainText,
+                TextFormatFlags.HorizontalCenter |
+                TextFormatFlags.VerticalCenter |
+                TextFormatFlags.NoPadding
+            );
+
+            if (selected)
+            {
+                using Pen accentPen = new Pen(Accent, 2);
+
+                e.Graphics.DrawLine(
+                    accentPen,
+                    e.Bounds.Left + 5,
+                    e.Bounds.Bottom - 1,
+                    e.Bounds.Right - 5,
+                    e.Bounds.Bottom - 1
+                );
+            }
+        }
+
+        private void ApplyCheckboxColor()
+        {
+            checkBox1.ForeColor = ColorTranslator.FromHtml("0x4e4e4e");
+            checkBox2.ForeColor = ColorTranslator.FromHtml("0xc2f2ff");
+            checkBox3.ForeColor = ColorTranslator.FromHtml("0xb6cbd1");
+            checkBox4.ForeColor = ColorTranslator.FromHtml("0x0000ff");
+            checkBox5.ForeColor = ColorTranslator.FromHtml("0xffbb00");
+            checkBox6.ForeColor = ColorTranslator.FromHtml("0x770a0a");
+            checkBox7.ForeColor = ColorTranslator.FromHtml("0x3b3abc");
+            checkBox8.ForeColor = ColorTranslator.FromHtml("0xf4fb01");
+            checkBox9.ForeColor = ColorTranslator.FromHtml("0x310387");
+            checkBox10.ForeColor = ColorTranslator.FromHtml("0x000000");
+            checkBox11.ForeColor = ColorTranslator.FromHtml("0xbf6c00");
+            checkBox12.ForeColor = ColorTranslator.FromHtml("0x08043f");
+            checkBox13.ForeColor = ColorTranslator.FromHtml("0xe500ff");
+            checkBox14.ForeColor = ColorTranslator.FromHtml("0x212121");
+            checkBox15.ForeColor = ColorTranslator.FromHtml("0xfaff00");
+            checkBox16.ForeColor = ColorTranslator.FromHtml("0x9fff9a");
+            checkBox17.ForeColor = ColorTranslator.FromHtml("0x996505");
+            checkBox18.ForeColor = ColorTranslator.FromHtml("0x3e0000");
+            checkBox19.ForeColor = ColorTranslator.FromHtml("0xc1ecff");
+            checkBox20.ForeColor = ColorTranslator.FromHtml("0x8d7dc7");
         }
     }
 }
