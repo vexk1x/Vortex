@@ -169,8 +169,6 @@ namespace Sol_s_RNG_Biome_Detector
 
                     if (textBox2.Text != string.Empty && textBox5.Text != string.Empty)
                     {
-                        if (checkBox22.Checked && !rarebiome)
-                            return;
 
                         int color = GetColor(biome.ToUpper());
 
@@ -178,7 +176,7 @@ namespace Sol_s_RNG_Biome_Detector
                         {
                             if (textBox3.Text != string.Empty)
                             {
-                                PrintLogs("Sent Webhook Ping!");
+                                PrintLogs("Sent Webhook!");
                                 Program.PostToWebhook(textBox2.Text, biome, textBox3.Text, doping, textBox5.Text, color);
                             }
                         }
@@ -186,19 +184,19 @@ namespace Sol_s_RNG_Biome_Detector
                         {
                             if (textBox4.Text != string.Empty)
                             {
-                                PrintLogs("Sent Webhook Ping!");
+                                PrintLogs("Sent Webhook!");
                                 Program.PostToWebhook(textBox2.Text, biome, "<@" + textBox4.Text + ">", doping, textBox5.Text, color);
                             }
                         }
                         if (checkBox25.Checked)
                         {
-                            PrintLogs("Sent Webhook Ping!");
+                            PrintLogs("Sent Webhook!");
                             Program.PostToWebhook(textBox2.Text, biome, "@everyone", doping, textBox5.Text, color);
 
                         }
                         if (checkBox26.Checked)
                         {
-                            PrintLogs("Sent Webhook Ping!");
+                            PrintLogs("Sent Webhook!");
                             Program.PostToWebhook(textBox2.Text, biome, string.Empty, doping, textBox5.Text, color);
 
                         }
