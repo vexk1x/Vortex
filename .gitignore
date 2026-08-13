@@ -1,0 +1,10 @@
+.vs/
+bin/
+obj/
+
+*.user
+*.suo
+*.pdb
+
+[Dd]ebug/
+[Rr]elease/
