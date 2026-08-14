@@ -7,5 +7,4 @@ https://discord.gg/6vRNY87wx
 
 Things to add:
 automatic use of Strange Controller / Biome Randomizer,
-multiple Webhooks,
 detects biomes from multiple accounts
