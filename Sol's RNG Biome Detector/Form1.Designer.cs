@@ -63,6 +63,8 @@
             label2 = new Label();
             label1 = new Label();
             tabPage3 = new TabPage();
+            button10 = new Button();
+            button9 = new Button();
             textBox5 = new TextBox();
             label16 = new Label();
             checkBox26 = new CheckBox();
@@ -73,7 +75,6 @@
             checkBox23 = new CheckBox();
             checkBox22 = new CheckBox();
             label5 = new Label();
-            textBox2 = new TextBox();
             tabPage4 = new TabPage();
             label22 = new Label();
             label21 = new Label();
@@ -94,6 +95,16 @@
             label10 = new Label();
             label9 = new Label();
             label8 = new Label();
+            tabPage7 = new TabPage();
+            button15 = new Button();
+            button11 = new Button();
+            label7 = new Label();
+            textBox2 = new TextBox();
+            tabPage8 = new TabPage();
+            button14 = new Button();
+            button13 = new Button();
+            button12 = new Button();
+            listBox1 = new ListBox();
             panelSidebar = new Panel();
             button8 = new Button();
             button7 = new Button();
@@ -111,6 +122,8 @@
             tabPage4.SuspendLayout();
             tabPage5.SuspendLayout();
             tabPage6.SuspendLayout();
+            tabPage7.SuspendLayout();
+            tabPage8.SuspendLayout();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
@@ -122,10 +135,12 @@
             tabControl.Controls.Add(tabPage4);
             tabControl.Controls.Add(tabPage5);
             tabControl.Controls.Add(tabPage6);
-            tabControl.Location = new Point(-4, 0);
+            tabControl.Controls.Add(tabPage7);
+            tabControl.Controls.Add(tabPage8);
+            tabControl.Location = new Point(148, 0);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
-            tabControl.Size = new Size(812, 457);
+            tabControl.Size = new Size(804, 457);
             tabControl.TabIndex = 0;
             // 
             // tabPage1
@@ -137,7 +152,7 @@
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(804, 429);
+            tabPage1.Size = new Size(796, 429);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "tabPage1";
             // 
@@ -149,7 +164,7 @@
             panelContent.Dock = DockStyle.Fill;
             panelContent.Location = new Point(3, 3);
             panelContent.Name = "panelContent";
-            panelContent.Size = new Size(798, 423);
+            panelContent.Size = new Size(790, 423);
             panelContent.TabIndex = 14;
             // 
             // pictureBox2
@@ -223,7 +238,7 @@
             tabPage2.Location = new Point(4, 24);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(804, 429);
+            tabPage2.Size = new Size(796, 429);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             // 
@@ -530,6 +545,8 @@
             // tabPage3
             // 
             tabPage3.BackColor = Color.White;
+            tabPage3.Controls.Add(button10);
+            tabPage3.Controls.Add(button9);
             tabPage3.Controls.Add(textBox5);
             tabPage3.Controls.Add(label16);
             tabPage3.Controls.Add(checkBox26);
@@ -540,13 +557,32 @@
             tabPage3.Controls.Add(checkBox23);
             tabPage3.Controls.Add(checkBox22);
             tabPage3.Controls.Add(label5);
-            tabPage3.Controls.Add(textBox2);
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(804, 429);
+            tabPage3.Size = new Size(796, 429);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
+            // 
+            // button10
+            // 
+            button10.Location = new Point(235, 18);
+            button10.Name = "button10";
+            button10.Size = new Size(114, 23);
+            button10.TabIndex = 14;
+            button10.Text = "View Webhooks";
+            button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(118, 18);
+            button9.Name = "button9";
+            button9.Size = new Size(111, 23);
+            button9.TabIndex = 13;
+            button9.Text = "Add Webhook";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
             // 
             // textBox5
             // 
@@ -656,14 +692,6 @@
             label5.TabIndex = 1;
             label5.Text = "Webhook URL:";
             // 
-            // textBox2
-            // 
-            textBox2.Location = new Point(118, 19);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(672, 23);
-            textBox2.TabIndex = 0;
-            textBox2.TextChanged += SettingChanged;
-            // 
             // tabPage4
             // 
             tabPage4.BackColor = Color.White;
@@ -676,7 +704,7 @@
             tabPage4.Location = new Point(4, 24);
             tabPage4.Name = "tabPage4";
             tabPage4.Padding = new Padding(3);
-            tabPage4.Size = new Size(804, 429);
+            tabPage4.Size = new Size(796, 429);
             tabPage4.TabIndex = 3;
             tabPage4.Text = "tabPage4";
             // 
@@ -747,7 +775,7 @@
             tabPage5.Location = new Point(4, 24);
             tabPage5.Name = "tabPage5";
             tabPage5.Padding = new Padding(3);
-            tabPage5.Size = new Size(804, 429);
+            tabPage5.Size = new Size(796, 429);
             tabPage5.TabIndex = 4;
             tabPage5.Text = "tabPage5";
             // 
@@ -791,7 +819,7 @@
             tabPage6.Location = new Point(4, 24);
             tabPage6.Name = "tabPage6";
             tabPage6.Padding = new Padding(3);
-            tabPage6.Size = new Size(804, 429);
+            tabPage6.Size = new Size(796, 429);
             tabPage6.TabIndex = 5;
             tabPage6.Text = "tabPage6";
             // 
@@ -874,6 +902,108 @@
             label8.Size = new Size(144, 15);
             label8.TabIndex = 0;
             label8.Text = "Total Rare Biomes Found: ";
+            // 
+            // tabPage7
+            // 
+            tabPage7.Controls.Add(button15);
+            tabPage7.Controls.Add(button11);
+            tabPage7.Controls.Add(label7);
+            tabPage7.Controls.Add(textBox2);
+            tabPage7.Location = new Point(4, 24);
+            tabPage7.Name = "tabPage7";
+            tabPage7.Padding = new Padding(3);
+            tabPage7.Size = new Size(796, 429);
+            tabPage7.TabIndex = 6;
+            tabPage7.Text = "tabPage7";
+            tabPage7.UseVisualStyleBackColor = true;
+            // 
+            // button15
+            // 
+            button15.Location = new Point(6, 336);
+            button15.Name = "button15";
+            button15.Size = new Size(75, 33);
+            button15.TabIndex = 4;
+            button15.Text = "Return";
+            button15.UseVisualStyleBackColor = true;
+            button15.Click += button15_Click;
+            // 
+            // button11
+            // 
+            button11.Location = new Point(343, 154);
+            button11.Name = "button11";
+            button11.Size = new Size(90, 39);
+            button11.TabIndex = 3;
+            button11.Text = "button11";
+            button11.UseVisualStyleBackColor = true;
+            button11.Click += button11_Click;
+            // 
+            // label7
+            // 
+            label7.AutoSize = true;
+            label7.Location = new Point(6, 50);
+            label7.Name = "label7";
+            label7.Size = new Size(112, 15);
+            label7.TabIndex = 2;
+            label7.Text = "Enter Webhook URL";
+            // 
+            // textBox2
+            // 
+            textBox2.Location = new Point(124, 42);
+            textBox2.Name = "textBox2";
+            textBox2.Size = new Size(665, 23);
+            textBox2.TabIndex = 1;
+            // 
+            // tabPage8
+            // 
+            tabPage8.Controls.Add(button14);
+            tabPage8.Controls.Add(button13);
+            tabPage8.Controls.Add(button12);
+            tabPage8.Controls.Add(listBox1);
+            tabPage8.Location = new Point(4, 24);
+            tabPage8.Name = "tabPage8";
+            tabPage8.Padding = new Padding(3);
+            tabPage8.Size = new Size(796, 429);
+            tabPage8.TabIndex = 7;
+            tabPage8.Text = "tabPage8";
+            tabPage8.UseVisualStyleBackColor = true;
+            // 
+            // button14
+            // 
+            button14.Location = new Point(6, 334);
+            button14.Name = "button14";
+            button14.Size = new Size(75, 30);
+            button14.TabIndex = 3;
+            button14.Text = "Return";
+            button14.UseVisualStyleBackColor = true;
+            button14.Click += button14_Click;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(678, 311);
+            button13.Name = "button13";
+            button13.Size = new Size(108, 38);
+            button13.TabIndex = 2;
+            button13.Text = "Delete Webhook";
+            button13.UseVisualStyleBackColor = true;
+            button13.Click += button13_Click;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(678, 250);
+            button12.Name = "button12";
+            button12.Size = new Size(105, 38);
+            button12.TabIndex = 1;
+            button12.Text = "Edit Webhook";
+            button12.UseVisualStyleBackColor = true;
+            button12.Click += button12_Click;
+            // 
+            // listBox1
+            // 
+            listBox1.FormattingEnabled = true;
+            listBox1.Location = new Point(6, 9);
+            listBox1.Name = "listBox1";
+            listBox1.Size = new Size(777, 229);
+            listBox1.TabIndex = 0;
             // 
             // panelSidebar
             // 
@@ -979,6 +1109,9 @@
             tabPage5.PerformLayout();
             tabPage6.ResumeLayout(false);
             tabPage6.PerformLayout();
+            tabPage7.ResumeLayout(false);
+            tabPage7.PerformLayout();
+            tabPage8.ResumeLayout(false);
             panelSidebar.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -1020,7 +1153,6 @@
         private CheckBox checkBox17;
         private CheckBox checkBox16;
         private Label label5;
-        private TextBox textBox2;
         private CheckBox checkBox22;
         private CheckBox checkBox25;
         private CheckBox checkBox24;
@@ -1058,5 +1190,17 @@
         private Panel panelContent;
         private PictureBox pictureBox2;
         private Label label6;
+        private Button button10;
+        private Button button9;
+        private TabPage tabPage7;
+        private TabPage tabPage8;
+        private Button button11;
+        private Label label7;
+        private TextBox textBox2;
+        private Button button13;
+        private Button button12;
+        private ListBox listBox1;
+        private Button button14;
+        private Button button15;
     }
 }

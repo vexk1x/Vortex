@@ -21,27 +21,27 @@ class BiomeDetector
 
         while (Form1.Start_Stop)
         {
-            if ((DateTime.Now - lastLogScan).TotalSeconds >= 3)
-            {
-                lastLogScan = DateTime.Now;
-
-                string newActiveFile = FindActiveLog(path);
-
-                if (!string.IsNullOrEmpty(newActiveFile) && newActiveFile != activeFile)
-                {
-                    activeFile = newActiveFile;
-                    form.PrintLogs("Switched active log: " + Path.GetFileName(activeFile));
-                }
-            }
-
-            if (string.IsNullOrEmpty(activeFile))
-            {
-                await Task.Delay(500);
-                continue;
-            }
-
             try
             {
+                if ((DateTime.Now - lastLogScan).TotalSeconds >= 3)
+                {
+                    lastLogScan = DateTime.Now;
+
+                    string newActiveFile = FindActiveLog(path);
+
+                    if (!string.IsNullOrEmpty(newActiveFile) && newActiveFile != activeFile)
+                    {
+                        activeFile = newActiveFile;
+                        form.PrintLogs("Switched active log: " + Path.GetFileName(activeFile));
+                    }
+                }
+
+                if (string.IsNullOrEmpty(activeFile))
+                {
+                    await Task.Delay(500);
+                    continue;
+                }
+
                 string log = ReadLog(activeFile);
 
                 int start = log.LastIndexOf(followup);
@@ -61,8 +61,9 @@ class BiomeDetector
             }
             catch (Exception e)
             {
-                form.PrintLogs("Lost active log: " + e.Message);
+                form.PrintLogs("Detector Error: " + e.Message);
                 activeFile = string.Empty;
+                await Task.Delay(1000);
             }
 
             await Task.Delay(200);

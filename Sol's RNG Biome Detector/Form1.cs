@@ -1,5 +1,6 @@
-using System.Runtime.CompilerServices;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text.Json;
 
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -25,6 +26,9 @@ namespace Sol_s_RNG_Biome_Detector
 
         private GUI gui = new GUI();
 
+        private readonly List<string> webhooks = new List<string>();
+
+        private int editingWebhookIndex = -1;
 
         public Form1()
         {
@@ -79,6 +83,7 @@ namespace Sol_s_RNG_Biome_Detector
             }
 
             LoadSettings();
+            LoadWebhooks();
             loadingSettings = false;
 
 
@@ -199,7 +204,7 @@ namespace Sol_s_RNG_Biome_Detector
                         }
                     }
 
-                    if (textBox2.Text != string.Empty && textBox5.Text != string.Empty)
+                    if (webhooks.Count > 0 && !string.IsNullOrWhiteSpace(textBox5.Text))
                     {
 
                         int color = GetColor(biome.ToUpper());
@@ -209,7 +214,7 @@ namespace Sol_s_RNG_Biome_Detector
                             if (textBox3.Text != string.Empty)
                             {
                                 PrintLogs("Sent Webhook!");
-                                Program.PostToWebhook(textBox2.Text, biome, $"<@&{textBox3.Text}>", doping, textBox5.Text, color); // small fix
+                                Program.PostToWebhooks(webhooks, biome, $"<@&{textBox3.Text}>", doping, textBox5.Text, color);
                             }
                         }
                         if (checkBox24.Checked)
@@ -217,19 +222,19 @@ namespace Sol_s_RNG_Biome_Detector
                             if (textBox4.Text != string.Empty)
                             {
                                 PrintLogs("Sent Webhook!");
-                                Program.PostToWebhook(textBox2.Text, biome, $"<@{textBox4.Text}>", doping, textBox5.Text, color);
+                                Program.PostToWebhooks(webhooks, biome, $"<@{textBox4.Text}>", doping, textBox5.Text, color);
                             }
                         }
                         if (checkBox25.Checked)
                         {
                             PrintLogs("Sent Webhook!");
-                            Program.PostToWebhook(textBox2.Text, biome, "@everyone", doping, textBox5.Text, color);
+                            Program.PostToWebhooks(webhooks, biome, "@everyone", doping, textBox5.Text, color);
 
                         }
                         if (checkBox26.Checked)
                         {
                             PrintLogs("Sent Webhook!");
-                            Program.PostToWebhook(textBox2.Text, biome, string.Empty, doping, textBox5.Text, color);
+                            Program.PostToWebhooks(webhooks, biome, string.Empty, doping, textBox5.Text, color);
 
                         }
                     }
@@ -396,7 +401,6 @@ namespace Sol_s_RNG_Biome_Detector
             Properties.Settings.Default.sPingRole = textBox3.Text;
             Properties.Settings.Default.sPingUserID = textBox4.Text;
 
-            Properties.Settings.Default.webhook = textBox2.Text;
             Properties.Settings.Default.privateserver = textBox5.Text;
 
             Properties.Settings.Default.lastBiome = BiomeDetector.lastValidBiome;
@@ -447,7 +451,6 @@ namespace Sol_s_RNG_Biome_Detector
             textBox3.Text = Properties.Settings.Default.sPingRole;
             textBox4.Text = Properties.Settings.Default.sPingUserID;
 
-            textBox2.Text = Properties.Settings.Default.webhook;
             textBox5.Text = Properties.Settings.Default.privateserver;
 
             totalBiomes = Properties.Settings.Default.totalbiomes;
@@ -471,18 +474,27 @@ namespace Sol_s_RNG_Biome_Detector
                 Start_Stop = true;
                 sessionTimer.Restart();
 
-                if (!string.IsNullOrWhiteSpace(textBox2.Text))
-                {
-                    await Program.StartStopWebhook(textBox2.Text, true, TimeSpan.Zero);
-                }
-
-                PrintLogs("Started");
-
                 button3.Text = "Stop";
                 button3.ForeColor = Color.White;
                 button3.BackColor = Color.FromArgb(220, 60, 70);
 
+                PrintLogs("Started");
+
+                BiomeDetector.lastValidBiome = "";
                 Task Biomes = BiomeDetector.Biomes(this);
+
+                if (webhooks.Count > 0)
+                {
+                    try
+                    {
+                        await Program.StartStopWebhooks(webhooks, true, TimeSpan.Zero);
+                    }
+                    catch (Exception ex)
+                    {
+                        PrintLogs("Webhook Error: " + ex.Message);
+                    }
+                }
+
                 return;
             }
 
@@ -493,17 +505,24 @@ namespace Sol_s_RNG_Biome_Detector
 
                 TimeSpan sessionTime = sessionTimer.Elapsed;
 
-                if (!string.IsNullOrWhiteSpace(textBox2.Text))
-                {
-                    await Program.StartStopWebhook(textBox2.Text, false, sessionTime);
-                }
-
                 button3.Text = "Start";
                 button3.ForeColor = Color.White;
                 button3.BackColor = Accent;
 
                 PrintLogs($"Stopped - Session Time: {FormatSessionTime(sessionTime)}");
-  
+
+                if (webhooks.Count > 0)
+                {
+                    try
+                    {
+                        await Program.StartStopWebhooks(webhooks, false, sessionTime);
+                    }
+                    catch (Exception ex)
+                    {
+                        PrintLogs("Webhook Error: " + ex.Message);
+                    }
+                }
+
                 return;
             }
         }
@@ -532,6 +551,168 @@ namespace Sol_s_RNG_Biome_Detector
                 else if (selectedButton == button8)
                     tabControl.SelectedTab = tabPage6;
             }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            editingWebhookIndex = -1;
+            textBox2.Text = "";
+            button11.Text = "Add Webhook";
+            tabControl.SelectedTab = tabPage7;
+        }
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            RefreshWebhookList();
+            tabControl.SelectedTab = tabPage8;
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            string webhook = textBox2.Text.Trim();
+
+            if (!IsValidWebhook(webhook))
+            {
+                MessageBox.Show("Please enter a valid Discord webhook URL.", "Invalid Webhook", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (editingWebhookIndex == -1)
+            {
+                if (webhooks.Contains(webhook))
+                {
+                    MessageBox.Show("This webhook is already added.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                webhooks.Add(webhook);
+            }
+            else
+            {
+                webhooks[editingWebhookIndex] = webhook;
+                editingWebhookIndex = -1;
+            }
+
+            SaveWebhooks();
+            RefreshWebhookList();
+
+            textBox2.Text = "";
+            button11.Text = "Add Webhook";
+
+            tabControl.SelectedTab = tabPage8;
+        }
+
+        private bool IsValidWebhook(string webhook)
+        {
+            if (!Uri.TryCreate(webhook, UriKind.Absolute, out Uri? uri))
+                return false;
+
+            bool discordHost = uri.Host.Equals("discord.com", StringComparison.OrdinalIgnoreCase) || uri.Host.EndsWith(".discord.com", StringComparison.OrdinalIgnoreCase);
+            bool webhookPath = uri.AbsolutePath.StartsWith("/api/webhooks/", StringComparison.OrdinalIgnoreCase);
+
+            return discordHost && webhookPath;
+        }
+
+        private void LoadWebhooks()
+        {
+            webhooks.Clear();
+
+            try
+            {
+                List<string>? savedWebhooks = JsonSerializer.Deserialize<List<string>>(Properties.Settings.Default.webhooks);
+
+                if (savedWebhooks != null)
+                    webhooks.AddRange(savedWebhooks);
+            }
+            catch
+            {
+                Properties.Settings.Default.webhooks = "[]";
+                Properties.Settings.Default.Save();
+            }
+
+            if (webhooks.Count == 0 && !string.IsNullOrWhiteSpace(Properties.Settings.Default.webhook))
+            {
+                webhooks.Add(Properties.Settings.Default.webhook);
+                SaveWebhooks();
+            }
+
+            RefreshWebhookList();
+        }
+
+        private void SaveWebhooks()
+        {
+            Properties.Settings.Default.webhooks = JsonSerializer.Serialize(webhooks);
+            Properties.Settings.Default.Save();
+        }
+
+        private void RefreshWebhookList()
+        {
+            listBox1.Items.Clear();
+
+            for (int i = 0; i < webhooks.Count; i++)
+                listBox1.Items.Add($"Webhook {i + 1} | {GetWebhookID(webhooks[i])}");
+        }
+
+        private string GetWebhookID(string webhook)
+        {
+            try
+            {
+                Uri uri = new Uri(webhook);
+                string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
+
+                if (parts.Length >= 3)
+                    return parts[2];
+            }
+            catch
+            {
+            }
+
+            return "Unknown";
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a webhook first.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show("Delete this webhook?", "Bloom", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            webhooks.RemoveAt(listBox1.SelectedIndex);
+
+            SaveWebhooks();
+            RefreshWebhookList();
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a webhook first.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            editingWebhookIndex = listBox1.SelectedIndex;
+
+            textBox2.Text = webhooks[editingWebhookIndex];
+            button11.Text = "Save Changes";
+
+            tabControl.SelectedTab = tabPage7;
         }
     }
 }

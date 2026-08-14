@@ -350,18 +350,6 @@ namespace Sol_s_RNG_Biome_Detector.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string webhook {
-            get {
-                return ((string)(this["webhook"]));
-            }
-            set {
-                this["webhook"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string privateserver {
             get {
                 return ((string)(this["privateserver"]));
@@ -428,6 +416,30 @@ namespace Sol_s_RNG_Biome_Detector.Properties {
             }
             set {
                 this["UpgradeRequired"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        public string webhooks {
+            get {
+                return ((string)(this["webhooks"]));
+            }
+            set {
+                this["webhooks"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string webhook {
+            get {
+                return ((string)(this["webhook"]));
+            }
+            set {
+                this["webhook"] = value;
             }
         }
     }

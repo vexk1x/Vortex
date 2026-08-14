@@ -8,7 +8,10 @@ namespace Sol_s_RNG_Biome_Detector
 {
     internal static class Program
     {
-        
+        private static readonly HttpClient client = new HttpClient()
+        {
+            Timeout = TimeSpan.FromSeconds(5)
+        };
 
         [STAThread]
 
@@ -22,7 +25,6 @@ namespace Sol_s_RNG_Biome_Detector
 
         public static async Task PostToWebhook(string webhookURL, string Biome, string whatping, bool doping, string pslink, int color)
         {
-            using HttpClient client = new HttpClient();
             
             var embed = new
             {
@@ -48,12 +50,16 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            await client.PostAsync(webhookURL, content);
+            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+
+            using HttpResponseMessage response = await client.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
         }
 
         public static async Task StartStopWebhook(string webhookURL, bool Started, TimeSpan sessionTime)
         {
-            using HttpClient client = new HttpClient();
+            
             string formattedTime = $"{(int)sessionTime.TotalHours:D2}:{sessionTime.Minutes:D2}:{sessionTime.Seconds:D2}";
 
             var embed = new
@@ -77,8 +83,32 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            await client.PostAsync(webhookURL, content);
+            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
 
+            using HttpResponseMessage response = await client.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+
+        }
+
+        public static async Task PostToWebhooks(IEnumerable<string> webhookURLs, string Biome, string whatping, bool doping, string pslink, int color)
+        {
+            List<Task> tasks = new List<Task>();
+
+            foreach (string webhookURL in webhookURLs)
+                tasks.Add(PostToWebhook(webhookURL, Biome, whatping, doping, pslink, color));
+
+            await Task.WhenAll(tasks);
+        }
+
+        public static async Task StartStopWebhooks(IEnumerable<string> webhookURLs, bool Started, TimeSpan sessionTime)
+        {
+            List<Task> tasks = new List<Task>();
+
+            foreach (string webhookURL in webhookURLs)
+                tasks.Add(StartStopWebhook(webhookURL, Started, sessionTime));
+
+            await Task.WhenAll(tasks);
         }
     }
 }
