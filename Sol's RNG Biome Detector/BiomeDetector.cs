@@ -10,76 +10,63 @@ class BiomeDetector
 
     public static async Task Biomes(Form1 form)
     {
-        string path = $@"C:\Users\{Environment.UserName}\AppData\Local\Roblox\logs";
-        string keyword = "SetRichPresence";
+        string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox", "logs");
         string followup = "\"largeImage\":{\"hoverText\":\"";
+
         string activeFile = string.Empty;
-        int attempts = 0;
+        DateTime lastLogScan = DateTime.MinValue;
 
         form.PrintLogs("Detector Started.");
         form.PrintLogs("Searching for active logs file.");
 
-        while (activeFile == string.Empty && attempts < 10)
-        {
-            string[] files = Directory.GetFiles(path, "*.log").OrderByDescending(File.GetLastWriteTime).Take(3).ToArray();
-
-
-            foreach (string file in files)
-            {
-                try
-                {
-                    form.PrintLogs("Checking: " + Path.GetFileName(file));
-
-                    string text = ReadLog(file);
-
-                    if (text.Contains(keyword))
-                    {
-                        activeFile = file;
-                        break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    form.PrintLogs("Err: " + e.Message);
-                }
-            }
-
-            attempts++;
-            await Task.Delay(350);
-            
-        }
-
-        if (activeFile == string.Empty)
-        {
-            form.PrintLogs("Err: No active log File found.");
-            return;
-        }
-        else
-        {
-            form.PrintLogs("Found active log File.");
-        }
-
         while (Form1.Start_Stop)
         {
-            string log = ReadLog(activeFile);
-
-            int start = log.LastIndexOf(followup);
-
-            if (start != -1)
+            if ((DateTime.Now - lastLogScan).TotalSeconds >= 3)
             {
-                start += followup.Length;
+                lastLogScan = DateTime.Now;
 
-                int end = log.IndexOf("\"", start);
+                string newActiveFile = FindActiveLog(path);
 
-                if (end != -1)
+                if (!string.IsNullOrEmpty(newActiveFile) && newActiveFile != activeFile)
                 {
-                    string biome = log.Substring(start, end - start);
-                    ValidateBiome(biome, form);
+                    activeFile = newActiveFile;
+                    form.PrintLogs("Switched active log: " + Path.GetFileName(activeFile));
                 }
-                
             }
+
+            if (string.IsNullOrEmpty(activeFile))
+            {
+                await Task.Delay(500);
+                continue;
+            }
+
+            try
+            {
+                string log = ReadLog(activeFile);
+
+                int start = log.LastIndexOf(followup);
+
+                if (start != -1)
+                {
+                    start += followup.Length;
+
+                    int end = log.IndexOf("\"", start);
+
+                    if (end != -1)
+                    {
+                        string biome = log.Substring(start, end - start);
+                        ValidateBiome(biome, form);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                form.PrintLogs("Lost active log: " + e.Message);
+                activeFile = string.Empty;
+            }
+
             await Task.Delay(200);
-        } 
+        }
     }
 
     private static void ValidateBiome(string LastBiome, Form1 form)
@@ -99,6 +86,26 @@ class BiomeDetector
         using StreamReader read = new StreamReader(stream);
 
         return read.ReadToEnd();
+    }
+
+    private static string FindActiveLog(string path)
+    {
+        string[] files = Directory.GetFiles(path, "*.log").OrderByDescending(File.GetLastWriteTime).Take(10).ToArray();
+
+        foreach (string file in files)
+        {
+            try
+            {
+                string text = ReadLog(file);
+
+                if (text.Contains("SetRichPresence"))
+                    return file;
+            }
+            catch
+            {
+            }
+        }
+        return string.Empty;
     }
 }
 
