@@ -1,5 +1,10 @@
+using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
+using System.Numerics;
+using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Text.Json;
 
 namespace Sol_s_RNG_Biome_Detector
@@ -17,18 +22,35 @@ namespace Sol_s_RNG_Biome_Detector
         private bool loadingSettings = false;
 
         private readonly Stopwatch sessionTimer = new Stopwatch();
+        public static readonly Stopwatch untilAFK = new Stopwatch();
+        public const uint AFKDelay = 900000; // 15 mins
 
-        private readonly Color Accent = Color.FromArgb(123, 97, 255);
+
 
         private readonly CheckBox[] biomeCheckboxes;
+
+        private readonly Label[] biomeStats;
 
         private readonly Button[] sidebarButtons;
 
         private GUI gui = new GUI();
 
-        private readonly List<string> webhooks = new List<string>();
+        private Webhook webhooks = new Webhook();
 
-        private int editingWebhookIndex = -1;
+        private PrivateServer privateServers = new PrivateServer();
+
+
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
+        private const int HOTKEY_F1 = 1;
+        private const int HOTKEY_F2 = 2;
+        private const int HOTKEY_F3 = 3;
+
+        private const int WM_HOTKEY = 0x0312;
 
         public Form1()
         {
@@ -65,7 +87,32 @@ namespace Sol_s_RNG_Biome_Detector
                 button5,
                 button6,
                 button7,
-                button8
+                button8,
+                button36
+            ];
+
+            biomeStats =
+            [
+                label51,
+                label52,
+                label53,
+                label54,
+                label55,
+                label56,
+                label57,
+                label58,
+                label59,
+                label60, // Normal - Rainy
+                label62,
+                label63,
+                label64,
+                label65,
+                label66,
+                label67, // Blazing Sun - Aurora
+                label43,
+                label44,
+                label45,
+                label46, // Singularity - Glitched
             ];
 
         }
@@ -74,16 +121,12 @@ namespace Sol_s_RNG_Biome_Detector
         {
             loadingSettings = true;
 
-            if (Properties.Settings.Default.UpgradeRequired)
-            {
-                Properties.Settings.Default.Upgrade();
-
-                Properties.Settings.Default.UpgradeRequired = false;
-                Properties.Settings.Default.Save();
-            }
-
+            Settings.Load();
             LoadSettings();
-            LoadWebhooks();
+            webhooks.Load(listBox1);
+            privateServers.Load(listBox2);
+            LoadStats();
+
             loadingSettings = false;
 
 
@@ -94,9 +137,24 @@ namespace Sol_s_RNG_Biome_Detector
             textBox1.Dock = DockStyle.Fill;
             button1.BringToFront();
 
-
-            gui.ApplyStyle(this, button3, tabControl, biomeCheckboxes, panelSidebar, panelContent);
+            gui.ApplyStyle(this, tabControl, biomeCheckboxes, biomeStats, panelSidebar, panelContent);
             gui.StyleSidebar(panelSidebar, sidebarButtons);
+
+            RegisterHotKey(Handle, HOTKEY_F1, 0, (uint)Keys.F1);
+            RegisterHotKey(Handle, HOTKEY_F2, 0, (uint)Keys.F2);
+            RegisterHotKey(Handle, HOTKEY_F3, 0, (uint)Keys.F3);
+
+            panelStatus.Size = new Size(14, 14);
+            panelStatus.BackColor = Color.Red;
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            UnregisterHotKey(Handle, HOTKEY_F1);
+            UnregisterHotKey(Handle, HOTKEY_F2);
+            UnregisterHotKey(Handle, HOTKEY_F3);
+
+            base.OnFormClosing(e);
         }
 
         public void PrintLogs(string log)
@@ -106,17 +164,8 @@ namespace Sol_s_RNG_Biome_Detector
             textBox1.ScrollToCaret();
         }
 
-        public void FoundNewBiome(string biome)
+        public void FoundNewBiome(string biome, string privateserverlink, string userid)
         {
-            bool countstats = true;
-            bool checkedonce = false;
-
-            if (Properties.Settings.Default.lastBiome == biome && !checkedonce)
-            {
-                countstats = false;
-                checkedonce = true;
-            }
-
             foreach (CheckBox box in biomeCheckboxes)
             {
                 if (box.Text.ToUpper() == biome.ToUpper())
@@ -124,97 +173,16 @@ namespace Sol_s_RNG_Biome_Detector
                     if (!box.Checked)
                         return;
 
-                    bool rarebiome = false;
-                    bool doping = false;
-
-                    if (checkBox22.Checked)
+                    if (webhooks.Webhooks.Count > 0 && !string.IsNullOrWhiteSpace(privateserverlink))
                     {
-                        switch (biome.ToUpper())
-                        {
-                            case "CYBERSPACE":
-                            case "DREAMSPACE":
-                            case "GLITCHED":
-                                rarebiome = true;
-                                doping = true;
-                                if (countstats)
-                                    UpdateStats(true);
-
-                                break;
-                            case "SINGULARITY":
-                                if (checkBox21.Checked)
-                                {
-                                    rarebiome = true;
-                                    doping = true;
-                                    if (countstats)
-                                        UpdateStats(true);
-                                }
-                                else
-                                {
-                                    rarebiome = false;
-                                    doping = false;
-                                    if (countstats)
-                                        UpdateStats(true);
-                                }
-                                break;
-
-                            default:
-                                if (countstats)
-                                    UpdateStats(false);
-                                break;
-                        }
-                    }
-                    else
-                    {
-                        doping = true;
-
-                        switch (biome.ToUpper())
-                        {
-                            case "CYBERSPACE":
-                            case "DREAMSPACE":
-                            case "GLITCHED":
-
-                                if (countstats)
-                                    UpdateStats(true);
-                                rarebiome = true;
-
-                                break;
-
-                            case "SINGULARITY":
-                                if (checkBox21.Checked)
-                                {
-
-                                    if (countstats)
-                                        UpdateStats(true);
-
-                                    rarebiome = true;
-                                }
-                                else
-                                {
-
-                                    if (countstats)
-                                        UpdateStats(true);
-                                    rarebiome = false;
-                                }
-                                break;
-
-                            default:
-                                if (countstats)
-                                    UpdateStats(false);
-                                break;
-                        }
-                    }
-
-                    if (webhooks.Count > 0 && !string.IsNullOrWhiteSpace(textBox5.Text))
-                    {
-
-                        int color = GetColor(biome.ToUpper());
+                        int color = GetBiomeStuff(biome.ToUpper(), checkBox22.Checked, checkBox21.Checked, out bool ping);
 
                         if (checkBox23.Checked)
                         {
                             if (textBox3.Text != string.Empty)
                             {
                                 PrintLogs("Sent Webhook!");
-                                Program.PostToWebhooks(webhooks, biome, $"<@&{textBox3.Text}>", doping, textBox5.Text, color);
+                                webhooks.PostToWebhooks(webhooks.Webhooks, biome, $"<@&{textBox3.Text}>", ping, privateserverlink, color);
                             }
                         }
                         if (checkBox24.Checked)
@@ -222,29 +190,77 @@ namespace Sol_s_RNG_Biome_Detector
                             if (textBox4.Text != string.Empty)
                             {
                                 PrintLogs("Sent Webhook!");
-                                Program.PostToWebhooks(webhooks, biome, $"<@{textBox4.Text}>", doping, textBox5.Text, color);
+                                webhooks.PostToWebhooks(webhooks.Webhooks, biome, $"<@{textBox4.Text}>", ping, privateserverlink, color);
                             }
                         }
                         if (checkBox25.Checked)
                         {
                             PrintLogs("Sent Webhook!");
-                            Program.PostToWebhooks(webhooks, biome, "@everyone", doping, textBox5.Text, color);
+                            webhooks.PostToWebhooks(webhooks.Webhooks, biome, "@everyone", ping, privateserverlink, color);
 
                         }
                         if (checkBox26.Checked)
                         {
                             PrintLogs("Sent Webhook!");
-                            Program.PostToWebhooks(webhooks, biome, string.Empty, doping, textBox5.Text, color);
+                            webhooks.PostToWebhooks(webhooks.Webhooks, biome, string.Empty, ping, privateserverlink, color);
 
                         }
                     }
-
-                    doping = false;
-                    rarebiome = false;
-                    countstats = true;
                 }
             }
             return;
+        }
+
+        private async void Start(bool start)
+        {
+            if (!Start_Stop && start)
+            {
+                Start_Stop = true;
+                sessionTimer.Restart();
+                untilAFK.Restart();
+
+                SessionBiomes = 0;
+                PrintLogs("Started");
+
+                if (webhooks.Webhooks.Count > 0)
+                {
+                    try
+                    {
+                        await webhooks.StartStopWebhooks(webhooks.Webhooks, true, TimeSpan.Zero, SessionBiomes, SessionRare);
+                    }
+                    catch (Exception ex)
+                    {
+                        PrintLogs("Webhook Error: " + ex.Message);
+                    }
+                }
+                Task Biomes = BiomeDetector.Biomes(this);
+                UpdatePanelStatus(true);
+                return;
+            }
+
+            if (Start_Stop && !start)
+            {
+                Start_Stop = false;
+                sessionTimer.Stop();
+
+                TimeSpan sessionTime = sessionTimer.Elapsed;
+
+                PrintLogs($"Stopped - Session Time: {FormatSessionTime(sessionTime)}");
+
+                if (webhooks.Webhooks.Count > 0)
+                {
+                    try
+                    {
+                        await webhooks.StartStopWebhooks(webhooks.Webhooks, false, sessionTime, SessionBiomes, SessionRare);
+                    }
+                    catch (Exception ex)
+                    {
+                        PrintLogs("Webhook Error: " + ex.Message);
+                    }
+                }
+                UpdatePanelStatus(false);
+                return;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -283,86 +299,244 @@ namespace Sol_s_RNG_Biome_Detector
             if (rarebiome)
             {
                 totalRare++;
-                label9.Text = totalRare.ToString();
 
                 SessionRare++;
-                label14.Text = SessionRare.ToString();
             }
 
             totalBiomes++;
             SessionBiomes++;
 
+            Settings.Data.TotalBiomes = totalBiomes;
+            Settings.Data.TotalRareBiomes = totalRare;
+
+            Settings.Save();
+            LoadStats();
+        }
+
+        private void LoadStats()
+        {
+            label9.Text = totalRare.ToString();
+            label14.Text = SessionRare.ToString();
             label11.Text = totalBiomes.ToString();
             label15.Text = SessionBiomes.ToString();
 
-            Properties.Settings.Default.totalbiomes = totalBiomes;
-            Properties.Settings.Default.totalrarebiomes = totalRare;
+            label68.Text = Settings.Data.TotalNormal.ToString(); // Normal -> Null
+            label69.Text = Settings.Data.TotalWindy.ToString();
+            label70.Text = Settings.Data.TotalSnowy.ToString();
+            label71.Text = Settings.Data.TotalRainy.ToString();
+            label72.Text = Settings.Data.TotalSandStorm.ToString();
+            label73.Text = Settings.Data.TotalHell.ToString();
+            label74.Text = Settings.Data.TotalStarfall.ToString();
+            label75.Text = Settings.Data.TotalHeaven.ToString();
+            label76.Text = Settings.Data.TotalCorruption.ToString();
+            label77.Text = Settings.Data.TotalNull.ToString();
+
+            label47.Text = Settings.Data.TotalSingularity.ToString(); // Singularity -> Glitched
+            label48.Text = Settings.Data.TotalCyberspace.ToString();
+            label49.Text = Settings.Data.TotalDreamspace.ToString();
+            label50.Text = Settings.Data.TotalGlitched.ToString();
+
+            label78.Text = Settings.Data.TotalBlazingSun.ToString(); // Blazing Sun -> Aurora
+            label79.Text = Settings.Data.TotalEggland.ToString();
+            label80.Text = Settings.Data.TotalPumpkinMoon.ToString();
+            label81.Text = Settings.Data.TotalBloodRain.ToString();
+            label82.Text = Settings.Data.TotalGraveyard.ToString();
+            label83.Text = Settings.Data.TotalAurora.ToString();
+
         }
 
-        private int GetColor(string Biome)
+        private int GetBiomeStuff(string Biome, bool onlyrareping, bool treatsingasrare, out bool ping)
         {
+            if (onlyrareping)
+                ping = false;
+            else
+                ping = true;
+
+
             switch (Biome)
             {
                 case "NORMAL":
-                    return 0x4e4e4e;
+                    {
+                        Settings.Data.TotalNormal++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x4e4e4e;
+                    }
+
 
                 case "WINDY":
-                    return 0xc2f2ff;
+                    {
+                        
+                        Settings.Data.TotalWindy++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xc2f2ff;
+                    }
 
                 case "SNOWY":
-                    return 0xb6cbd1;
+                    {
+                        Settings.Data.TotalSnowy++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xb6cbd1;
+                    }
 
                 case "RAINY":
-                    return 0x0000ff;
+                    {
+                        
+                        Settings.Data.TotalRainy++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x0000ff;
+                    }
 
                 case "SAND STORM":
-                    return 0xffbb00;
+                    {
+                        Settings.Data.TotalSandStorm++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xffbb00;
+                    }
 
                 case "HELL":
-                    return 0x770a0a;
+                    {
+                        Settings.Data.TotalHell++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x770a0a;
+                    }
 
                 case "STARFALL":
-                    return 0x3b3abc;
+                    {
+                       
+                        Settings.Data.TotalStarfall++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x3b3abc;
+                    }
 
                 case "HEAVEN":
-                    return 0xf4fb01;
+                    {
+                     
+                        Settings.Data.TotalHeaven++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xf4fb01;
+                    }
 
                 case "CORRUPTION":
-                    return 0x310387;
+                    {
+                        
+                        Settings.Data.TotalCorruption++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x310387;
+                    }
 
                 case "NULL":
-                    return 0x000000;
+                    {
+                        
+                        Settings.Data.TotalNull++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x000000;
+                    }
 
                 case "SINGULARITY":
-                    return 0xbf6c00;
+                    {
+                        Settings.Data.TotalSingularity++;
+                        Settings.Save();
+                        UpdateStats(true);
+
+                        if (treatsingasrare)
+                            ping = true;
+
+                        return 0xbf6c00;
+                    }
 
                 case "CYBERSPACE":
-                    return 0x08043f;
+                    {
+                        
+                        Settings.Data.TotalCyberspace++;
+                        Settings.Save();
+                        UpdateStats(true);
+                        ping = true;
+                        return 0x08043f;
+                    }
 
                 case "DREAMSPACE":
-                    return 0xe500ff;
+                    {
+                        
+                        Settings.Data.TotalDreamspace++;
+                        Settings.Save();
+                        UpdateStats(true);
+                        ping = true;
+                        return 0xe500ff;
+                    }
 
                 case "GLITCHED":
-                    return 0x212121;
+                    {
+                        
+                        Settings.Data.TotalGlitched++;
+                        Settings.Save();
+                        UpdateStats(true);
+                        ping = true;
+                        return 0x212121;
+                    }
 
                 case "BLAZING SUN":
-                    return 0xfaff00;
+                    {
+                        
+                        Settings.Data.TotalBlazingSun++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xfaff00;
+                    }
 
                 case "EGGLAND":
-                    return 0x9fff9a;
+                    {
+                        
+                        Settings.Data.TotalEggland++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x9fff9a;
+                    }
 
                 case "PUMPKIN MOON":
-                    return 0x996505;
+                    {
+                        
+                        Settings.Data.TotalPumpkinMoon++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x996505;
+                    }
 
                 case "BLOOD RAIN":
-                    return 0x3e0000;
+                    {
+                        
+                        Settings.Data.TotalBloodRain++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x3e0000;
+                    }
 
                 case "GRAVEYARD":
-                    return 0xc1ecff;
+                    {
+                        
+                        Settings.Data.TotalGraveyard++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0xc1ecff;
+                    }
 
                 case "AURORA":
-                    return 0x8d7dc7;
-
+                    {
+                        
+                        Settings.Data.TotalAurora++;
+                        Settings.Save();
+                        UpdateStats(false);
+                        return 0x8d7dc7;
+                    }
 
                 default:
                     return 0xFFFFFF;
@@ -371,42 +545,41 @@ namespace Sol_s_RNG_Biome_Detector
 
         private void SaveSettings()
         {
-            Properties.Settings.Default.Normal = checkBox1.Checked;
-            Properties.Settings.Default.Windy = checkBox2.Checked;
-            Properties.Settings.Default.Snowy = checkBox3.Checked;
-            Properties.Settings.Default.Rainy = checkBox4.Checked;
-            Properties.Settings.Default.Sand_Storm = checkBox5.Checked;
-            Properties.Settings.Default.Hell = checkBox6.Checked;
-            Properties.Settings.Default.Starfall = checkBox7.Checked;
-            Properties.Settings.Default.Heaven = checkBox8.Checked;
-            Properties.Settings.Default.Corruption = checkBox9.Checked;
-            Properties.Settings.Default.Null = checkBox10.Checked;
-            Properties.Settings.Default.Singularity = checkBox11.Checked;
-            Properties.Settings.Default.Cyberspace = checkBox12.Checked;
-            Properties.Settings.Default.Dreamspace = checkBox13.Checked;
-            Properties.Settings.Default.Glitched = checkBox14.Checked;
-            Properties.Settings.Default.Blazing_Sun = checkBox15.Checked;
-            Properties.Settings.Default.Eggland = checkBox16.Checked;
-            Properties.Settings.Default.Pumpkin_Moon = checkBox17.Checked;
-            Properties.Settings.Default.Blood_Rain = checkBox18.Checked;
-            Properties.Settings.Default.Graveyard = checkBox19.Checked;
-            Properties.Settings.Default.Aurora = checkBox20.Checked;
-            Properties.Settings.Default.treatsingasrare = checkBox21.Checked;
-            Properties.Settings.Default.onlypingforrare = checkBox22.Checked;
-            Properties.Settings.Default.pingrole = checkBox23.Checked;
-            Properties.Settings.Default.pinguserid = checkBox24.Checked;
-            Properties.Settings.Default.pingeveryone = checkBox25.Checked;
-            Properties.Settings.Default.dontping = checkBox26.Checked;
+            Settings.Data.Normal = checkBox1.Checked;
+            Settings.Data.Windy = checkBox2.Checked;
+            Settings.Data.Snowy = checkBox3.Checked;
+            Settings.Data.Rainy = checkBox4.Checked;
+            Settings.Data.SandStorm = checkBox5.Checked;
+            Settings.Data.Hell = checkBox6.Checked;
+            Settings.Data.Starfall = checkBox7.Checked;
+            Settings.Data.Heaven = checkBox8.Checked;
+            Settings.Data.Corruption = checkBox9.Checked;
+            Settings.Data.Null = checkBox10.Checked;
+            Settings.Data.Singularity = checkBox11.Checked;
+            Settings.Data.Cyberspace = checkBox12.Checked;
+            Settings.Data.Dreamspace = checkBox13.Checked;
+            Settings.Data.Glitched = checkBox14.Checked;
+            Settings.Data.BlazingSun = checkBox15.Checked;
+            Settings.Data.Eggland = checkBox16.Checked;
+            Settings.Data.PumpkinMoon = checkBox17.Checked;
+            Settings.Data.BloodRain = checkBox18.Checked;
+            Settings.Data.Graveyard = checkBox19.Checked;
+            Settings.Data.Aurora = checkBox20.Checked;
 
-            Properties.Settings.Default.sPingRole = textBox3.Text;
-            Properties.Settings.Default.sPingUserID = textBox4.Text;
+            Settings.Data.TreatSingularityAsRare = checkBox21.Checked;
+            Settings.Data.OnlyPingForRare = checkBox22.Checked;
 
-            Properties.Settings.Default.privateserver = textBox5.Text;
+            Settings.Data.PingRole = checkBox23.Checked;
+            Settings.Data.PingUserID = checkBox24.Checked;
+            Settings.Data.PingEveryone = checkBox25.Checked;
+            Settings.Data.DontPing = checkBox26.Checked;
 
-            Properties.Settings.Default.lastBiome = BiomeDetector.lastValidBiome;
+            Settings.Data.PingRoleID = textBox3.Text;
+            Settings.Data.PingUserIDValue = textBox4.Text;
 
-            Properties.Settings.Default.Save();
 
+
+            Settings.Save();
         }
 
         private void SettingChanged(object sender, EventArgs e)
@@ -419,47 +592,43 @@ namespace Sol_s_RNG_Biome_Detector
 
         private void LoadSettings()
         {
-            checkBox1.Checked = Properties.Settings.Default.Normal;
-            checkBox2.Checked = Properties.Settings.Default.Windy;
-            checkBox3.Checked = Properties.Settings.Default.Snowy;
-            checkBox4.Checked = Properties.Settings.Default.Rainy;
-            checkBox5.Checked = Properties.Settings.Default.Sand_Storm;
-            checkBox6.Checked = Properties.Settings.Default.Hell;
-            checkBox7.Checked = Properties.Settings.Default.Starfall;
-            checkBox8.Checked = Properties.Settings.Default.Heaven;
-            checkBox9.Checked = Properties.Settings.Default.Corruption;
-            checkBox10.Checked = Properties.Settings.Default.Null;
-            checkBox11.Checked = Properties.Settings.Default.Singularity;
-            checkBox12.Checked = Properties.Settings.Default.Cyberspace;
-            checkBox13.Checked = Properties.Settings.Default.Dreamspace;
-            checkBox14.Checked = Properties.Settings.Default.Glitched;
-            checkBox15.Checked = Properties.Settings.Default.Blazing_Sun;
-            checkBox16.Checked = Properties.Settings.Default.Eggland;
-            checkBox17.Checked = Properties.Settings.Default.Pumpkin_Moon;
-            checkBox18.Checked = Properties.Settings.Default.Blood_Rain;
-            checkBox19.Checked = Properties.Settings.Default.Graveyard;
-            checkBox20.Checked = Properties.Settings.Default.Aurora;
+            checkBox1.Checked = Settings.Data.Normal;
+            checkBox2.Checked = Settings.Data.Windy;
+            checkBox3.Checked = Settings.Data.Snowy;
+            checkBox4.Checked = Settings.Data.Rainy;
+            checkBox5.Checked = Settings.Data.SandStorm;
+            checkBox6.Checked = Settings.Data.Hell;
+            checkBox7.Checked = Settings.Data.Starfall;
+            checkBox8.Checked = Settings.Data.Heaven;
+            checkBox9.Checked = Settings.Data.Corruption;
+            checkBox10.Checked = Settings.Data.Null;
+            checkBox11.Checked = Settings.Data.Singularity;
+            checkBox12.Checked = Settings.Data.Cyberspace;
+            checkBox13.Checked = Settings.Data.Dreamspace;
+            checkBox14.Checked = Settings.Data.Glitched;
+            checkBox15.Checked = Settings.Data.BlazingSun;
+            checkBox16.Checked = Settings.Data.Eggland;
+            checkBox17.Checked = Settings.Data.PumpkinMoon;
+            checkBox18.Checked = Settings.Data.BloodRain;
+            checkBox19.Checked = Settings.Data.Graveyard;
+            checkBox20.Checked = Settings.Data.Aurora;
 
-            checkBox21.Checked = Properties.Settings.Default.treatsingasrare;
-            checkBox22.Checked = Properties.Settings.Default.onlypingforrare;
+            checkBox21.Checked = Settings.Data.TreatSingularityAsRare;
+            checkBox22.Checked = Settings.Data.OnlyPingForRare;
 
-            checkBox23.Checked = Properties.Settings.Default.pingrole;
-            checkBox24.Checked = Properties.Settings.Default.pinguserid;
-            checkBox25.Checked = Properties.Settings.Default.pingeveryone;
-            checkBox26.Checked = Properties.Settings.Default.dontping;
+            checkBox23.Checked = Settings.Data.PingRole;
+            checkBox24.Checked = Settings.Data.PingUserID;
+            checkBox25.Checked = Settings.Data.PingEveryone;
+            checkBox26.Checked = Settings.Data.DontPing;
 
-            textBox3.Text = Properties.Settings.Default.sPingRole;
-            textBox4.Text = Properties.Settings.Default.sPingUserID;
+            textBox3.Text = Settings.Data.PingRoleID;
+            textBox4.Text = Settings.Data.PingUserIDValue;
 
-            textBox5.Text = Properties.Settings.Default.privateserver;
-
-            totalBiomes = Properties.Settings.Default.totalbiomes;
-            totalRare = Properties.Settings.Default.totalrarebiomes;
+            totalBiomes = Settings.Data.TotalBiomes;
+            totalRare = Settings.Data.TotalRareBiomes;
 
             label11.Text = totalBiomes.ToString();
             label9.Text = totalRare.ToString();
-
-
         }
 
         private string FormatSessionTime(TimeSpan time)
@@ -467,65 +636,7 @@ namespace Sol_s_RNG_Biome_Detector
             return $"{(int)time.TotalHours:D2}:{time.Minutes:D2}:{time.Seconds:D2}";
         }
 
-        private async void button3_Click(object sender, EventArgs e)
-        {
-            if (!Start_Stop)
-            {
-                Start_Stop = true;
-                sessionTimer.Restart();
 
-                button3.Text = "Stop";
-                button3.ForeColor = Color.White;
-                button3.BackColor = Color.FromArgb(220, 60, 70);
-
-                PrintLogs("Started");
-
-                BiomeDetector.lastValidBiome = "";
-                Task Biomes = BiomeDetector.Biomes(this);
-
-                if (webhooks.Count > 0)
-                {
-                    try
-                    {
-                        await Program.StartStopWebhooks(webhooks, true, TimeSpan.Zero);
-                    }
-                    catch (Exception ex)
-                    {
-                        PrintLogs("Webhook Error: " + ex.Message);
-                    }
-                }
-
-                return;
-            }
-
-            if (Start_Stop)
-            {
-                Start_Stop = false;
-                sessionTimer.Stop();
-
-                TimeSpan sessionTime = sessionTimer.Elapsed;
-
-                button3.Text = "Start";
-                button3.ForeColor = Color.White;
-                button3.BackColor = Accent;
-
-                PrintLogs($"Stopped - Session Time: {FormatSessionTime(sessionTime)}");
-
-                if (webhooks.Count > 0)
-                {
-                    try
-                    {
-                        await Program.StartStopWebhooks(webhooks, false, sessionTime);
-                    }
-                    catch (Exception ex)
-                    {
-                        PrintLogs("Webhook Error: " + ex.Message);
-                    }
-                }
-
-                return;
-            }
-        }
 
         private void activebutton(object sender, EventArgs e)
         {
@@ -550,20 +661,22 @@ namespace Sol_s_RNG_Biome_Detector
 
                 else if (selectedButton == button8)
                     tabControl.SelectedTab = tabPage6;
+
+                else if (selectedButton == button36)
+                    tabControl.SelectedTab = tabPage13;
             }
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            editingWebhookIndex = -1;
+            webhooks.EditingIndex = -1;
             textBox2.Text = "";
-            button11.Text = "Add Webhook";
             tabControl.SelectedTab = tabPage7;
         }
 
         private void button10_Click(object sender, EventArgs e)
         {
-            RefreshWebhookList();
+            webhooks.RefreshList(listBox1);
             tabControl.SelectedTab = tabPage8;
         }
 
@@ -571,13 +684,7 @@ namespace Sol_s_RNG_Biome_Detector
         {
             string webhook = textBox2.Text.Trim();
 
-            if (!IsValidWebhook(webhook))
-            {
-                MessageBox.Show("Please enter a valid Discord webhook URL.", "Invalid Webhook", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (editingWebhookIndex == -1)
+            if (webhooks.EditingIndex == -1)
             {
                 if (webhooks.Contains(webhook))
                 {
@@ -589,86 +696,17 @@ namespace Sol_s_RNG_Biome_Detector
             }
             else
             {
-                webhooks[editingWebhookIndex] = webhook;
-                editingWebhookIndex = -1;
+                webhooks.Update(webhooks.EditingIndex, webhook);
+                webhooks.EditingIndex = -1;
             }
 
-            SaveWebhooks();
-            RefreshWebhookList();
+            webhooks.RefreshList(listBox1);
 
             textBox2.Text = "";
-            button11.Text = "Add Webhook";
 
             tabControl.SelectedTab = tabPage8;
         }
 
-        private bool IsValidWebhook(string webhook)
-        {
-            if (!Uri.TryCreate(webhook, UriKind.Absolute, out Uri? uri))
-                return false;
-
-            bool discordHost = uri.Host.Equals("discord.com", StringComparison.OrdinalIgnoreCase) || uri.Host.EndsWith(".discord.com", StringComparison.OrdinalIgnoreCase);
-            bool webhookPath = uri.AbsolutePath.StartsWith("/api/webhooks/", StringComparison.OrdinalIgnoreCase);
-
-            return discordHost && webhookPath;
-        }
-
-        private void LoadWebhooks()
-        {
-            webhooks.Clear();
-
-            try
-            {
-                List<string>? savedWebhooks = JsonSerializer.Deserialize<List<string>>(Properties.Settings.Default.webhooks);
-
-                if (savedWebhooks != null)
-                    webhooks.AddRange(savedWebhooks);
-            }
-            catch
-            {
-                Properties.Settings.Default.webhooks = "[]";
-                Properties.Settings.Default.Save();
-            }
-
-            if (webhooks.Count == 0 && !string.IsNullOrWhiteSpace(Properties.Settings.Default.webhook))
-            {
-                webhooks.Add(Properties.Settings.Default.webhook);
-                SaveWebhooks();
-            }
-
-            RefreshWebhookList();
-        }
-
-        private void SaveWebhooks()
-        {
-            Properties.Settings.Default.webhooks = JsonSerializer.Serialize(webhooks);
-            Properties.Settings.Default.Save();
-        }
-
-        private void RefreshWebhookList()
-        {
-            listBox1.Items.Clear();
-
-            for (int i = 0; i < webhooks.Count; i++)
-                listBox1.Items.Add($"Webhook {i + 1} | {GetWebhookID(webhooks[i])}");
-        }
-
-        private string GetWebhookID(string webhook)
-        {
-            try
-            {
-                Uri uri = new Uri(webhook);
-                string[] parts = uri.AbsolutePath.Split('/', StringSplitOptions.RemoveEmptyEntries);
-
-                if (parts.Length >= 3)
-                    return parts[2];
-            }
-            catch
-            {
-            }
-
-            return "Unknown";
-        }
 
         private void button14_Click(object sender, EventArgs e)
         {
@@ -693,10 +731,8 @@ namespace Sol_s_RNG_Biome_Detector
             if (result != DialogResult.Yes)
                 return;
 
-            webhooks.RemoveAt(listBox1.SelectedIndex);
-
-            SaveWebhooks();
-            RefreshWebhookList();
+            webhooks.Remove(listBox1.SelectedIndex);
+            webhooks.RefreshList(listBox1);
         }
 
         private void button12_Click(object sender, EventArgs e)
@@ -707,12 +743,308 @@ namespace Sol_s_RNG_Biome_Detector
                 return;
             }
 
-            editingWebhookIndex = listBox1.SelectedIndex;
+            webhooks.EditingIndex = listBox1.SelectedIndex;
 
-            textBox2.Text = webhooks[editingWebhookIndex];
+            textBox2.Text = webhooks.Get(webhooks.EditingIndex);
             button11.Text = "Save Changes";
 
             tabControl.SelectedTab = tabPage7;
+        }
+
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+            privateServers.EditingIndex = -1;
+
+            textBox5.Clear();
+            textBox6.Clear();
+
+            tabControl.SelectedTab = tabPage9;
+        }
+
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+            privateServers.RefreshList(listBox2);
+            tabControl.SelectedTab = tabPage10;
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+            privateServers.EditingIndex = -1;
+
+            textBox5.Clear();
+            textBox6.Clear();
+
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void button22_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage3;
+        }
+
+        private void button20_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage11;
+        }
+
+        private void button21_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage9;
+        }
+
+
+
+        private void button19_Click(object sender, EventArgs e)
+        {
+            string link = textBox5.Text.Trim();
+            string userId = textBox6.Text.Trim();
+
+            if (!privateServers.IsValidLink(link))
+            {
+                MessageBox.Show("Please enter a valid Roblox private server link.", "Invalid Private Server", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (!privateServers.IsValidUserId(userId))
+            {
+                MessageBox.Show("Please enter a valid Roblox User ID.", "Invalid User ID", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int existingIndex = privateServers.FindUser(userId);
+
+            if (existingIndex != -1 && existingIndex != privateServers.EditingIndex)
+            {
+                MessageBox.Show("This Roblox User ID already has a private server configured.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (privateServers.EditingIndex == -1)
+            {
+                privateServers.Add(userId, link);
+            }
+            else
+            {
+                privateServers.Update(privateServers.EditingIndex, userId, link);
+                privateServers.EditingIndex = -1;
+            }
+
+            privateServers.RefreshList(listBox2);
+
+            textBox5.Clear();
+            textBox6.Clear();
+
+            tabControl.SelectedTab = tabPage10;
+        }
+
+        private void button23_Click(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a private server first.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            privateServers.EditingIndex = listBox2.SelectedIndex;
+
+            PrivateServer.Entry entry = privateServers.Get(privateServers.EditingIndex);
+
+            textBox5.Text = entry.Link;
+            textBox6.Text = entry.UserId;
+
+            button19.Text = "Save Changes";
+
+            tabControl.SelectedTab = tabPage9;
+        }
+
+        private void button24_Click(object sender, EventArgs e)
+        {
+            if (listBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a private server first.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            PrivateServer.Entry entry = privateServers.Get(listBox2.SelectedIndex);
+
+            DialogResult result = MessageBox.Show($"Delete the private server for User ID {entry.UserId}?", "Bloom", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result != DialogResult.Yes)
+                return;
+
+            privateServers.Remove(listBox2.SelectedIndex);
+            privateServers.RefreshList(listBox2);
+        }
+
+        private void button25_Click(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        public string GetPrivateServerForUser(string userId)
+        {
+            return privateServers.GetForUser(userId);
+        }
+
+        private void checkBox28_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox28.Checked)
+            {
+                DialogResult dresult = MessageBox.Show("Enabling this modifies handles of the Roblox client and may result in a ban (Use at your own risk)!", "Bloom", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+
+                if (dresult == DialogResult.OK)
+                {
+
+                    string path = RobloxHandle.FindHandleExe();
+
+                    if (string.IsNullOrWhiteSpace(path))
+                    {
+                        tabControl.SelectedTab = tabPage12;
+                        checkBox28.Checked = false;
+                    }
+                    else
+                    {
+
+                        bool admin = AskForAdmin();
+
+                        if (!admin)
+                        {
+                            MessageBox.Show("This program requires admin perms in order to interact with the Roblox Handle", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            checkBox28.Checked = false;
+                            return;
+                        }
+
+                        bool result = RobloxHandle.CloseSingletonEvent(path);
+
+                        if (!result)
+                        {
+                            checkBox28.Checked = false;
+                            PrintLogs("Couldn't close the Handle!");
+                            MessageBox.Show(RobloxHandle.LastError, "Failed to close Roblox Handle", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                }
+
+                if (dresult == DialogResult.Cancel)
+                {
+                    checkBox28.Checked = false;
+                    return;
+                }
+            }
+        }
+
+        private static bool AskForAdmin()
+        {
+            ProcessStartInfo info = new ProcessStartInfo();
+
+            info.FileName = Environment.ProcessPath;
+            info.Verb = "runas";
+            info.UseShellExecute = true;
+
+            try
+            {
+                Process.Start(info);
+                return true;
+            }
+            catch (Win32Exception ex)
+            {
+                if (ex.NativeErrorCode == 1223)
+                    return false;
+
+                throw;
+            }
+        }
+
+        private void button26_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage1;
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://learn.microsoft.com/en-us/sysinternals/downloads/handle") { UseShellExecute = true });
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo("https://download.sysinternals.com/files/Handle.zip") { UseShellExecute = true });
+        }
+
+        private async void checkBox29_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!checkBox29.Checked)
+                return;
+
+            while (checkBox29.Checked)
+            {
+                if (Start_Stop && untilAFK.ElapsedMilliseconds > AFKDelay)
+                {
+                    if (!checkBox29.Checked || !Start_Stop)
+                        continue;
+
+                    AntiAFK.SendActivity();
+                    untilAFK.Restart();
+                }
+                else
+                {
+                    await Task.Delay(1000);
+                }
+            }
+        }
+
+        private async void GetUsedItems(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button34_Click(object sender, EventArgs e)
+        {
+            tabControl.SelectedTab = tabPage13;
+        }
+
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_HOTKEY)
+            {
+                int id = m.WParam.ToInt32();
+
+                if (id == HOTKEY_F1)
+                {
+                    Start(true);
+                }
+
+                if (id == HOTKEY_F2)
+                {
+                    Start(false);
+                }
+
+                if (id == HOTKEY_F3)
+                {
+                    Environment.Exit(0);
+                }
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            if (listBox1.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select a webhook first.", "Bloom", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            webhooks.TestWebhook(webhooks.Get(listBox1.SelectedIndex));
+        }
+
+        private void UpdatePanelStatus(bool running)
+        {
+            panelStatus.BackColor = running ? Color.Green : Color.Red;
         }
     }
 }

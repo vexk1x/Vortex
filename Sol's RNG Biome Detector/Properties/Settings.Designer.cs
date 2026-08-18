@@ -350,18 +350,6 @@ namespace Sol_s_RNG_Biome_Detector.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string privateserver {
-            get {
-                return ((string)(this["privateserver"]));
-            }
-            set {
-                this["privateserver"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string sPingRole {
             get {
                 return ((string)(this["sPingRole"]));
@@ -392,18 +380,6 @@ namespace Sol_s_RNG_Biome_Detector.Properties {
             }
             set {
                 this["Hell"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string lastBiome {
-            get {
-                return ((string)(this["lastBiome"]));
-            }
-            set {
-                this["lastBiome"] = value;
             }
         }
         
@@ -440,6 +416,30 @@ namespace Sol_s_RNG_Biome_Detector.Properties {
             }
             set {
                 this["webhook"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("[]")]
+        public string privateservers {
+            get {
+                return ((string)(this["privateservers"]));
+            }
+            set {
+                this["privateservers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("{}")]
+        public string biomechanger {
+            get {
+                return ((string)(this["biomechanger"]));
+            }
+            set {
+                this["biomechanger"] = value;
             }
         }
     }

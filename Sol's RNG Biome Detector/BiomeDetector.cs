@@ -1,23 +1,37 @@
 ﻿using Sol_s_RNG_Biome_Detector;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
 class BiomeDetector
 {
+    private static readonly Dictionary<string, RobloxClient> clients = new Dictionary<string, RobloxClient>();
+    private static readonly HashSet<string> knownFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-    public static string lastValidBiome = "";
+    private static Dictionary<string, string> lastBiomeByUser = new Dictionary<string, string>();
+
+    private class RobloxClient
+    {
+        public string LogFile { get; set; } = "";
+        public string UserId { get; set; } = "";
+        public string Buffer { get; set; } = "";
+        public long ReadPosition { get; set; } = 0;
+        public DateTime LogWriteTime { get; set; }
+    }
 
     public static async Task Biomes(Form1 form)
     {
         string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox", "logs");
-        string followup = "\"largeImage\":{\"hoverText\":\"";
-
-        string activeFile = string.Empty;
         DateTime lastLogScan = DateTime.MinValue;
 
+        clients.Clear();
+        knownFiles.Clear();
+        lastBiomeByUser.Clear();
+
         form.PrintLogs("Detector Started.");
-        form.PrintLogs("Searching for active logs file.");
+        form.PrintLogs("Searching for Roblox clients.");
 
         while (Form1.Start_Stop)
         {
@@ -27,86 +41,267 @@ class BiomeDetector
                 {
                     lastLogScan = DateTime.Now;
 
-                    string newActiveFile = FindActiveLog(path);
+                    FindClients(path, form);
+                }
 
-                    if (!string.IsNullOrEmpty(newActiveFile) && newActiveFile != activeFile)
+                List<RobloxClient> currentClients = new List<RobloxClient>(clients.Values);
+
+                foreach (RobloxClient client in currentClients)
+                {
+                    try
                     {
-                        activeFile = newActiveFile;
-                        form.PrintLogs("Switched active log: " + Path.GetFileName(activeFile));
+                        string newData = ReadNewData(client);
+
+                        if (!string.IsNullOrEmpty(newData))
+                            ProcessNewData(client, newData, form);
                     }
-                }
-
-                if (string.IsNullOrEmpty(activeFile))
-                {
-                    await Task.Delay(500);
-                    continue;
-                }
-
-                string log = ReadLog(activeFile);
-
-                int start = log.LastIndexOf(followup);
-
-                if (start != -1)
-                {
-                    start += followup.Length;
-
-                    int end = log.IndexOf("\"", start);
-
-                    if (end != -1)
+                    catch (Exception e)
                     {
-                        string biome = log.Substring(start, end - start);
-                        ValidateBiome(biome, form);
+                        form.PrintLogs($"Log Error | User ID {client.UserId}: {e.Message}");
                     }
                 }
             }
             catch (Exception e)
             {
                 form.PrintLogs("Detector Error: " + e.Message);
-                activeFile = string.Empty;
-                await Task.Delay(1000);
             }
 
             await Task.Delay(200);
         }
     }
 
-    private static void ValidateBiome(string LastBiome, Form1 form)
+    private static void FindClients(string path, Form1 form)
     {
-        if (lastValidBiome != LastBiome)
+        if (!Directory.Exists(path))
+            return;
+
+        DirectoryInfo directory = new DirectoryInfo(path);
+        FileInfo[] files = directory.GetFiles("*.log");
+
+        Array.Sort(files, CompareLogFiles);
+
+        for (int i = 0; i < files.Length; i++)
         {
-            lastValidBiome = LastBiome;
-            form.PrintLogs("New Biome Found: " + lastValidBiome);
-            form.FoundNewBiome(lastValidBiome);
-        }
-    }
+            FileInfo file = files[i];
 
-    private static string ReadLog(string file)
-    {
-        using FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+            if (knownFiles.Contains(file.FullName))
+                continue;
 
-        using StreamReader read = new StreamReader(stream);
+            if (!IsLogActive(file.FullName))
+                continue;
 
-        return read.ReadToEnd();
-    }
-
-    private static string FindActiveLog(string path)
-    {
-        string[] files = Directory.GetFiles(path, "*.log").OrderByDescending(File.GetLastWriteTime).Take(10).ToArray();
-
-        foreach (string file in files)
-        {
             try
             {
-                string text = ReadLog(file);
+                long position;
+                string log = ReadFullLog(file.FullName, out position);
 
-                if (text.Contains("SetRichPresence"))
-                    return file;
+                if (!log.Contains("SetRichPresence"))
+                    continue;
+
+                string userId = GetUserId(log);
+
+                if (string.IsNullOrWhiteSpace(userId))
+                    continue;
+
+                knownFiles.Add(file.FullName);
+
+                string currentBiome = GetLatestBiome(log);
+
+                RobloxClient client = new RobloxClient();
+
+                client.LogFile = file.FullName;
+                client.UserId = userId;
+                client.ReadPosition = position;
+                client.LogWriteTime = file.LastWriteTime;
+
+                if (clients.ContainsKey(userId))
+                {
+                    RobloxClient oldClient = clients[userId];
+
+                    if (file.LastWriteTime <= oldClient.LogWriteTime)
+                        continue;
+
+                    clients[userId] = client;
+
+                    form.PrintLogs($"Switched log for User ID {userId}: {file.Name}");
+                }
+                else
+                {
+                    clients.Add(userId, client);
+
+                    form.PrintLogs($"Found Roblox client | User ID: {userId}");
+                }
+
+                if (!string.IsNullOrWhiteSpace(currentBiome))
+                    ValidateBiome(client, currentBiome, form);
             }
-            catch
+            catch (Exception e)
             {
+                form.PrintLogs("Client Scan Error: " + e.Message);
             }
         }
-        return string.Empty;
+    }
+
+    private static bool IsLogActive(string file)
+    {
+        try
+        {
+            using FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
+
+            return false;
+        }
+        catch (IOException)
+        {
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static int CompareLogFiles(FileInfo first, FileInfo second)
+    {
+        return second.LastWriteTime.CompareTo(first.LastWriteTime);
+    }
+
+    private static string GetUserId(string log)
+    {
+        string marker = "userid:";
+
+        int start = log.IndexOf(marker, StringComparison.OrdinalIgnoreCase);
+
+        if (start == -1)
+            return "";
+
+        start += marker.Length;
+
+        int end = log.IndexOf(",", start);
+
+        if (end == -1)
+            return "";
+
+        return log.Substring(start, end - start).Trim();
+    }
+
+    private static string GetLatestBiome(string log)
+    {
+        string followup = "\"largeImage\":{\"hoverText\":\"";
+
+        int start = log.LastIndexOf(followup, StringComparison.Ordinal);
+
+        if (start == -1)
+            return "";
+
+        start += followup.Length;
+
+        int end = log.IndexOf("\"", start, StringComparison.Ordinal);
+
+        if (end == -1)
+            return "";
+
+        return log.Substring(start, end - start);
+    }
+
+    private static string ReadNewData(RobloxClient client)
+    {
+        using FileStream stream = new FileStream(client.LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+
+        if (stream.Length < client.ReadPosition)
+        {
+            client.ReadPosition = 0;
+            client.Buffer = "";
+        }
+
+        if (stream.Length == client.ReadPosition)
+        {
+            client.LogWriteTime = File.GetLastWriteTime(client.LogFile);
+
+            return "";
+        }
+
+        stream.Seek(client.ReadPosition, SeekOrigin.Begin);
+
+        using StreamReader reader = new StreamReader(stream, Encoding.UTF8, true, 4096, true);
+
+        string data = reader.ReadToEnd();
+
+        client.ReadPosition = stream.Position;
+        client.LogWriteTime = File.GetLastWriteTime(client.LogFile);
+
+        return data;
+    }
+
+    private static void ProcessNewData(RobloxClient client, string newData, Form1 form)
+    {
+        string followup = "\"largeImage\":{\"hoverText\":\"";
+        string data = client.Buffer + newData;
+
+        client.Buffer = "";
+
+        int searchPosition = 0;
+
+        while (searchPosition < data.Length)
+        {
+            int markerStart = data.IndexOf(followup, searchPosition, StringComparison.Ordinal);
+
+            if (markerStart == -1)
+            {
+                int keepLength = Math.Min(followup.Length - 1, data.Length);
+
+                if (keepLength > 0)
+                    client.Buffer = data.Substring(data.Length - keepLength);
+
+                break;
+            }
+
+            int biomeStart = markerStart + followup.Length;
+            int biomeEnd = data.IndexOf("\"", biomeStart, StringComparison.Ordinal);
+
+            if (biomeEnd == -1)
+            {
+                client.Buffer = data.Substring(markerStart);
+
+                break;
+            }
+
+            string biome = data.Substring(biomeStart, biomeEnd - biomeStart);
+
+            ValidateBiome(client, biome, form);
+
+            searchPosition = biomeEnd + 1;
+        }
+    }
+
+    private static void ValidateBiome(RobloxClient client, string biome, Form1 form)
+    {
+        string privateServer = form.GetPrivateServerForUser(client.UserId);
+
+        if (lastBiomeByUser.ContainsKey(client.UserId))
+        {
+            if (lastBiomeByUser[client.UserId] == biome)
+                return;
+        }
+
+        lastBiomeByUser[client.UserId] = biome;
+
+        form.PrintLogs($"New Biome Found: {biome} | User ID: {client.UserId}");
+
+        if (string.IsNullOrWhiteSpace(privateServer))
+            form.PrintLogs($"No private server configured for User ID: {client.UserId}");
+
+        form.FoundNewBiome(biome, privateServer, client.UserId);
+    }
+
+    private static string ReadFullLog(string file, out long position)
+    {
+        using FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete);
+        using StreamReader reader = new StreamReader(stream, Encoding.UTF8, true, 4096, true);
+
+        string text = reader.ReadToEnd();
+
+        position = stream.Position;
+
+        return text;
     }
 }
-

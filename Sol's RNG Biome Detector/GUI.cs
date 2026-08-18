@@ -6,43 +6,30 @@ namespace Sol_s_RNG_Biome_Detector
     class GUI
     {
         private readonly Color DarkBackground = Color.FromArgb(17, 19, 24);
+
         private readonly Color DarkPanel = Color.FromArgb(25, 28, 35);
+
         private readonly Color DarkInput = Color.FromArgb(32, 36, 45);
-        private readonly Color DarkBorder = Color.FromArgb(42, 47, 58);
 
         private readonly Color MainText = Color.FromArgb(241, 243, 245);
 
         private readonly Color Accent = Color.FromArgb(123, 97, 255);
 
 
-        public void ApplyStyle(Form form, Button startButton, TabControl tabControl, CheckBox[] biomeCheckboxes, Panel panelSidebar, Panel panelContent)
+        public void ApplyStyle(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent)
         {
-            panelContent.Controls.Add(startButton);
-            startButton.BringToFront();
-
-            startButton.FlatStyle = FlatStyle.Flat;
-            startButton.FlatAppearance.BorderSize = 0;
-
-            startButton.BackColor = Accent;
-            startButton.ForeColor = Color.White;
-
-            startButton.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            startButton.Cursor = Cursors.Hand;
-
-            startButton.Size = new Size(150, 42);
-            startButton.Left = startButton.Parent.ClientSize.Width - startButton.Width - 20;
-            startButton.Top = startButton.Parent.ClientSize.Height - startButton.Height - 20;
-            startButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-
-
             ApplyDarkTheme(form);
 
             ApplyCheckboxColor(biomeCheckboxes);
+            ApplyLabelColor(labels);
 
             PageContainer(form, tabControl, panelSidebar);
+
+            tabControl.Appearance = TabAppearance.FlatButtons;
+            tabControl.SizeMode = TabSizeMode.Fixed;
+            tabControl.ItemSize = new Size(0, 1);
+            tabControl.Multiline = true;
         }
-
-
 
         private void ApplyDarkTheme(Control parent)
         {
@@ -129,6 +116,38 @@ namespace Sol_s_RNG_Biome_Detector
             }
         }
 
+        private void ApplyLabelColor(Label[] labels)
+        {
+            string[] colors =
+            {
+                "#4e4e4e",
+                "#c2f2ff",
+                "#b6cbd1",
+                "#0000ff",
+                "#ffbb00",
+                "#770a0a",
+                "#3b3abc",
+                "#f4fb01",
+                "#310387",
+                "#000000",
+                "#faff00",
+                "#9fff9a",
+                "#996505",
+                "#3e0000",
+                "#c1ecff",
+                "#8d7dc7",
+                "#bf6c00",
+                "#08043f",
+                "#e500ff",
+                "#212121"
+            };
+
+            for (int i = 0; i < labels.Length && i < colors.Length; i++)
+            {
+                labels[i].ForeColor = ColorTranslator.FromHtml(colors[i]);
+            }
+        }
+
         private void PageContainer(Form form, TabControl tabControl, Panel panelSidebar)
         {
             tabControl.Dock = DockStyle.None;
@@ -137,7 +156,6 @@ namespace Sol_s_RNG_Biome_Detector
 
             tabControl.Size = new Size(form.ClientSize.Width - panelSidebar.Width, form.ClientSize.Height);
         }
-
 
         public void StyleSidebar(Panel sidebar, Button[] buttons)
         {
@@ -175,6 +193,7 @@ namespace Sol_s_RNG_Biome_Detector
                 buttons[3].Text = "Info";
                 buttons[4].Text = "Logs";
                 buttons[5].Text = "Stats";
+                buttons[6].Text = "Items";
 
             }
         }
