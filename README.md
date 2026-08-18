@@ -1,5 +1,4 @@
 # Bloom
-Simple Sol's RNG Biome Detector
 
 Discord: vexk1x
 
