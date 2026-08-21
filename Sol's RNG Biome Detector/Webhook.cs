@@ -1,6 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
+using static System.Windows.Forms.AxHost;
 
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -83,8 +84,8 @@ namespace Sol_s_RNG_Biome_Detector
             return Webhooks[index];
         }
 
-        public async Task PostToWebhook(string webhookURL, string Biome, string whatping, bool ping, string pslink, int color)
-        {
+        public async Task PostToWebhook(string webhookURL, string Biome, string whatping, bool ping, string pslink, int color, string username)
+        { 
 
             string biomeimage = await GetBiomeImage(Biome);
 
@@ -93,7 +94,7 @@ namespace Sol_s_RNG_Biome_Detector
             var embed = new
             {
                 title = $"<t:{timestamp}:F> (<t:{timestamp}:R>)",
-                description = $"## Biome Started - {Biome}\n## [Join Server]({pslink})\n\n\n[Download Bloom](https://github.com/vexk1x/Bloom/releases)",
+                description = $"## Biome Started - {Biome}\n## [Join Server]({pslink})\n\n{username}\n[Download Bloom](https://github.com/vexk1x/Bloom/releases)",
                 color,
 
                 thumbnail = new
@@ -175,12 +176,16 @@ namespace Sol_s_RNG_Biome_Detector
 
         }
 
-        public async Task PostToWebhooks(IEnumerable<string> webhookURLs, string Biome, string whatping, bool ping, string pslink, int color)
+        public async Task PostToWebhooks(IEnumerable<string> webhookURLs, string Biome, string whatping, bool ping, string pslink, int color, string userid, bool includeuser)
         {
             List<Task> tasks = new List<Task>();
+            string username = "";
+
+            if (includeuser)
+                username = await GetUsername(userid);
 
             foreach (string webhookURL in webhookURLs)
-                tasks.Add(PostToWebhook(webhookURL, Biome, whatping, ping, pslink, color));
+                tasks.Add(PostToWebhook(webhookURL, Biome, whatping, ping, pslink, color, username));
 
             await Task.WhenAll(tasks);
         }
@@ -227,6 +232,71 @@ namespace Sol_s_RNG_Biome_Detector
             using HttpResponseMessage response = await client.PostAsync(url, content);
 
             response.EnsureSuccessStatusCode();
+        }
+
+        private async Task<string> GetUsername(string userid)
+        {
+            string json = await client.GetStringAsync($"https://users.roblox.com/v1/users/{userid}");
+
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            string username = document.RootElement.GetProperty("name").GetString();
+
+            if (string.IsNullOrWhiteSpace(username))
+                return userid;
+
+            return username;
+        }
+
+        public async Task PostAuraToWebhook(string webhookURL, string aura, string rolledby, bool ping, string DiscordUserId)
+        {
+
+            var embed = new
+            {
+                title = $"**Aura Equipped - {aura}**",
+                description = $"\n\n{rolledby}\n [Download Bloom](https://github.com/vexk1x/Bloom/releases)",
+                color = 0xFFFFFF,
+
+                footer = new
+                {
+                    text = $"Bloom | {DateTime.Now:dd/MM/yyyy HH:mm}"
+                },
+                timestamp = DateTime.UtcNow.ToString("o")
+            };
+
+            var payload = new
+            {
+                content = ping && !string.IsNullOrWhiteSpace(DiscordUserId) ? DiscordUserId : null,
+                embeds = new[] { embed }
+            };
+
+            string json = JsonSerializer.Serialize(payload);
+
+            using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+
+            using HttpResponseMessage response = await client.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+        }
+
+        public async Task PostAuraToWebhooks(IEnumerable<string> webhookURLs, string aura, string userid, bool includeuser, bool ping, string DiscordUserId)
+        {
+            List<Task> tasks = new List<Task>();
+            string username = "";
+            string rolledby = "";
+
+            if (includeuser)
+                username = await GetUsername(userid);
+
+            if (!string.IsNullOrWhiteSpace(username))
+                rolledby = $"`Rolled by {username}`";
+
+            foreach (string webhookURL in webhookURLs)
+                tasks.Add(PostAuraToWebhook(webhookURL, aura, rolledby, ping, DiscordUserId));
+
+            await Task.WhenAll(tasks);
         }
     }
 }

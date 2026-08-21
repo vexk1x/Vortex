@@ -119,6 +119,17 @@ namespace Sol_s_RNG_Biome_Detector
             public int TotalBloodRain { get; set; } = 0;
             public int TotalGraveyard { get; set; } = 0;
             public int TotalAurora { get; set; } = 0;
+
+            public bool IncludeUsername { get; set; } = false;
+
+            public bool AuraNotifications { get; set; } = false;
+            public bool OnlyPingForGlobals { get; set; } = false;
+            public bool AuraPingUserID { get; set; } = false;
+            public string MinAuraRarity { get; set; } = "";
+            public string AuraUserID { get; set; } = "";
+
+            public int TotalGlobalsRolled {  get; set; } = 0;
+
         }
     }
 }

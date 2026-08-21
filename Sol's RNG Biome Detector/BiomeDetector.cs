@@ -11,6 +11,7 @@ class BiomeDetector
     private static readonly HashSet<string> knownFiles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
     private static Dictionary<string, string> lastBiomeByUser = new Dictionary<string, string>();
+    private static Dictionary<string, string> lastAuraByUser = new Dictionary<string, string>();
 
     private class RobloxClient
     {
@@ -29,6 +30,7 @@ class BiomeDetector
         clients.Clear();
         knownFiles.Clear();
         lastBiomeByUser.Clear();
+        lastAuraByUser.Clear();
 
         form.PrintLogs("Detector Started.");
         form.PrintLogs("Searching for Roblox clients.");
@@ -106,6 +108,7 @@ class BiomeDetector
                 knownFiles.Add(file.FullName);
 
                 string currentBiome = GetLatestBiome(log);
+                string currentAura = GetLatestAura(log);
 
                 RobloxClient client = new RobloxClient();
 
@@ -134,6 +137,21 @@ class BiomeDetector
 
                 if (!string.IsNullOrWhiteSpace(currentBiome))
                     ValidateBiome(client, currentBiome, form);
+
+
+                if (!string.IsNullOrWhiteSpace(currentAura))
+                {
+                    if (!lastAuraByUser.ContainsKey(client.UserId))
+                    {
+                        lastAuraByUser[client.UserId] = currentAura;
+                    }
+                    else
+                    {
+                        ValidateAura(client, currentAura, form);
+                    }
+                }
+
+
             }
             catch (Exception e)
             {
@@ -239,6 +257,8 @@ class BiomeDetector
 
         client.Buffer = "";
 
+        ProcessAuraData(client, data, form);
+
         int searchPosition = 0;
 
         while (searchPosition < data.Length)
@@ -303,5 +323,68 @@ class BiomeDetector
         position = stream.Position;
 
         return text;
+    }
+
+    private static string GetLatestAura(string log)
+    {
+        string marker = "\"state\":\"Equipped \\\"";
+
+        int start = log.LastIndexOf(marker, StringComparison.Ordinal);
+
+        if (start == -1)
+            return "";
+
+        start += marker.Length;
+
+        int end = log.IndexOf("\\\"", start, StringComparison.Ordinal);
+
+        if (end == -1)
+            return "";
+
+        return log.Substring(start, end - start);
+    }
+
+    private static void ProcessAuraData(RobloxClient client, string data, Form1 form)
+    {
+        string marker = "\"state\":\"Equipped \\\"";
+
+        int searchPosition = 0;
+
+        while (searchPosition < data.Length)
+        {
+            int markerStart = data.IndexOf(marker, searchPosition, StringComparison.Ordinal);
+
+            if (markerStart == -1)
+                break;
+
+            int auraStart = markerStart + marker.Length;
+
+            int auraEnd = data.IndexOf("\\\"", auraStart, StringComparison.Ordinal);
+
+            if (auraEnd == -1)
+                break;
+
+            string aura = data.Substring(auraStart, auraEnd - auraStart);
+
+            ValidateAura(client, aura, form);
+
+            searchPosition = auraEnd + 2;
+        }
+    }
+
+    private static void ValidateAura(RobloxClient client, string aura, Form1 form)
+    {
+        if (string.IsNullOrWhiteSpace(aura))
+            return;
+
+        if (lastAuraByUser.TryGetValue(client.UserId, out string lastAura))
+        {
+            if (lastAura == aura)
+                return;
+        }
+
+        lastAuraByUser[client.UserId] = aura;
+
+        form.FoundNewAura(aura, client.UserId);
     }
 }

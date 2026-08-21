@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 using System.Text;
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -15,6 +17,8 @@ namespace Sol_s_RNG_Biome_Detector
 
         private readonly Color Accent = Color.FromArgb(123, 97, 255);
 
+        
+
 
         public void ApplyStyle(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent)
         {
@@ -24,11 +28,6 @@ namespace Sol_s_RNG_Biome_Detector
             ApplyLabelColor(labels);
 
             PageContainer(form, tabControl, panelSidebar);
-
-            tabControl.Appearance = TabAppearance.FlatButtons;
-            tabControl.SizeMode = TabSizeMode.Fixed;
-            tabControl.ItemSize = new Size(0, 1);
-            tabControl.Multiline = true;
         }
 
         private void ApplyDarkTheme(Control parent)
@@ -130,12 +129,7 @@ namespace Sol_s_RNG_Biome_Detector
                 "#f4fb01",
                 "#310387",
                 "#000000",
-                "#faff00",
-                "#9fff9a",
-                "#996505",
-                "#3e0000",
-                "#c1ecff",
-                "#8d7dc7",
+                "#f1ff00",
                 "#bf6c00",
                 "#08043f",
                 "#e500ff",
@@ -189,11 +183,13 @@ namespace Sol_s_RNG_Biome_Detector
 
                 buttons[0].Text = "General";
                 buttons[1].Text = "Biomes";
-                buttons[2].Text = "Webhook";
-                buttons[3].Text = "Info";
-                buttons[4].Text = "Logs";
-                buttons[5].Text = "Stats";
-                buttons[6].Text = "Items";
+                buttons[2].Text = "Auras";
+                buttons[3].Text = "Webhook";
+                buttons[4].Text = "Info";
+                buttons[5].Text = "Logs";
+                buttons[6].Text = "Stats";
+                // buttons[7].Text = "Items";
+                buttons[7].Hide();
 
             }
         }
@@ -211,5 +207,7 @@ namespace Sol_s_RNG_Biome_Detector
             selected.ForeColor = Color.White;
             selected.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
         }
+
+        
     }
 }
