@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Text.Json;
+using System.IO;
+using System.Windows.Forms.Design;
 
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -7,25 +9,35 @@ namespace Sol_s_RNG_Biome_Detector
     {
         public static SettingsData Data = new SettingsData();
 
-        private static readonly string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bloom");
+        private static readonly string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vortex");
         private static readonly string file = Path.Combine(folder, "settings.json");
+
+        private static readonly string oldfolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bloom");
+        private static readonly string oldfile = Path.Combine(oldfolder, "settings.json");
+
+
+        public static void Rename()
+        {
+            if (!Directory.Exists(folder))
+            {
+                Directory.Move(oldfolder, folder);
+            }
+            if (!File.Exists(file))
+            {
+                File.Move(oldfile, file);
+            }
+        }
 
         public static void Save()
         {
-            try
-            {
-                Directory.CreateDirectory(folder);
+            Directory.CreateDirectory(folder);
 
-                JsonSerializerOptions options = new JsonSerializerOptions();
-                options.WriteIndented = true;
+            JsonSerializerOptions options = new JsonSerializerOptions();
+            options.WriteIndented = true;
 
-                string json = JsonSerializer.Serialize(Data, options);
+            string json = JsonSerializer.Serialize(Data, options);
 
-                File.WriteAllText(file, json);
-            }
-            catch
-            {
-            }
+            File.WriteAllText(file, json);
         }
 
         public static string GetPath()
@@ -57,7 +69,6 @@ namespace Sol_s_RNG_Biome_Detector
                 Data = new SettingsData();
             }
         }
-
 
         internal class SettingsData
         {

@@ -89,33 +89,27 @@ namespace Sol_s_RNG_Biome_Detector
 
             foreach (Process process in processes)
             {
-                try
-                {
-                    process.Refresh();
+                process.Refresh();
 
-                    IntPtr window = process.MainWindowHandle;
+                IntPtr window = process.MainWindowHandle;
 
-                    if (window == IntPtr.Zero)
-                        continue;
+                if (window == IntPtr.Zero)
+                    continue;
 
-                    if (!FocusRoblox(window))
-                        continue;
+                if (!FocusRoblox(window))
+                    continue;
 
-                    Thread.Sleep(200);
+                Thread.Sleep(200);
 
-                    if (GetForegroundWindow() != window)
-                        continue;
+                if (GetForegroundWindow() != window)
+                    continue;
 
-                    if (!SendSpace(window))
-                        continue;
+                if (!SendSpace(window))
+                    continue;
 
-                    successCount++;
+                successCount++;
 
-                    Thread.Sleep(250);
-                }
-                catch
-                {
-                }
+                Thread.Sleep(250);
             }
 
             if (oldWindow != IntPtr.Zero)

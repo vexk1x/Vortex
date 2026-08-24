@@ -1,6 +1,7 @@
 ﻿using Sol_s_RNG_Biome_Detector;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,9 @@ class BiomeDetector
         public DateTime LogWriteTime { get; set; }
     }
 
-    public static async Task Biomes(Form1 form)
+    private static TextBox logs;
+
+    public static async Task Biomes(Form1 form, TextBox logs)
     {
         string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Roblox", "logs");
         DateTime lastLogScan = DateTime.MinValue;
@@ -37,35 +40,21 @@ class BiomeDetector
 
         while (Form1.Start_Stop)
         {
-            try
+            if ((DateTime.Now - lastLogScan).TotalSeconds >= 3)
             {
-                if ((DateTime.Now - lastLogScan).TotalSeconds >= 3)
-                {
-                    lastLogScan = DateTime.Now;
+                lastLogScan = DateTime.Now;
 
-                    FindClients(path, form);
-                }
-
-                List<RobloxClient> currentClients = new List<RobloxClient>(clients.Values);
-
-                foreach (RobloxClient client in currentClients)
-                {
-                    try
-                    {
-                        string newData = ReadNewData(client);
-
-                        if (!string.IsNullOrEmpty(newData))
-                            ProcessNewData(client, newData, form);
-                    }
-                    catch (Exception e)
-                    {
-                        form.PrintLogs($"Log Error | User ID {client.UserId}: {e.Message}");
-                    }
-                }
+                FindClients(path, form);
             }
-            catch (Exception e)
+
+            List<RobloxClient> currentClients = new List<RobloxClient>(clients.Values);
+
+            foreach (RobloxClient client in currentClients)
             {
-                form.PrintLogs("Detector Error: " + e.Message);
+                string newData = ReadNewData(client);
+
+                if (!string.IsNullOrEmpty(newData))
+                    ProcessNewData(client, newData, form);
             }
 
             await Task.Delay(200);
@@ -165,17 +154,13 @@ class BiomeDetector
         try
         {
             using FileStream stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.None);
-
-            return false;
         }
         catch (IOException)
         {
             return true;
         }
-        catch
-        {
-            return false;
-        }
+
+        return false;
     }
 
     private static int CompareLogFiles(FileInfo first, FileInfo second)

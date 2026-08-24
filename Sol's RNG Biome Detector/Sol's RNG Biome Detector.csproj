@@ -7,8 +7,8 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>Bloom.ico</ApplicationIcon>
-    <AssemblyName>Bloom</AssemblyName>
+    <ApplicationIcon>Vortex.ico</ApplicationIcon>
+    <AssemblyName>Vortex</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
