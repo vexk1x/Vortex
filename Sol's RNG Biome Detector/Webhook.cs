@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
 using static System.Windows.Forms.AxHost;
@@ -94,7 +95,7 @@ namespace Sol_s_RNG_Biome_Detector
             var embed = new
             {
                 title = $"<t:{timestamp}:F> (<t:{timestamp}:R>)",
-                description = $"## Biome Started - {Biome}\n## [Join Server]({pslink})\n\n{username}\n[Download Bloom](https://github.com/vexk1x/Bloom/releases)",
+                description = $"## Biome Started - {Biome}\n## [Join Server]({pslink})\n\n{username}",
                 color,
 
                 thumbnail = new
@@ -104,7 +105,7 @@ namespace Sol_s_RNG_Biome_Detector
 
                 footer = new
                 {
-                    text = $"Bloom | https://github.com/vexk1x/Bloom/releases"
+                    text = $"Vortex | https://github.com/vexk1x/Vortex/releases"
                 },
                 timestamp = DateTime.UtcNow.ToString("o")
             };
@@ -131,8 +132,8 @@ namespace Sol_s_RNG_Biome_Detector
         {
             string fileName = biome.ToUpper().Replace(" ", "_");
 
-            string biomeUrl = $"https://raw.githubusercontent.com/vexk1x/Bloom/main/Biomes/{fileName}.png";
-            string eventUrl = "https://raw.githubusercontent.com/vexk1x/Bloom/main/Biomes/EVENT.png";
+            string biomeUrl = $"https://raw.githubusercontent.com/vexk1x/Vortex/main/Biomes/{fileName}.png";
+            string eventUrl = "https://raw.githubusercontent.com/vexk1x/Vortex/main/Biomes/EVENT.png";
 
             using HttpResponseMessage response = await client.GetAsync(biomeUrl);
 
@@ -149,12 +150,12 @@ namespace Sol_s_RNG_Biome_Detector
 
             var embed = new
             {
-                description = Started ? "## STARTED!\n **[Download Bloom](https://github.com/vexk1x/Bloom/releases)**" : $"## STOPPED!\nSession Time: **{formattedTime}**\nBiomes Found this Session: **{biomesfound}**\nRare Biomes found this Session: **{rarebiomesfound}**\n\n **[Download Bloom](https://github.com/vexk1x/Bloom/releases)**",
+                description = Started ? "## STARTED!" : $"## STOPPED!\nSession Time: **{formattedTime}**\nBiomes Found this Session: **{biomesfound}**\nRare Biomes found this Session: **{rarebiomesfound}**",
                 color = Started ? 0x0da65c : 0x940202,
 
                 footer = new
                 {
-                    text = $"Bloom | {DateTime.Now:dd/MM/yyyy HH:mm}"
+                    text = $"Vortex | https://github.com/vexk1x/Vortex/releases"
                 },
                 timestamp = DateTime.UtcNow.ToString("o")
             };
@@ -180,9 +181,13 @@ namespace Sol_s_RNG_Biome_Detector
         {
             List<Task> tasks = new List<Task>();
             string username = "";
+            string tempuser = "";
 
             if (includeuser)
-                username = await GetUsername(userid);
+            {
+                tempuser = await GetUsername(userid);
+                username = $"`Found by: {tempuser}`";
+            }
 
             foreach (string webhookURL in webhookURLs)
                 tasks.Add(PostToWebhook(webhookURL, Biome, whatping, ping, pslink, color, username));
@@ -207,12 +212,12 @@ namespace Sol_s_RNG_Biome_Detector
 
             var embed = new
             {
-                title = $"Bloom",
+                title = $"Vortex",
                 description = $"Webhook Test!",
                 color = 0xFFFFFF,
                 footer = new
                 {
-                    text = $"Bloom | https://github.com/vexk1x/Bloom/releases"
+                    text = $"Vortex | https://github.com/vexk1x/Vortex/releases"
                 },
                 timestamp = DateTime.UtcNow.ToString("o")
             };
@@ -248,18 +253,18 @@ namespace Sol_s_RNG_Biome_Detector
             return username;
         }
 
-        public async Task PostAuraToWebhook(string webhookURL, string aura, string rolledby, bool ping, string DiscordUserId)
+        public async Task PostAuraToWebhook(string webhookURL, string aura, string rolledby, bool ping, string DiscordUserId, string rarity)
         {
 
             var embed = new
             {
                 title = $"**Aura Equipped - {aura}**",
-                description = $"\n\n{rolledby}\n [Download Bloom](https://github.com/vexk1x/Bloom/releases)",
+                description = $"\n\n{rolledby}\n{rarity}",
                 color = 0xFFFFFF,
 
                 footer = new
                 {
-                    text = $"Bloom | {DateTime.Now:dd/MM/yyyy HH:mm}"
+                    text = $"Vortex | https://github.com/vexk1x/Vortex/releases"
                 },
                 timestamp = DateTime.UtcNow.ToString("o")
             };
@@ -281,7 +286,7 @@ namespace Sol_s_RNG_Biome_Detector
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task PostAuraToWebhooks(IEnumerable<string> webhookURLs, string aura, string userid, bool includeuser, bool ping, string DiscordUserId)
+        public async Task PostAuraToWebhooks(IEnumerable<string> webhookURLs, string aura, string userid, bool includeuser, bool ping, string DiscordUserId, string rarity)
         {
             List<Task> tasks = new List<Task>();
             string username = "";
@@ -293,8 +298,11 @@ namespace Sol_s_RNG_Biome_Detector
             if (!string.IsNullOrWhiteSpace(username))
                 rolledby = $"`Rolled by {username}`";
 
+            if (!string.IsNullOrWhiteSpace(rarity))
+                rarity = "Rarity: " + Int64.Parse(rarity).ToString("N0", CultureInfo.InvariantCulture);
+
             foreach (string webhookURL in webhookURLs)
-                tasks.Add(PostAuraToWebhook(webhookURL, aura, rolledby, ping, DiscordUserId));
+                tasks.Add(PostAuraToWebhook(webhookURL, aura, rolledby, ping, DiscordUserId, rarity));
 
             await Task.WhenAll(tasks);
         }

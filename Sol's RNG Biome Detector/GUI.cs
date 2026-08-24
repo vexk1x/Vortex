@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Text;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,26 +9,38 @@ namespace Sol_s_RNG_Biome_Detector
     class GUI
     {
         private readonly Color DarkBackground = Color.FromArgb(17, 19, 24);
-
         private readonly Color DarkPanel = Color.FromArgb(25, 28, 35);
-
         private readonly Color DarkInput = Color.FromArgb(32, 36, 45);
-
         private readonly Color MainText = Color.FromArgb(241, 243, 245);
 
-        private readonly Color Accent = Color.FromArgb(123, 97, 255);
+        private readonly PrivateFontCollection privatefonts = new();
+        private IntPtr fontmemory;
 
-        
+
+        [DllImport("gdi32.dll")]
+        private static extern IntPtr AddFontMemResourceEx
+        (
+            IntPtr pbFont,
+            uint cbFont,
+            IntPtr pdv,
+            ref uint pcFonts
+        );
 
 
         public void ApplyStyle(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent)
         {
+
+            LoadFont();
+
+            ApplyFont(form);
+
             ApplyDarkTheme(form);
 
             ApplyCheckboxColor(biomeCheckboxes);
             ApplyLabelColor(labels);
 
             PageContainer(form, tabControl, panelSidebar);
+
         }
 
         private void ApplyDarkTheme(Control parent)
@@ -46,13 +59,7 @@ namespace Sol_s_RNG_Biome_Detector
                         break;
 
                     case Button button:
-                        button.BackColor = Accent;
-                        button.ForeColor = Color.White;
-
-                        button.FlatStyle = FlatStyle.Flat;
-                        button.FlatAppearance.BorderSize = 0;
-
-                        button.Cursor = Cursors.Hand;
+                        ApplyButtonStuff(button);
                         break;
 
                     case CheckBox checkBox:
@@ -98,15 +105,7 @@ namespace Sol_s_RNG_Biome_Detector
                 "#310387",
                 "#000000",
                 "#bf6c00",
-                "#08043f",
-                "#e500ff",
-                "#212121",
-                "#faff00",
-                "#9fff9a",
-                "#996505",
-                "#3e0000",
-                "#c1ecff",
-                "#8d7dc7"
+                "#fffc8f",
             };
 
             for (int i = 0; i < checkBoxes.Length && i < colors.Length; i++)
@@ -172,12 +171,12 @@ namespace Sol_s_RNG_Biome_Detector
                 button.BackColor = sidebar.BackColor;
                 button.ForeColor = Color.FromArgb(180, 185, 195);
 
-                button.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
-
                 button.TextAlign = ContentAlignment.MiddleLeft;
                 button.Padding = new Padding(14, 0, 0, 0);
 
                 button.Cursor = Cursors.Hand;
+
+                button.Font = new Font(privatefonts.Families[0], 10F, FontStyle.Regular);
 
                 y += 48;
 
@@ -188,9 +187,13 @@ namespace Sol_s_RNG_Biome_Detector
                 buttons[4].Text = "Info";
                 buttons[5].Text = "Logs";
                 buttons[6].Text = "Stats";
-                // buttons[7].Text = "Items";
+                // buttons[7].Text = "Items"; Still needs testing :nailbite:, have patience
                 buttons[7].Hide();
 
+
+                button.BackgroundImage = Properties.Resources.deselected;
+                button.BackgroundImageLayout = ImageLayout.Stretch;
+                
             }
         }
 
@@ -200,14 +203,56 @@ namespace Sol_s_RNG_Biome_Detector
             {
                 button.BackColor = Color.FromArgb(14, 17, 22);
                 button.ForeColor = Color.FromArgb(180, 185, 195);
-                button.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+                button.Font = new Font(privatefonts.Families[0], 10F, FontStyle.Regular);
+                button.BackgroundImage = Properties.Resources.deselected;
             }
-
+            
             selected.BackColor = Color.FromArgb(32, 36, 45);
             selected.ForeColor = Color.White;
-            selected.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            selected.Font = new Font(privatefonts.Families[0], 12F, FontStyle.Bold);
+            selected.BackgroundImage = Properties.Resources.selected;
         }
 
-        
+        private void ApplyButtonStuff(Button button)
+        {
+            button.BackColor = Color.FromArgb(14, 17, 22);
+            button.ForeColor = Color.White;
+
+            button.FlatStyle = FlatStyle.Flat;
+            button.FlatAppearance.BorderSize = 0;
+
+            button.Cursor = Cursors.Hand;
+            button.BackgroundImage = Properties.Resources.deselected;
+            button.BackgroundImageLayout = ImageLayout.Stretch;
+        }
+
+        private void LoadFont()
+        {
+            byte[] fontdata = Properties.Resources.Sarpanch_Regular;
+
+            fontmemory = Marshal.AllocCoTaskMem(fontdata.Length);
+            Marshal.Copy(fontdata, 0, fontmemory, fontdata.Length);
+
+            privatefonts.AddMemoryFont(fontmemory, fontdata.Length);
+
+            uint added = 0;
+
+            AddFontMemResourceEx(fontmemory, (uint)fontdata.Length, IntPtr.Zero, ref added);
+        }
+
+        private void ApplyFont(Control parent)
+        {
+            parent.Font = new Font(privatefonts.Families[0], parent.Font.Size, FontStyle.Regular, GraphicsUnit.Point);
+
+            if (parent is Label label)
+                label.UseCompatibleTextRendering = true;
+            if (parent is Button button)
+                button.UseCompatibleTextRendering = true; 
+
+            foreach (Control ctrl in parent.Controls)
+            {
+                ApplyFont(ctrl);
+            }
+        }
     }
 }
