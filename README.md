@@ -11,5 +11,5 @@ Discord: vexk1x
 feel free to contact me for anything you want to know or to report anything.
 
 
-Discord server: https://discord.gg/bZ6aV89vc
+Discord server: https://www.discord.gg/XhBq3tmQcm
 
