@@ -1552,5 +1552,29 @@
         "Rarity": 2222222222,
         "NativeBiome": "",
         "NativeRarity": 2222222222
+    },
+    {
+        "Name": "Pool Party",
+        "Rarity": 972000000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 486000000
+    },
+    {
+        "Name": "Craptropica",
+        "Rarity": 1334221000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 667110500
+    },
+    {
+        "Name": "Taverna",
+        "Rarity": 1444444444,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 722222222
+    },
+    {
+        "Name": "Centaurus",
+        "Rarity": 3000000000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 1500000000
     }
 ]
