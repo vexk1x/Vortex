@@ -35,7 +35,10 @@ namespace Sol_s_RNG_Biome_Detector
             info.UseShellExecute = false;
             info.CreateNoWindow = true;
 
-            using Process process = Process.Start(info);
+            using Process? process = Process.Start(info);
+
+            if (process is null)
+                return IntPtr.Zero;
 
             string output = process.StandardOutput.ReadToEnd();
             string error = process.StandardError.ReadToEnd();
@@ -93,7 +96,10 @@ namespace Sol_s_RNG_Biome_Detector
             info.UseShellExecute = false;
             info.CreateNoWindow = true;
 
-            using Process process = Process.Start(info);
+            using Process? process = Process.Start(info);
+
+            if (process is null)
+                return false;
 
             string output = process.StandardOutput.ReadToEnd();
             string error = process.StandardError.ReadToEnd();

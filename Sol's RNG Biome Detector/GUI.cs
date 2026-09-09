@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Text;
+
 namespace Sol_s_RNG_Biome_Detector
 {
     class GUI
@@ -16,18 +19,15 @@ namespace Sol_s_RNG_Biome_Detector
         private readonly PrivateFontCollection privatefonts = new();
         private IntPtr fontmemory;
 
+        private volatile bool running = false;
+
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx
-        (
-            IntPtr pbFont,
-            uint cbFont,
-            IntPtr pdv,
-            ref uint pcFonts
-        );
+        (IntPtr pbFont, uint cbFont, IntPtr pdv, ref uint pcFonts);
 
 
-        public void ApplyStyle(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent)
+        public void DrawGui(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent, Button[] sidebarButtons, PictureBox[] tabBoxes, Label[] tabLabels)
         {
 
             LoadFont();
@@ -40,6 +40,11 @@ namespace Sol_s_RNG_Biome_Detector
             ApplyLabelColor(labels);
 
             PageContainer(form, tabControl, panelSidebar);
+
+            StyleSidebar(panelSidebar, sidebarButtons);
+            StyleBiomeTab(tabBoxes, tabLabels);
+
+            ApplyRoundedCorners(15, form);
 
         }
 
@@ -150,7 +155,7 @@ namespace Sol_s_RNG_Biome_Detector
             tabControl.Size = new Size(form.ClientSize.Width - panelSidebar.Width, form.ClientSize.Height);
         }
 
-        public void StyleSidebar(Panel sidebar, Button[] buttons)
+        private void StyleSidebar(Panel sidebar, Button[] buttons)
         {
             sidebar.BackColor = Color.FromArgb(14, 17, 22);
 
@@ -187,8 +192,7 @@ namespace Sol_s_RNG_Biome_Detector
                 buttons[4].Text = "Info";
                 buttons[5].Text = "Logs";
                 buttons[6].Text = "Stats";
-                // buttons[7].Text = "Items"; Still needs testing :nailbite:, have patience
-                buttons[7].Hide();
+                buttons[7].Text = "Accounts";
 
 
                 button.BackgroundImage = Properties.Resources.deselected;
@@ -250,9 +254,54 @@ namespace Sol_s_RNG_Biome_Detector
                 button.UseCompatibleTextRendering = true; 
 
             foreach (Control ctrl in parent.Controls)
-            {
                 ApplyFont(ctrl);
-            }
+            
+        }
+
+        private void StyleBiomeTab(PictureBox[] tabBoxes, Label[] tabLabels)
+        {
+            // Common
+            tabBoxes[0].Image = Properties.Resources.common;
+            tabBoxes[1].Image = Properties.Resources.common;
+            tabLabels[0].ForeColor = Color.White;
+
+            // Uncommon
+            tabBoxes[2].Image = Properties.Resources.uncommon;
+            tabBoxes[3].Image = Properties.Resources.uncommon;
+            tabLabels[1].ForeColor = Color.DarkSlateBlue;
+
+            // Rare
+            tabBoxes[4].Image = Properties.Resources.rare;
+            tabBoxes[5].Image = Properties.Resources.rare;
+            tabLabels[2].ForeColor = Color.LightGray;
+
+            // Event
+            tabBoxes[6].Image = Properties.Resources._event;
+            tabBoxes[7].Image = Properties.Resources._event;
+            tabLabels[3].ForeColor = Color.LightGreen;
+
+
+            foreach (PictureBox box in tabBoxes)
+                box.SizeMode = PictureBoxSizeMode.StretchImage;
+
+            foreach (Label label in tabLabels)
+                label.Font = new Font(privatefonts.Families[0], 12F, FontStyle.Regular);
+        }
+
+        private void ApplyRoundedCorners(int radius, Form form)
+        {
+            GraphicsPath path = new GraphicsPath();
+            Rectangle bounds = new Rectangle(0, 0, form.Width, form.Height);
+            int d = radius * 2;
+
+            path.StartFigure();
+            path.AddArc(bounds.X, bounds.Y, d, d, 180, 90);
+            path.AddArc(bounds.Right - d, bounds.Y, d, d, 270, 90);
+            path.AddArc(bounds.Right - d, bounds.Bottom - d, d, d, 0, 90);
+            path.AddArc(bounds.X, bounds.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+
+            form.Region = new Region(path);
         }
     }
 }

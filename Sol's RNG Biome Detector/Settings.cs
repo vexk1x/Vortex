@@ -18,13 +18,19 @@ namespace Sol_s_RNG_Biome_Detector
 
         public static void Rename()
         {
-            if (!Directory.Exists(folder))
+            try
             {
-                Directory.Move(oldfolder, folder);
+                if (!Directory.Exists(folder) && Directory.Exists(oldfolder))
+                {
+                    Directory.Move(oldfolder, folder);
+                }
+                if (!File.Exists(file) && File.Exists(oldfile))
+                {
+                    File.Move(oldfile, file);
+                }
             }
-            if (!File.Exists(file))
+            catch
             {
-                File.Move(oldfile, file);
             }
         }
 
@@ -87,11 +93,7 @@ namespace Sol_s_RNG_Biome_Detector
             public bool Dreamspace { get; set; } = true;
             public bool Glitched { get; set; } = true;
             public bool BlazingSun { get; set; } = true;
-            public bool Eggland { get; set; } = true;
-            public bool PumpkinMoon { get; set; } = true;
-            public bool BloodRain { get; set; } = true;
-            public bool Graveyard { get; set; } = true;
-            public bool Aurora { get; set; } = true;
+            public bool Incinerator { get; set; } = true;
 
             public bool TreatSingularityAsRare { get; set; } = false;
             public bool OnlyPingForRare { get; set; } = false;
@@ -125,11 +127,7 @@ namespace Sol_s_RNG_Biome_Detector
             public int TotalDreamspace { get; set; } = 0;
             public int TotalGlitched { get; set; } = 0;
             public int TotalBlazingSun { get; set; } = 0;
-            public int TotalEggland { get; set; } = 0;
-            public int TotalPumpkinMoon { get; set; } = 0;
-            public int TotalBloodRain { get; set; } = 0;
-            public int TotalGraveyard { get; set; } = 0;
-            public int TotalAurora { get; set; } = 0;
+            public int TotalIncinerator { get; set; } = 0;
 
             public bool IncludeUsername { get; set; } = false;
 
