@@ -2,7 +2,6 @@
 using System.Text;
 using System.Text.Json;
 using System.Windows.Forms;
-using static System.Windows.Forms.AxHost;
 
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -85,7 +84,7 @@ namespace Sol_s_RNG_Biome_Detector
             return Webhooks[index];
         }
 
-        public async Task PostToWebhook(string webhookURL, string Biome, string whatping, bool ping, string pslink, int color, string username)
+        public async Task PostToWebhook(string webhook, string Biome, string whatping, bool ping, string pslink, int color, string username)
         { 
 
             string biomeimage = await GetBiomeImage(Biome);
@@ -121,7 +120,7 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+            string url = webhook.Contains("?") ? webhook + "&wait=true" : webhook + "?wait=true";
 
             using HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -143,7 +142,7 @@ namespace Sol_s_RNG_Biome_Detector
             return eventUrl;
         }
 
-        public async Task StartStopWebhook(string webhookURL, bool Started, TimeSpan sessionTime, int biomesfound, int rarebiomesfound)
+        public async Task StartStopWebhook(string webhook, bool Started, TimeSpan sessionTime, int biomesfound, int rarebiomesfound)
         {
 
             string formattedTime = $"{(int)sessionTime.TotalHours:D2}:{sessionTime.Minutes:D2}:{sessionTime.Seconds:D2}";
@@ -169,7 +168,7 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+            string url = webhook.Contains("?") ? webhook + "&wait=true" : webhook + "?wait=true";
 
             using HttpResponseMessage response = await client.PostAsync(url, content);
 
@@ -177,7 +176,7 @@ namespace Sol_s_RNG_Biome_Detector
 
         }
 
-        public async Task PostToWebhooks(IEnumerable<string> webhookURLs, string Biome, string whatping, bool ping, string pslink, int color, string userid, bool includeuser)
+        public async Task PostToWebhooks(string Biome, string whatping, bool ping, string pslink, int color, string userid, bool includeuser)
         {
             List<Task> tasks = new List<Task>();
             string username = "";
@@ -189,23 +188,23 @@ namespace Sol_s_RNG_Biome_Detector
                 username = $"`Found by: {tempuser}`";
             }
 
-            foreach (string webhookURL in webhookURLs)
-                tasks.Add(PostToWebhook(webhookURL, Biome, whatping, ping, pslink, color, username));
+            foreach (string webhook in Webhooks)
+                tasks.Add(PostToWebhook(webhook, Biome, whatping, ping, pslink, color, username));
 
             await Task.WhenAll(tasks);
         }
 
-        public async Task StartStopWebhooks(IEnumerable<string> webhookURLs, bool Started, TimeSpan sessionTime, int biomesfound, int rarebiomesfound)
+        public async Task StartStopWebhooks(bool Started, TimeSpan sessionTime, int biomesfound, int rarebiomesfound)
         {
             List<Task> tasks = new List<Task>();
 
-            foreach (string webhookURL in webhookURLs)
-                tasks.Add(StartStopWebhook(webhookURL, Started, sessionTime, biomesfound, rarebiomesfound));
+            foreach (string webhook in Webhooks)
+                tasks.Add(StartStopWebhook(webhook, Started, sessionTime, biomesfound, rarebiomesfound));
 
             await Task.WhenAll(tasks);
         }
 
-        public async Task TestWebhook(string webhookURL)
+        public async Task TestWebhook(string webhook)
         {
 
             long timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -232,20 +231,20 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+            string url = webhook.Contains("?") ? webhook + "&wait=true" : webhook + "?wait=true";
 
             using HttpResponseMessage response = await client.PostAsync(url, content);
 
             response.EnsureSuccessStatusCode();
         }
 
-        private async Task<string> GetUsername(string userid)
+        public async Task<string> GetUsername(string userid)
         {
             string json = await client.GetStringAsync($"https://users.roblox.com/v1/users/{userid}");
 
             using JsonDocument document = JsonDocument.Parse(json);
 
-            string username = document.RootElement.GetProperty("name").GetString();
+            string? username = document.RootElement.GetProperty("name").GetString();
 
             if (string.IsNullOrWhiteSpace(username))
                 return userid;
@@ -253,13 +252,13 @@ namespace Sol_s_RNG_Biome_Detector
             return username;
         }
 
-        public async Task PostAuraToWebhook(string webhookURL, string aura, string rolledby, bool ping, string DiscordUserId, string rarity)
+        public async Task PostAuraToWebhook(string webhook, string aura, string rolledby, bool ping, string DiscordUserId, string rarity, bool native, string frombiome)
         {
 
             var embed = new
             {
                 title = $"**Aura Equipped - {aura}**",
-                description = $"\n\n{rolledby}\n{rarity}",
+                description = native ?  $"\n\n{rolledby}\n**1/{rarity}**\n**From: {frombiome} [NATIVE]**" : $"\n\n{rolledby}\n**1/{rarity}**\n**From: {frombiome}**",
                 color = 0xFFFFFF,
 
                 footer = new
@@ -279,14 +278,14 @@ namespace Sol_s_RNG_Biome_Detector
 
             using StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            string url = webhookURL.Contains("?") ? webhookURL + "&wait=true" : webhookURL + "?wait=true";
+            string url = webhook.Contains("?") ? webhook + "&wait=true" : webhook + "?wait=true";
 
             using HttpResponseMessage response = await client.PostAsync(url, content);
 
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task PostAuraToWebhooks(IEnumerable<string> webhookURLs, string aura, string userid, bool includeuser, bool ping, string DiscordUserId, string rarity)
+        public async Task PostAuraToWebhooks(string aura, string userid, bool includeuser, bool ping, string DiscordUserId, string rarity, bool native, string frombiome)
         {
             List<Task> tasks = new List<Task>();
             string username = "";
@@ -299,10 +298,10 @@ namespace Sol_s_RNG_Biome_Detector
                 rolledby = $"`Rolled by {username}`";
 
             if (!string.IsNullOrWhiteSpace(rarity))
-                rarity = "Rarity: " + Int64.Parse(rarity).ToString("N0", CultureInfo.InvariantCulture);
+                rarity = Int64.Parse(rarity).ToString("N0", CultureInfo.InvariantCulture);
 
-            foreach (string webhookURL in webhookURLs)
-                tasks.Add(PostAuraToWebhook(webhookURL, aura, rolledby, ping, DiscordUserId, rarity));
+            foreach (string webhook in Webhooks)
+                tasks.Add(PostAuraToWebhook(webhook, aura, rolledby, ping, DiscordUserId, rarity, native, frombiome));
 
             await Task.WhenAll(tasks);
         }

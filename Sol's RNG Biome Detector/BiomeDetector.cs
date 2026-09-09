@@ -1,4 +1,5 @@
-﻿using Sol_s_RNG_Biome_Detector;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using Sol_s_RNG_Biome_Detector;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
@@ -22,8 +23,6 @@ class BiomeDetector
         public long ReadPosition { get; set; } = 0;
         public DateTime LogWriteTime { get; set; }
     }
-
-    private static TextBox logs;
 
     public static async Task Biomes(Form1 form, TextBox logs)
     {
@@ -362,14 +361,28 @@ class BiomeDetector
         if (string.IsNullOrWhiteSpace(aura))
             return;
 
-        if (lastAuraByUser.TryGetValue(client.UserId, out string lastAura))
+        if (lastAuraByUser.TryGetValue(client.UserId, out string? lastAura))
         {
             if (lastAura == aura)
+                return;
+
+            if (lastAura is null)
                 return;
         }
 
         lastAuraByUser[client.UserId] = aura;
 
-        form.FoundNewAura(aura, client.UserId);
+        _ = form.FoundNewAura(aura, client.UserId, lastBiomeByUser[client.UserId]);
+    }
+
+    public static string LastBiomebyUser(string userId)
+    {
+        if (!clients.TryGetValue(userId, out RobloxClient? client))
+            return "Inactive";
+
+        if (lastBiomeByUser.TryGetValue(userId, out string? biome))
+            return biome;
+
+        return "Loading";
     }
 }

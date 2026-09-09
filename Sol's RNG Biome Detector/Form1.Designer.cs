@@ -32,12 +32,26 @@
             tabControl = new HiddenTabControl();
             tabPage1 = new TabPage();
             panelContent = new Panel();
+            label41 = new Label();
+            button25 = new Button();
             pictureBox13 = new PictureBox();
             pictureBox2 = new PictureBox();
             checkBox28 = new CheckBox();
             checkBox29 = new CheckBox();
-            pictureBox1 = new PictureBox();
             tabPage2 = new TabPage();
+            checkBox12 = new CheckBox();
+            pictureBox21 = new PictureBox();
+            pictureBox20 = new PictureBox();
+            label42 = new Label();
+            label99 = new Label();
+            pictureBox19 = new PictureBox();
+            pictureBox18 = new PictureBox();
+            label40 = new Label();
+            pictureBox17 = new PictureBox();
+            pictureBox16 = new PictureBox();
+            label28 = new Label();
+            pictureBox15 = new PictureBox();
+            pictureBox14 = new PictureBox();
             label20 = new Label();
             label19 = new Label();
             label17 = new Label();
@@ -55,14 +69,11 @@
             checkBox2 = new CheckBox();
             checkBox1 = new CheckBox();
             tabPage3 = new TabPage();
+            button10 = new Button();
+            button9 = new Button();
             pictureBox7 = new PictureBox();
             checkBox21 = new CheckBox();
             checkBox31 = new CheckBox();
-            button17 = new Button();
-            button16 = new Button();
-            button10 = new Button();
-            button9 = new Button();
-            label16 = new Label();
             checkBox26 = new CheckBox();
             textBox4 = new TextBox();
             textBox3 = new TextBox();
@@ -70,8 +81,9 @@
             checkBox24 = new CheckBox();
             checkBox23 = new CheckBox();
             checkBox22 = new CheckBox();
-            label5 = new Label();
             tabPage4 = new TabPage();
+            linkLabel4 = new LinkLabel();
+            linkLabel3 = new LinkLabel();
             pictureBox8 = new PictureBox();
             label6 = new Label();
             label85 = new Label();
@@ -170,29 +182,8 @@
             label35 = new Label();
             label34 = new Label();
             label31 = new Label();
-            tabPage13 = new TabPage();
-            panel1 = new Panel();
-            label86 = new Label();
-            button28 = new Button();
-            listBox3 = new ListBox();
-            tabPage14 = new TabPage();
-            button35 = new Button();
-            button34 = new Button();
-            button33 = new Button();
-            button32 = new Button();
-            button31 = new Button();
-            button30 = new Button();
-            button29 = new Button();
-            label39 = new Label();
-            label38 = new Label();
-            label37 = new Label();
-            label36 = new Label();
-            label33 = new Label();
-            checkBox30 = new CheckBox();
-            checkBox27 = new CheckBox();
             tabPage15 = new TabPage();
             pictureBox12 = new PictureBox();
-            checkBox34 = new CheckBox();
             label89 = new Label();
             textBox8 = new TextBox();
             checkBox33 = new CheckBox();
@@ -200,22 +191,36 @@
             label87 = new Label();
             textBox7 = new TextBox();
             checkBox32 = new CheckBox();
+            tabPage16 = new TabPage();
+            pictureBox1 = new PictureBox();
+            textBox9 = new TextBox();
+            button17 = new Button();
+            button16 = new Button();
             panelSidebar = new Panel();
+            button37 = new Button();
             button27 = new Button();
-            button36 = new Button();
             button8 = new Button();
             button7 = new Button();
             button6 = new Button();
             button5 = new Button();
             button4 = new Button();
             button2 = new Button();
+            label5 = new Label();
+            label16 = new Label();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
             panelContent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox21).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox20).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox19).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox18).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox17).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox16).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox15).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox14).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).BeginInit();
             tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox7).BeginInit();
@@ -235,11 +240,10 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             tabPage12.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).BeginInit();
-            tabPage13.SuspendLayout();
-            panel1.SuspendLayout();
-            tabPage14.SuspendLayout();
             tabPage15.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).BeginInit();
+            tabPage16.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panelSidebar.SuspendLayout();
             SuspendLayout();
             // 
@@ -257,10 +261,9 @@
             tabControl.Controls.Add(tabPage10);
             tabControl.Controls.Add(tabPage11);
             tabControl.Controls.Add(tabPage12);
-            tabControl.Controls.Add(tabPage13);
-            tabControl.Controls.Add(tabPage14);
             tabControl.Controls.Add(tabPage15);
-            tabControl.Location = new Point(148, 0);
+            tabControl.Controls.Add(tabPage16);
+            tabControl.Location = new Point(154, 0);
             tabControl.Name = "tabControl";
             tabControl.SelectedIndex = 0;
             tabControl.Size = new Size(804, 457);
@@ -270,7 +273,6 @@
             // 
             tabPage1.BackColor = Color.White;
             tabPage1.Controls.Add(panelContent);
-            tabPage1.Controls.Add(pictureBox1);
             tabPage1.Location = new Point(4, 24);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
@@ -281,6 +283,8 @@
             // panelContent
             // 
             panelContent.BackColor = Color.FromArgb(17, 19, 24);
+            panelContent.Controls.Add(label41);
+            panelContent.Controls.Add(button25);
             panelContent.Controls.Add(pictureBox13);
             panelContent.Controls.Add(pictureBox2);
             panelContent.Controls.Add(checkBox28);
@@ -291,6 +295,25 @@
             panelContent.Size = new Size(790, 423);
             panelContent.TabIndex = 14;
             // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Location = new Point(3, 405);
+            label41.Name = "label41";
+            label41.Size = new Size(109, 15);
+            label41.TabIndex = 2;
+            label41.Text = "Uptime: 00:00:00:00";
+            // 
+            // button25
+            // 
+            button25.Location = new Point(480, 323);
+            button25.Name = "button25";
+            button25.Size = new Size(75, 23);
+            button25.TabIndex = 2;
+            button25.Text = "Minimize";
+            button25.UseVisualStyleBackColor = true;
+            button25.Click += button25_Click_2;
+            // 
             // pictureBox13
             // 
             pictureBox13.Location = new Point(343, 361);
@@ -298,6 +321,7 @@
             pictureBox13.Size = new Size(212, 59);
             pictureBox13.TabIndex = 22;
             pictureBox13.TabStop = false;
+            pictureBox13.Click += pictureBox13_Click;
             // 
             // pictureBox2
             // 
@@ -330,18 +354,22 @@
             checkBox29.UseVisualStyleBackColor = true;
             checkBox29.CheckedChanged += checkBox29_CheckedChanged;
             // 
-            // pictureBox1
-            // 
-            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new Point(416, 149);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(67, 69);
-            pictureBox1.TabIndex = 7;
-            pictureBox1.TabStop = false;
-            // 
             // tabPage2
             // 
             tabPage2.BackColor = Color.White;
+            tabPage2.Controls.Add(checkBox12);
+            tabPage2.Controls.Add(pictureBox21);
+            tabPage2.Controls.Add(pictureBox20);
+            tabPage2.Controls.Add(label42);
+            tabPage2.Controls.Add(label99);
+            tabPage2.Controls.Add(pictureBox19);
+            tabPage2.Controls.Add(pictureBox18);
+            tabPage2.Controls.Add(label40);
+            tabPage2.Controls.Add(pictureBox17);
+            tabPage2.Controls.Add(pictureBox16);
+            tabPage2.Controls.Add(label28);
+            tabPage2.Controls.Add(pictureBox15);
+            tabPage2.Controls.Add(pictureBox14);
             tabPage2.Controls.Add(label20);
             tabPage2.Controls.Add(label19);
             tabPage2.Controls.Add(label17);
@@ -365,11 +393,125 @@
             tabPage2.TabIndex = 1;
             tabPage2.Text = "tabPage2";
             // 
+            // checkBox12
+            // 
+            checkBox12.AutoSize = true;
+            checkBox12.Location = new Point(121, 306);
+            checkBox12.Name = "checkBox12";
+            checkBox12.Size = new Size(83, 19);
+            checkBox12.TabIndex = 39;
+            checkBox12.Text = "Incinerator";
+            checkBox12.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox21
+            // 
+            pictureBox21.Location = new Point(338, 275);
+            pictureBox21.Name = "pictureBox21";
+            pictureBox21.Size = new Size(227, 16);
+            pictureBox21.TabIndex = 38;
+            pictureBox21.TabStop = false;
+            // 
+            // pictureBox20
+            // 
+            pictureBox20.Location = new Point(0, 275);
+            pictureBox20.Name = "pictureBox20";
+            pictureBox20.Size = new Size(227, 16);
+            pictureBox20.TabIndex = 37;
+            pictureBox20.TabStop = false;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label42.Location = new Point(257, 186);
+            label42.Name = "label42";
+            label42.Size = new Size(42, 21);
+            label42.TabIndex = 36;
+            label42.Text = "Rare";
+            // 
+            // label99
+            // 
+            label99.AutoSize = true;
+            label99.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label99.Location = new Point(259, 272);
+            label99.Name = "label99";
+            label99.Size = new Size(48, 21);
+            label99.TabIndex = 35;
+            label99.Text = "Event";
+            // 
+            // pictureBox19
+            // 
+            pictureBox19.Location = new Point(338, 189);
+            pictureBox19.Name = "pictureBox19";
+            pictureBox19.Size = new Size(227, 16);
+            pictureBox19.TabIndex = 34;
+            pictureBox19.TabStop = false;
+            // 
+            // pictureBox18
+            // 
+            pictureBox18.Location = new Point(0, 189);
+            pictureBox18.Name = "pictureBox18";
+            pictureBox18.Size = new Size(227, 16);
+            pictureBox18.TabIndex = 33;
+            pictureBox18.TabStop = false;
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label40.Location = new Point(235, 102);
+            label40.Name = "label40";
+            label40.Size = new Size(92, 21);
+            label40.TabIndex = 32;
+            label40.Text = "Uncommon";
+            // 
+            // pictureBox17
+            // 
+            pictureBox17.Location = new Point(338, 107);
+            pictureBox17.Name = "pictureBox17";
+            pictureBox17.Size = new Size(227, 15);
+            pictureBox17.TabIndex = 31;
+            pictureBox17.TabStop = false;
+            // 
+            // pictureBox16
+            // 
+            pictureBox16.Location = new Point(0, 107);
+            pictureBox16.Name = "pictureBox16";
+            pictureBox16.Size = new Size(227, 15);
+            pictureBox16.TabIndex = 2;
+            pictureBox16.TabStop = false;
+            // 
+            // label28
+            // 
+            label28.AutoSize = true;
+            label28.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label28.Location = new Point(242, 26);
+            label28.Name = "label28";
+            label28.Size = new Size(75, 21);
+            label28.TabIndex = 30;
+            label28.Text = "Common";
+            // 
+            // pictureBox15
+            // 
+            pictureBox15.Location = new Point(338, 30);
+            pictureBox15.Name = "pictureBox15";
+            pictureBox15.Size = new Size(227, 14);
+            pictureBox15.TabIndex = 29;
+            pictureBox15.TabStop = false;
+            // 
+            // pictureBox14
+            // 
+            pictureBox14.Location = new Point(2, 30);
+            pictureBox14.Name = "pictureBox14";
+            pictureBox14.Size = new Size(225, 14);
+            pictureBox14.TabIndex = 28;
+            pictureBox14.TabStop = false;
+            // 
             // label20
             // 
             label20.AutoSize = true;
             label20.ForeColor = Color.Black;
-            label20.Location = new Point(39, 358);
+            label20.Location = new Point(478, 220);
             label20.Name = "label20";
             label20.Size = new Size(51, 15);
             label20.TabIndex = 27;
@@ -379,7 +521,7 @@
             // 
             label19.AutoSize = true;
             label19.ForeColor = Color.Black;
-            label19.Location = new Point(39, 334);
+            label19.Location = new Point(373, 220);
             label19.Name = "label19";
             label19.Size = new Size(72, 15);
             label19.TabIndex = 26;
@@ -390,7 +532,7 @@
             label17.AutoSize = true;
             label17.BackColor = Color.White;
             label17.ForeColor = Color.Black;
-            label17.Location = new Point(39, 312);
+            label17.Location = new Point(123, 220);
             label17.Name = "label17";
             label17.Size = new Size(68, 15);
             label17.TabIndex = 25;
@@ -399,7 +541,7 @@
             // pictureBox6
             // 
             pictureBox6.Image = (Image)resources.GetObject("pictureBox6.Image");
-            pictureBox6.Location = new Point(467, 3);
+            pictureBox6.Location = new Point(456, 326);
             pictureBox6.Name = "pictureBox6";
             pictureBox6.Size = new Size(89, 93);
             pictureBox6.TabIndex = 24;
@@ -409,7 +551,7 @@
             // 
             checkBox15.AutoSize = true;
             checkBox15.ForeColor = Color.Black;
-            checkBox15.Location = new Point(204, 24);
+            checkBox15.Location = new Point(2, 306);
             checkBox15.Name = "checkBox15";
             checkBox15.Size = new Size(87, 19);
             checkBox15.TabIndex = 18;
@@ -422,7 +564,7 @@
             checkBox11.AutoSize = true;
             checkBox11.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             checkBox11.ForeColor = Color.Black;
-            checkBox11.Location = new Point(23, 288);
+            checkBox11.Location = new Point(2, 220);
             checkBox11.Name = "checkBox11";
             checkBox11.Size = new Size(87, 21);
             checkBox11.TabIndex = 14;
@@ -434,7 +576,7 @@
             // 
             checkBox10.AutoSize = true;
             checkBox10.ForeColor = Color.Black;
-            checkBox10.Location = new Point(23, 245);
+            checkBox10.Location = new Point(478, 142);
             checkBox10.Name = "checkBox10";
             checkBox10.Size = new Size(48, 19);
             checkBox10.TabIndex = 13;
@@ -446,7 +588,7 @@
             // 
             checkBox9.AutoSize = true;
             checkBox9.ForeColor = Color.Black;
-            checkBox9.Location = new Point(23, 220);
+            checkBox9.Location = new Point(373, 142);
             checkBox9.Name = "checkBox9";
             checkBox9.Size = new Size(84, 19);
             checkBox9.TabIndex = 12;
@@ -458,7 +600,7 @@
             // 
             checkBox8.AutoSize = true;
             checkBox8.ForeColor = Color.Black;
-            checkBox8.Location = new Point(23, 195);
+            checkBox8.Location = new Point(251, 142);
             checkBox8.Name = "checkBox8";
             checkBox8.Size = new Size(66, 19);
             checkBox8.TabIndex = 11;
@@ -470,7 +612,7 @@
             // 
             checkBox7.AutoSize = true;
             checkBox7.ForeColor = Color.Black;
-            checkBox7.Location = new Point(23, 170);
+            checkBox7.Location = new Point(121, 142);
             checkBox7.Name = "checkBox7";
             checkBox7.Size = new Size(62, 19);
             checkBox7.TabIndex = 10;
@@ -482,7 +624,7 @@
             // 
             checkBox6.AutoSize = true;
             checkBox6.ForeColor = Color.Black;
-            checkBox6.Location = new Point(23, 145);
+            checkBox6.Location = new Point(2, 142);
             checkBox6.Name = "checkBox6";
             checkBox6.Size = new Size(47, 19);
             checkBox6.TabIndex = 9;
@@ -494,7 +636,7 @@
             // 
             checkBox5.AutoSize = true;
             checkBox5.ForeColor = Color.Black;
-            checkBox5.Location = new Point(23, 120);
+            checkBox5.Location = new Point(478, 66);
             checkBox5.Name = "checkBox5";
             checkBox5.Size = new Size(87, 19);
             checkBox5.TabIndex = 8;
@@ -506,7 +648,7 @@
             // 
             checkBox4.AutoSize = true;
             checkBox4.ForeColor = Color.Black;
-            checkBox4.Location = new Point(23, 95);
+            checkBox4.Location = new Point(373, 66);
             checkBox4.Name = "checkBox4";
             checkBox4.Size = new Size(55, 19);
             checkBox4.TabIndex = 7;
@@ -518,7 +660,7 @@
             // 
             checkBox3.AutoSize = true;
             checkBox3.ForeColor = Color.Black;
-            checkBox3.Location = new Point(23, 70);
+            checkBox3.Location = new Point(251, 66);
             checkBox3.Name = "checkBox3";
             checkBox3.Size = new Size(61, 19);
             checkBox3.TabIndex = 6;
@@ -530,7 +672,7 @@
             // 
             checkBox2.AutoSize = true;
             checkBox2.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox2.Location = new Point(23, 45);
+            checkBox2.Location = new Point(123, 66);
             checkBox2.Name = "checkBox2";
             checkBox2.Size = new Size(60, 19);
             checkBox2.TabIndex = 5;
@@ -542,7 +684,7 @@
             // 
             checkBox1.AutoSize = true;
             checkBox1.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox1.Location = new Point(23, 20);
+            checkBox1.Location = new Point(2, 66);
             checkBox1.Name = "checkBox1";
             checkBox1.Size = new Size(66, 19);
             checkBox1.TabIndex = 4;
@@ -553,14 +695,11 @@
             // tabPage3
             // 
             tabPage3.BackColor = Color.White;
+            tabPage3.Controls.Add(button10);
+            tabPage3.Controls.Add(button9);
             tabPage3.Controls.Add(pictureBox7);
             tabPage3.Controls.Add(checkBox21);
             tabPage3.Controls.Add(checkBox31);
-            tabPage3.Controls.Add(button17);
-            tabPage3.Controls.Add(button16);
-            tabPage3.Controls.Add(button10);
-            tabPage3.Controls.Add(button9);
-            tabPage3.Controls.Add(label16);
             tabPage3.Controls.Add(checkBox26);
             tabPage3.Controls.Add(textBox4);
             tabPage3.Controls.Add(textBox3);
@@ -568,7 +707,6 @@
             tabPage3.Controls.Add(checkBox24);
             tabPage3.Controls.Add(checkBox23);
             tabPage3.Controls.Add(checkBox22);
-            tabPage3.Controls.Add(label5);
             tabPage3.Location = new Point(4, 24);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
@@ -576,10 +714,30 @@
             tabPage3.TabIndex = 2;
             tabPage3.Text = "tabPage3";
             // 
+            // button10
+            // 
+            button10.Location = new Point(6, 256);
+            button10.Name = "button10";
+            button10.Size = new Size(153, 23);
+            button10.TabIndex = 31;
+            button10.Text = "View Webhooks";
+            button10.UseVisualStyleBackColor = true;
+            button10.Click += button10_Click_2;
+            // 
+            // button9
+            // 
+            button9.Location = new Point(6, 211);
+            button9.Name = "button9";
+            button9.Size = new Size(153, 23);
+            button9.TabIndex = 30;
+            button9.Text = "Add Webhook";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click_2;
+            // 
             // pictureBox7
             // 
             pictureBox7.Image = (Image)resources.GetObject("pictureBox7.Image");
-            pictureBox7.Location = new Point(468, 323);
+            pictureBox7.Location = new Point(466, 6);
             pictureBox7.Name = "pictureBox7";
             pictureBox7.Size = new Size(89, 93);
             pictureBox7.TabIndex = 26;
@@ -608,61 +766,11 @@
             checkBox31.UseVisualStyleBackColor = true;
             checkBox31.CheckedChanged += SettingChanged;
             // 
-            // button17
-            // 
-            button17.Location = new Point(303, 44);
-            button17.Name = "button17";
-            button17.Size = new Size(153, 23);
-            button17.TabIndex = 16;
-            button17.Text = "View Private Servers";
-            button17.UseVisualStyleBackColor = true;
-            button17.Click += button17_Click;
-            // 
-            // button16
-            // 
-            button16.Location = new Point(133, 44);
-            button16.Name = "button16";
-            button16.Size = new Size(153, 23);
-            button16.TabIndex = 15;
-            button16.Text = "Add Private Server";
-            button16.UseVisualStyleBackColor = true;
-            button16.Click += button16_Click;
-            // 
-            // button10
-            // 
-            button10.Location = new Point(303, 18);
-            button10.Name = "button10";
-            button10.Size = new Size(152, 23);
-            button10.TabIndex = 14;
-            button10.Text = "View Webhooks";
-            button10.UseVisualStyleBackColor = true;
-            button10.Click += button10_Click;
-            // 
-            // button9
-            // 
-            button9.Location = new Point(133, 18);
-            button9.Name = "button9";
-            button9.Size = new Size(153, 23);
-            button9.TabIndex = 13;
-            button9.Text = "Add Webhook";
-            button9.UseVisualStyleBackColor = true;
-            button9.Click += button9_Click;
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.ForeColor = SystemColors.ActiveCaptionText;
-            label16.Location = new Point(6, 48);
-            label16.Name = "label16";
-            label16.Size = new Size(106, 15);
-            label16.TabIndex = 11;
-            label16.Text = "Private Server Link:";
-            // 
             // checkBox26
             // 
             checkBox26.AutoSize = true;
             checkBox26.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox26.Location = new Point(3, 265);
+            checkBox26.Location = new Point(3, 155);
             checkBox26.Name = "checkBox26";
             checkBox26.Size = new Size(82, 19);
             checkBox26.TabIndex = 8;
@@ -672,7 +780,7 @@
             // 
             // textBox4
             // 
-            textBox4.Location = new Point(134, 182);
+            textBox4.Location = new Point(134, 75);
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(230, 23);
             textBox4.TabIndex = 7;
@@ -680,7 +788,7 @@
             // 
             // textBox3
             // 
-            textBox3.Location = new Point(134, 138);
+            textBox3.Location = new Point(134, 31);
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(230, 23);
             textBox3.TabIndex = 6;
@@ -692,7 +800,7 @@
             checkBox25.Checked = true;
             checkBox25.CheckState = CheckState.Checked;
             checkBox25.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox25.Location = new Point(3, 228);
+            checkBox25.Location = new Point(2, 118);
             checkBox25.Name = "checkBox25";
             checkBox25.Size = new Size(112, 19);
             checkBox25.TabIndex = 5;
@@ -704,7 +812,7 @@
             // 
             checkBox24.AutoSize = true;
             checkBox24.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox24.Location = new Point(3, 186);
+            checkBox24.Location = new Point(3, 79);
             checkBox24.Name = "checkBox24";
             checkBox24.Size = new Size(90, 19);
             checkBox24.TabIndex = 4;
@@ -716,7 +824,7 @@
             // 
             checkBox23.AutoSize = true;
             checkBox23.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox23.Location = new Point(3, 146);
+            checkBox23.Location = new Point(3, 35);
             checkBox23.Name = "checkBox23";
             checkBox23.Size = new Size(90, 19);
             checkBox23.TabIndex = 3;
@@ -731,7 +839,7 @@
             checkBox22.Checked = true;
             checkBox22.CheckState = CheckState.Checked;
             checkBox22.ForeColor = SystemColors.ActiveCaptionText;
-            checkBox22.Location = new Point(303, 397);
+            checkBox22.Location = new Point(299, 404);
             checkBox22.Name = "checkBox22";
             checkBox22.Size = new Size(161, 19);
             checkBox22.TabIndex = 2;
@@ -739,19 +847,11 @@
             checkBox22.UseVisualStyleBackColor = true;
             checkBox22.CheckedChanged += SettingChanged;
             // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.ForeColor = SystemColors.ActiveCaptionText;
-            label5.Location = new Point(6, 22);
-            label5.Name = "label5";
-            label5.Size = new Size(85, 15);
-            label5.TabIndex = 1;
-            label5.Text = "Webhook URL:";
-            // 
             // tabPage4
             // 
             tabPage4.BackColor = Color.White;
+            tabPage4.Controls.Add(linkLabel4);
+            tabPage4.Controls.Add(linkLabel3);
             tabPage4.Controls.Add(pictureBox8);
             tabPage4.Controls.Add(label6);
             tabPage4.Controls.Add(label85);
@@ -767,6 +867,28 @@
             tabPage4.TabIndex = 3;
             tabPage4.Text = "tabPage4";
             // 
+            // linkLabel4
+            // 
+            linkLabel4.AutoSize = true;
+            linkLabel4.Location = new Point(17, 260);
+            linkLabel4.Name = "linkLabel4";
+            linkLabel4.Size = new Size(172, 15);
+            linkLabel4.TabIndex = 24;
+            linkLabel4.TabStop = true;
+            linkLabel4.Text = "Tutorial Video (Thanks to Fiko!)";
+            linkLabel4.LinkClicked += linkLabel4_LinkClicked;
+            // 
+            // linkLabel3
+            // 
+            linkLabel3.AutoSize = true;
+            linkLabel3.Location = new Point(17, 228);
+            linkLabel3.Name = "linkLabel3";
+            linkLabel3.Size = new Size(82, 15);
+            linkLabel3.TabIndex = 23;
+            linkLabel3.TabStop = true;
+            linkLabel3.Text = "Discord Server";
+            linkLabel3.LinkClicked += linkLabel3_LinkClicked;
+            // 
             // pictureBox8
             // 
             pictureBox8.Image = (Image)resources.GetObject("pictureBox8.Image");
@@ -781,9 +903,9 @@
             label6.AutoSize = true;
             label6.Location = new Point(17, 66);
             label6.Name = "label6";
-            label6.Size = new Size(378, 15);
+            label6.Size = new Size(458, 15);
             label6.TabIndex = 10;
-            label6.Text = "Fiko (fiko2022): Assets, Rebranding idea, Suggestions, Feedback, Tester";
+            label6.Text = "Fiko (fiko2022): Assets, Rebranding idea, Suggestions, Feedback, Tester, Tutorial Video";
             // 
             // label85
             // 
@@ -817,9 +939,9 @@
             label22.AutoSize = true;
             label22.Location = new Point(17, 93);
             label22.Name = "label22";
-            label22.Size = new Size(310, 15);
+            label22.Size = new Size(366, 15);
             label22.TabIndex = 5;
-            label22.Text = "2119 (211nine): Suggestions, Tester, Discord server creator";
+            label22.Text = "2119 (211nine): Suggestions, Tester, Discord server creator, Feedback";
             // 
             // label21
             // 
@@ -836,9 +958,9 @@
             label18.ForeColor = SystemColors.ActiveCaptionText;
             label18.Location = new Point(17, 404);
             label18.Name = "label18";
-            label18.Size = new Size(118, 15);
+            label18.Size = new Size(71, 15);
             label18.TabIndex = 1;
-            label18.Text = "Ver: 1.0.1 (rebranded)";
+            label18.Text = "Ver: 1.0.2 (V)";
             // 
             // tabPage5
             // 
@@ -882,6 +1004,8 @@
             // tabPage6
             // 
             tabPage6.BackColor = Color.White;
+            tabPage6.Controls.Add(label16);
+            tabPage6.Controls.Add(label5);
             tabPage6.Controls.Add(pictureBox9);
             tabPage6.Controls.Add(label4);
             tabPage6.Controls.Add(label3);
@@ -1728,7 +1852,7 @@
             pictureBox5.Image = (Image)resources.GetObject("pictureBox5.Image");
             pictureBox5.Location = new Point(20, 170);
             pictureBox5.Name = "pictureBox5";
-            pictureBox5.Size = new Size(380, 50);
+            pictureBox5.Size = new Size(394, 60);
             pictureBox5.TabIndex = 5;
             pictureBox5.TabStop = false;
             // 
@@ -1737,9 +1861,9 @@
             label35.AutoSize = true;
             label35.Location = new Point(20, 152);
             label35.Name = "label35";
-            label35.Size = new Size(324, 15);
+            label35.Size = new Size(322, 15);
             label35.TabIndex = 4;
-            label35.Text = "Please then extract it into the same directory where bloom is";
+            label35.Text = "Please then extract it into the same Directory where Vortex is";
             // 
             // label34
             // 
@@ -1759,211 +1883,9 @@
             label31.TabIndex = 0;
             label31.Text = "Couldn't find Handle64.exe!";
             // 
-            // tabPage13
-            // 
-            tabPage13.Controls.Add(panel1);
-            tabPage13.Controls.Add(button28);
-            tabPage13.Controls.Add(listBox3);
-            tabPage13.Location = new Point(4, 24);
-            tabPage13.Name = "tabPage13";
-            tabPage13.Padding = new Padding(3);
-            tabPage13.Size = new Size(796, 429);
-            tabPage13.TabIndex = 12;
-            tabPage13.Text = "tabPage13";
-            tabPage13.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(label86);
-            panel1.Dock = DockStyle.Fill;
-            panel1.Location = new Point(3, 3);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(790, 423);
-            panel1.TabIndex = 3;
-            // 
-            // label86
-            // 
-            label86.AutoSize = true;
-            label86.Location = new Point(334, 175);
-            label86.Name = "label86";
-            label86.Size = new Size(121, 15);
-            label86.TabIndex = 0;
-            label86.Text = "SCRAPPED FOR NOW";
-            // 
-            // button28
-            // 
-            button28.Location = new Point(708, 338);
-            button28.Name = "button28";
-            button28.Size = new Size(75, 36);
-            button28.TabIndex = 2;
-            button28.Text = "Set up";
-            button28.UseVisualStyleBackColor = true;
-            // 
-            // listBox3
-            // 
-            listBox3.FormattingEnabled = true;
-            listBox3.Location = new Point(6, 6);
-            listBox3.Name = "listBox3";
-            listBox3.Size = new Size(777, 244);
-            listBox3.TabIndex = 0;
-            // 
-            // tabPage14
-            // 
-            tabPage14.Controls.Add(button35);
-            tabPage14.Controls.Add(button34);
-            tabPage14.Controls.Add(button33);
-            tabPage14.Controls.Add(button32);
-            tabPage14.Controls.Add(button31);
-            tabPage14.Controls.Add(button30);
-            tabPage14.Controls.Add(button29);
-            tabPage14.Controls.Add(label39);
-            tabPage14.Controls.Add(label38);
-            tabPage14.Controls.Add(label37);
-            tabPage14.Controls.Add(label36);
-            tabPage14.Controls.Add(label33);
-            tabPage14.Controls.Add(checkBox30);
-            tabPage14.Controls.Add(checkBox27);
-            tabPage14.Location = new Point(4, 24);
-            tabPage14.Name = "tabPage14";
-            tabPage14.Padding = new Padding(3);
-            tabPage14.Size = new Size(796, 429);
-            tabPage14.TabIndex = 13;
-            tabPage14.Text = "tabPage14";
-            tabPage14.UseVisualStyleBackColor = true;
-            // 
-            // button35
-            // 
-            button35.Location = new Point(671, 336);
-            button35.Name = "button35";
-            button35.Size = new Size(75, 31);
-            button35.TabIndex = 12;
-            button35.Text = "Apply";
-            button35.UseVisualStyleBackColor = true;
-            // 
-            // button34
-            // 
-            button34.Location = new Point(6, 336);
-            button34.Name = "button34";
-            button34.Size = new Size(75, 31);
-            button34.TabIndex = 2;
-            button34.Text = "Return";
-            button34.UseVisualStyleBackColor = true;
-            button34.Click += button34_Click;
-            // 
-            // button33
-            // 
-            button33.Location = new Point(660, 142);
-            button33.Name = "button33";
-            button33.Size = new Size(75, 23);
-            button33.TabIndex = 11;
-            button33.Text = "Calibrate";
-            button33.UseVisualStyleBackColor = true;
-            // 
-            // button32
-            // 
-            button32.Location = new Point(660, 113);
-            button32.Name = "button32";
-            button32.Size = new Size(75, 23);
-            button32.TabIndex = 10;
-            button32.Text = "Calibrate";
-            button32.UseVisualStyleBackColor = true;
-            // 
-            // button31
-            // 
-            button31.Location = new Point(660, 83);
-            button31.Name = "button31";
-            button31.Size = new Size(75, 23);
-            button31.TabIndex = 9;
-            button31.Text = "Calibrate";
-            button31.UseVisualStyleBackColor = true;
-            // 
-            // button30
-            // 
-            button30.Location = new Point(660, 53);
-            button30.Name = "button30";
-            button30.Size = new Size(75, 23);
-            button30.TabIndex = 8;
-            button30.Text = "Calibrate";
-            button30.UseVisualStyleBackColor = true;
-            // 
-            // button29
-            // 
-            button29.Location = new Point(660, 24);
-            button29.Name = "button29";
-            button29.Size = new Size(75, 23);
-            button29.TabIndex = 7;
-            button29.Text = "Calibrate";
-            button29.UseVisualStyleBackColor = true;
-            // 
-            // label39
-            // 
-            label39.AutoSize = true;
-            label39.Location = new Point(521, 146);
-            label39.Name = "label39";
-            label39.Size = new Size(68, 15);
-            label39.TabIndex = 6;
-            label39.Text = "Use Button:";
-            // 
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Location = new Point(521, 117);
-            label38.Name = "label38";
-            label38.Size = new Size(34, 15);
-            label38.TabIndex = 5;
-            label38.Text = "Item:";
-            // 
-            // label37
-            // 
-            label37.AutoSize = true;
-            label37.Location = new Point(521, 87);
-            label37.Name = "label37";
-            label37.Size = new Size(61, 15);
-            label37.TabIndex = 4;
-            label37.Text = "Seach bar:";
-            // 
-            // label36
-            // 
-            label36.AutoSize = true;
-            label36.Location = new Point(521, 57);
-            label36.Name = "label36";
-            label36.Size = new Size(59, 15);
-            label36.TabIndex = 3;
-            label36.Text = "Items tab:";
-            // 
-            // label33
-            // 
-            label33.AutoSize = true;
-            label33.Location = new Point(521, 24);
-            label33.Name = "label33";
-            label33.Size = new Size(86, 15);
-            label33.TabIndex = 2;
-            label33.Text = "Inventory bag: ";
-            // 
-            // checkBox30
-            // 
-            checkBox30.AutoSize = true;
-            checkBox30.Location = new Point(6, 45);
-            checkBox30.Name = "checkBox30";
-            checkBox30.Size = new Size(148, 19);
-            checkBox30.TabIndex = 1;
-            checkBox30.Text = "Use Biome Randomizer";
-            checkBox30.UseVisualStyleBackColor = true;
-            // 
-            // checkBox27
-            // 
-            checkBox27.AutoSize = true;
-            checkBox27.Location = new Point(6, 20);
-            checkBox27.Name = "checkBox27";
-            checkBox27.Size = new Size(144, 19);
-            checkBox27.TabIndex = 0;
-            checkBox27.Text = "Use Strange Controller";
-            checkBox27.UseVisualStyleBackColor = true;
-            // 
             // tabPage15
             // 
             tabPage15.Controls.Add(pictureBox12);
-            tabPage15.Controls.Add(checkBox34);
             tabPage15.Controls.Add(label89);
             tabPage15.Controls.Add(textBox8);
             tabPage15.Controls.Add(checkBox33);
@@ -1988,17 +1910,6 @@
             pictureBox12.TabIndex = 27;
             pictureBox12.TabStop = false;
             // 
-            // checkBox34
-            // 
-            checkBox34.AutoSize = true;
-            checkBox34.Location = new Point(10, 93);
-            checkBox34.Name = "checkBox34";
-            checkBox34.Size = new Size(137, 19);
-            checkBox34.TabIndex = 26;
-            checkBox34.Text = "Only ping for globals";
-            checkBox34.UseVisualStyleBackColor = true;
-            checkBox34.CheckedChanged += SettingChanged;
-            // 
             // label89
             // 
             label89.AutoSize = true;
@@ -2010,7 +1921,7 @@
             // 
             // textBox8
             // 
-            textBox8.Location = new Point(112, 209);
+            textBox8.Location = new Point(131, 209);
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(180, 23);
             textBox8.TabIndex = 24;
@@ -2029,16 +1940,16 @@
             // label88
             // 
             label88.AutoSize = true;
-            label88.Location = new Point(10, 130);
+            label88.Location = new Point(10, 99);
             label88.Name = "label88";
             label88.Size = new Size(86, 15);
             label88.TabIndex = 22;
-            label88.Text = "(ex: 99,999,999)";
+            label88.Text = "(ex: 50,000,000)";
             // 
             // label87
             // 
             label87.AutoSize = true;
-            label87.Location = new Point(10, 115);
+            label87.Location = new Point(10, 84);
             label87.Name = "label87";
             label87.Size = new Size(91, 15);
             label87.TabIndex = 21;
@@ -2046,7 +1957,7 @@
             // 
             // textBox7
             // 
-            textBox7.Location = new Point(120, 112);
+            textBox7.Location = new Point(131, 81);
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(172, 23);
             textBox7.TabIndex = 20;
@@ -2062,11 +1973,61 @@
             checkBox32.UseVisualStyleBackColor = true;
             checkBox32.CheckedChanged += SettingChanged;
             // 
+            // tabPage16
+            // 
+            tabPage16.Controls.Add(pictureBox1);
+            tabPage16.Controls.Add(textBox9);
+            tabPage16.Controls.Add(button17);
+            tabPage16.Controls.Add(button16);
+            tabPage16.Location = new Point(4, 24);
+            tabPage16.Name = "tabPage16";
+            tabPage16.Padding = new Padding(3);
+            tabPage16.Size = new Size(796, 429);
+            tabPage16.TabIndex = 15;
+            tabPage16.Text = "tabPage16";
+            tabPage16.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = (Image)resources.GetObject("pictureBox1.Image");
+            pictureBox1.Location = new Point(473, 6);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(89, 93);
+            pictureBox1.TabIndex = 33;
+            pictureBox1.TabStop = false;
+            // 
+            // textBox9
+            // 
+            textBox9.Location = new Point(6, 158);
+            textBox9.Name = "textBox9";
+            textBox9.Size = new Size(556, 23);
+            textBox9.TabIndex = 32;
+            // 
+            // button17
+            // 
+            button17.Location = new Point(6, 66);
+            button17.Name = "button17";
+            button17.Size = new Size(153, 23);
+            button17.TabIndex = 31;
+            button17.Text = "View Accounts";
+            button17.UseVisualStyleBackColor = true;
+            button17.Click += button17_Click_1;
+            // 
+            // button16
+            // 
+            button16.Location = new Point(6, 20);
+            button16.Name = "button16";
+            button16.Size = new Size(153, 23);
+            button16.TabIndex = 30;
+            button16.Text = "Add Account";
+            button16.UseVisualStyleBackColor = true;
+            button16.Click += button16_Click_1;
+            // 
             // panelSidebar
             // 
             panelSidebar.BackColor = Color.FromArgb(17, 19, 24);
+            panelSidebar.Controls.Add(button37);
             panelSidebar.Controls.Add(button27);
-            panelSidebar.Controls.Add(button36);
             panelSidebar.Controls.Add(button8);
             panelSidebar.Controls.Add(button7);
             panelSidebar.Controls.Add(button6);
@@ -2076,8 +2037,18 @@
             panelSidebar.Dock = DockStyle.Left;
             panelSidebar.Location = new Point(0, 0);
             panelSidebar.Name = "panelSidebar";
-            panelSidebar.Size = new Size(148, 486);
+            panelSidebar.Size = new Size(148, 453);
             panelSidebar.TabIndex = 1;
+            // 
+            // button37
+            // 
+            button37.Location = new Point(24, 399);
+            button37.Name = "button37";
+            button37.Size = new Size(75, 23);
+            button37.TabIndex = 0;
+            button37.Text = "button37";
+            button37.UseVisualStyleBackColor = true;
+            button37.Click += activebutton;
             // 
             // button27
             // 
@@ -2088,16 +2059,6 @@
             button27.Text = "button27";
             button27.UseVisualStyleBackColor = true;
             button27.Click += activebutton;
-            // 
-            // button36
-            // 
-            button36.Location = new Point(24, 402);
-            button36.Name = "button36";
-            button36.Size = new Size(75, 23);
-            button36.TabIndex = 2;
-            button36.Text = "button36";
-            button36.UseVisualStyleBackColor = true;
-            button36.Click += activebutton;
             // 
             // button8
             // 
@@ -2159,12 +2120,30 @@
             button2.UseVisualStyleBackColor = true;
             button2.Click += activebutton;
             // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(232, 175);
+            label5.Name = "label5";
+            label5.Size = new Size(70, 15);
+            label5.TabIndex = 49;
+            label5.Text = "Incinerator: ";
+            // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(316, 175);
+            label16.Name = "label16";
+            label16.Size = new Size(13, 15);
+            label16.TabIndex = 50;
+            label16.Text = "0";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
-            ClientSize = new Size(719, 486);
+            ClientSize = new Size(1156, 453);
             Controls.Add(panelSidebar);
             Controls.Add(tabControl);
             Cursor = Cursors.Cross;
@@ -2178,9 +2157,16 @@
             panelContent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox13).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             tabPage2.ResumeLayout(false);
             tabPage2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox21).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox20).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox19).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox18).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox17).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox16).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox15).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox14).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox6).EndInit();
             tabPage3.ResumeLayout(false);
             tabPage3.PerformLayout();
@@ -2208,14 +2194,12 @@
             tabPage12.ResumeLayout(false);
             tabPage12.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox5).EndInit();
-            tabPage13.ResumeLayout(false);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
-            tabPage14.ResumeLayout(false);
-            tabPage14.PerformLayout();
             tabPage15.ResumeLayout(false);
             tabPage15.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox12).EndInit();
+            tabPage16.ResumeLayout(false);
+            tabPage16.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panelSidebar.ResumeLayout(false);
             ResumeLayout(false);
         }
@@ -2244,7 +2228,6 @@
         private CheckBox checkBox3;
         private CheckBox checkBox2;
         private CheckBox checkBox1;
-        private Label label5;
         private CheckBox checkBox22;
         private CheckBox checkBox25;
         private CheckBox checkBox24;
@@ -2260,12 +2243,9 @@
         private Label label10;
         private Label label9;
         private Label label8;
-        private Label label16;
         private Label label18;
-        private CheckBox checkBox27;
         private Label label22;
         private Label label21;
-        private PictureBox pictureBox1;
         private Panel panelSidebar;
         private Button button8;
         private Button button7;
@@ -2274,8 +2254,6 @@
         private Button button4;
         private Button button2;
         private Panel panelContent;
-        private Button button10;
-        private Button button9;
         private TabPage tabPage7;
         private TabPage tabPage8;
         private Button button11;
@@ -2287,8 +2265,6 @@
         private Button button14;
         private Button button15;
         private Label label23;
-        private Button button17;
-        private Button button16;
         private TabPage tabPage9;
         private Label label24;
         private TextBox textBox5;
@@ -2321,24 +2297,6 @@
         private CheckBox checkBox29;
         private CheckBox checkBox28;
         private Label label32;
-        private TabPage tabPage13;
-        private Button button28;
-        private ListBox listBox3;
-        private TabPage tabPage14;
-        private Button button33;
-        private Button button32;
-        private Button button31;
-        private Button button30;
-        private Button button29;
-        private Label label39;
-        private Label label38;
-        private Label label37;
-        private Label label36;
-        private Label label33;
-        private CheckBox checkBox30;
-        private Button button35;
-        private Button button34;
-        private Button button36;
         private Button button3;
         private Label label43;
         private Label label50;
@@ -2371,12 +2329,9 @@
         private Label label69;
         private Label label68;
         private Label label85;
-        private Panel panel1;
-        private Label label86;
         private CheckBox checkBox31;
         private Button button27;
         private TabPage tabPage15;
-        private CheckBox checkBox34;
         private Label label89;
         private TextBox textBox8;
         private CheckBox checkBox33;
@@ -2402,5 +2357,32 @@
         private Label label20;
         private Label label19;
         private Label label17;
+        private PictureBox pictureBox15;
+        private PictureBox pictureBox14;
+        private Label label28;
+        private Label label40;
+        private PictureBox pictureBox17;
+        private PictureBox pictureBox16;
+        private Label label42;
+        private Label label99;
+        private PictureBox pictureBox19;
+        private PictureBox pictureBox18;
+        private PictureBox pictureBox21;
+        private PictureBox pictureBox20;
+        private Button button25;
+        private LinkLabel linkLabel4;
+        private LinkLabel linkLabel3;
+        private Label label41;
+        private TabPage tabPage16;
+        private Button button37;
+        private Button button17;
+        private Button button16;
+        private TextBox textBox9;
+        private Button button10;
+        private Button button9;
+        private PictureBox pictureBox1;
+        private CheckBox checkBox12;
+        private Label label16;
+        private Label label5;
     }
 }

@@ -20,7 +20,7 @@ namespace Sol_s_RNG_Biome_Detector
             Servers.Clear();
             Servers.AddRange(Settings.Data.PrivateServers);
 
-            RefreshList(listBox);
+            _ = RefreshList(listBox);
         }
 
         public void Save()
@@ -29,12 +29,30 @@ namespace Sol_s_RNG_Biome_Detector
             Settings.Save();
         }
 
-        public void RefreshList(ListBox listBox)
+        public async Task RefreshList(ListBox listBox)
         {
             listBox.Items.Clear();
 
             for (int i = 0; i < Servers.Count; i++)
-                listBox.Items.Add($"User ID: {Servers[i].UserId} | Private Server configured");
+            {
+                listBox.Items.Add($"User: {await GetUsername(Servers[i].UserId)} | Private Server configured");
+            }
+        }
+
+        public static async Task<string> GetUsername(string userid)
+        {
+            using HttpClient client = new HttpClient();
+
+            string json = await client.GetStringAsync($"https://users.roblox.com/v1/users/{userid}");
+
+            using JsonDocument document = JsonDocument.Parse(json);
+
+            string? username = document.RootElement.GetProperty("name").GetString();
+
+            if (string.IsNullOrWhiteSpace(username))
+                return userid;
+
+            return username;
         }
 
         public bool IsValidUserId(string userId)
@@ -44,7 +62,7 @@ namespace Sol_s_RNG_Biome_Detector
 
         public bool IsValidLink(string link)
         {
-            Uri uri;
+            Uri? uri;
 
             if (!Uri.TryCreate(link, UriKind.Absolute, out uri))
                 return false;
