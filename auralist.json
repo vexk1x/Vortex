@@ -1518,6 +1518,12 @@
         "NativeRarity": 10000
     },
     {
+    	"Name": "Illusionary",
+        "Rarity": 10000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 10000000
+    },
+    {
         "Name": "Glitch",
         "Rarity": 12210110,
         "NativeBiome": "Glitched",
