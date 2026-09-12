@@ -97,6 +97,8 @@
             textBox1 = new TextBox();
             vScrollBar1 = new VScrollBar();
             tabPage6 = new TabPage();
+            label16 = new Label();
+            label5 = new Label();
             pictureBox9 = new PictureBox();
             label4 = new Label();
             label3 = new Label();
@@ -162,6 +164,8 @@
             label24 = new Label();
             textBox5 = new TextBox();
             tabPage10 = new TabPage();
+            button29 = new Button();
+            button28 = new Button();
             listBox2 = new ListBox();
             button24 = new Button();
             button23 = new Button();
@@ -205,8 +209,6 @@
             button5 = new Button();
             button4 = new Button();
             button2 = new Button();
-            label5 = new Label();
-            label16 = new Label();
             tabControl.SuspendLayout();
             tabPage1.SuspendLayout();
             panelContent.SuspendLayout();
@@ -1056,6 +1058,24 @@
             tabPage6.TabIndex = 5;
             tabPage6.Text = "tabPage6";
             // 
+            // label16
+            // 
+            label16.AutoSize = true;
+            label16.Location = new Point(316, 175);
+            label16.Name = "label16";
+            label16.Size = new Size(13, 15);
+            label16.TabIndex = 50;
+            label16.Text = "0";
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Location = new Point(232, 175);
+            label5.Name = "label5";
+            label5.Size = new Size(70, 15);
+            label5.TabIndex = 49;
+            label5.Text = "Incinerator: ";
+            // 
             // pictureBox9
             // 
             pictureBox9.Image = (Image)resources.GetObject("pictureBox9.Image");
@@ -1665,6 +1685,8 @@
             // 
             // tabPage10
             // 
+            tabPage10.Controls.Add(button29);
+            tabPage10.Controls.Add(button28);
             tabPage10.Controls.Add(listBox2);
             tabPage10.Controls.Add(button24);
             tabPage10.Controls.Add(button23);
@@ -1677,6 +1699,26 @@
             tabPage10.Text = "tabPage10";
             tabPage10.UseVisualStyleBackColor = true;
             // 
+            // button29
+            // 
+            button29.Location = new Point(397, 384);
+            button29.Name = "button29";
+            button29.Size = new Size(170, 31);
+            button29.TabIndex = 5;
+            button29.Text = "Enable Account";
+            button29.UseVisualStyleBackColor = true;
+            button29.Click += button29_Click;
+            // 
+            // button28
+            // 
+            button28.Location = new Point(397, 347);
+            button28.Name = "button28";
+            button28.Size = new Size(170, 31);
+            button28.TabIndex = 4;
+            button28.Text = "Disable Account";
+            button28.UseVisualStyleBackColor = true;
+            button28.Click += button28_Click;
+            // 
             // listBox2
             // 
             listBox2.FormattingEnabled = true;
@@ -1687,21 +1729,21 @@
             // 
             // button24
             // 
-            button24.Location = new Point(397, 326);
+            button24.Location = new Point(397, 310);
             button24.Name = "button24";
             button24.Size = new Size(170, 31);
             button24.TabIndex = 2;
-            button24.Text = "Delete Private Server link";
+            button24.Text = "Delete Account";
             button24.UseVisualStyleBackColor = true;
             button24.Click += button24_Click;
             // 
             // button23
             // 
-            button23.Location = new Point(397, 291);
+            button23.Location = new Point(397, 275);
             button23.Name = "button23";
             button23.Size = new Size(170, 29);
             button23.TabIndex = 1;
-            button23.Text = "Edit Private Server link";
+            button23.Text = "Edit Account";
             button23.UseVisualStyleBackColor = true;
             button23.Click += button23_Click;
             // 
@@ -1925,6 +1967,7 @@
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(180, 23);
             textBox8.TabIndex = 24;
+            textBox8.TextChanged += SettingChanged;
             // 
             // checkBox33
             // 
@@ -1961,6 +2004,7 @@
             textBox7.Name = "textBox7";
             textBox7.Size = new Size(172, 23);
             textBox7.TabIndex = 20;
+            textBox7.TextChanged += SettingChanged;
             // 
             // checkBox32
             // 
@@ -2119,24 +2163,6 @@
             button2.Text = "button2";
             button2.UseVisualStyleBackColor = true;
             button2.Click += activebutton;
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(232, 175);
-            label5.Name = "label5";
-            label5.Size = new Size(70, 15);
-            label5.TabIndex = 49;
-            label5.Text = "Incinerator: ";
-            // 
-            // label16
-            // 
-            label16.AutoSize = true;
-            label16.Location = new Point(316, 175);
-            label16.Name = "label16";
-            label16.Size = new Size(13, 15);
-            label16.TabIndex = 50;
-            label16.Text = "0";
             // 
             // Form1
             // 
@@ -2384,5 +2410,7 @@
         private CheckBox checkBox12;
         private Label label16;
         private Label label5;
+        private Button button28;
+        private Button button29;
     }
 }
