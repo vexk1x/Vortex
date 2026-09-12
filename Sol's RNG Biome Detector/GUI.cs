@@ -19,8 +19,6 @@ namespace Sol_s_RNG_Biome_Detector
         private readonly PrivateFontCollection privatefonts = new();
         private IntPtr fontmemory;
 
-        private volatile bool running = false;
-
 
         [DllImport("gdi32.dll")]
         private static extern IntPtr AddFontMemResourceEx
@@ -29,7 +27,6 @@ namespace Sol_s_RNG_Biome_Detector
 
         public void DrawGui(Form form, TabControl tabControl, CheckBox[] biomeCheckboxes, Label[] labels, Panel panelSidebar, Panel panelContent, Button[] sidebarButtons, PictureBox[] tabBoxes, Label[] tabLabels)
         {
-
             LoadFont();
 
             ApplyFont(form);
@@ -111,6 +108,10 @@ namespace Sol_s_RNG_Biome_Detector
                 "#000000",
                 "#bf6c00",
                 "#fffc8f",
+                "#08043f",
+                "#e500ff",
+                "#212121",
+                "#fe0101"
             };
 
             for (int i = 0; i < checkBoxes.Length && i < colors.Length; i++)
@@ -137,7 +138,8 @@ namespace Sol_s_RNG_Biome_Detector
                 "#bf6c00",
                 "#08043f",
                 "#e500ff",
-                "#212121"
+                "#212121",
+                "#fe0101" // inc
             };
 
             for (int i = 0; i < labels.Length && i < colors.Length; i++)

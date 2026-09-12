@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Text;
+using Sol_s_RNG_Biome_Detector;
 
 namespace Sol_s_RNG_Biome_Detector
 {
@@ -23,7 +24,7 @@ namespace Sol_s_RNG_Biome_Detector
 
         private readonly Stopwatch SessionTimer = new Stopwatch();
         public static readonly Stopwatch UntilAFK = new Stopwatch();
-        public const uint AFKDelay = 900000; // 15 mins
+        public const int AFKDelay = 900000; // 15 mins
 
         private int AccountRefreshVersion = 0;
 
@@ -70,11 +71,11 @@ namespace Sol_s_RNG_Biome_Detector
         {
             InitializeComponent();
 
-            this.Size = new Size(739, 492);
+            this.Size = new Size(735, 480);
             FormBorderStyle = FormBorderStyle.None;
             panelContent.MouseDown += titleBar_MouseDown;
 
-           
+
             foreach (TabPage page in tabControl.TabPages)
             {
                 page.MouseDown += titleBar_MouseDown;
@@ -109,7 +110,8 @@ namespace Sol_s_RNG_Biome_Detector
                 checkBox15,
                 CYBERSPACE,
                 DREAMSPACE,
-                GLITCHED
+                GLITCHED,
+                checkBox12 // inc
             ];
 
             SidebarButtons =
@@ -140,7 +142,8 @@ namespace Sol_s_RNG_Biome_Detector
                 label43, // Singularity - Glitched
                 label44,
                 label45,
-                label46
+                label46,
+                label5 // Incinerator
             ];
 
             TabBoxes =
@@ -164,7 +167,7 @@ namespace Sol_s_RNG_Biome_Detector
             ];
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private async void Form1_Load(object sender, EventArgs e)
         {
             Settings.Rename();
 
@@ -173,7 +176,7 @@ namespace Sol_s_RNG_Biome_Detector
             Settings.Load();
             LoadSettings();
             Webhooks.Load(listBox1);
-            PrivateServers.Load(listBox2);
+            await PrivateServers.Load(listBox2);
             LoadStats();
 
             LoadingSettings = false;
@@ -236,12 +239,12 @@ namespace Sol_s_RNG_Biome_Detector
 
         public void FoundNewBiome(string biome, string privateserverlink, string userid)
         {
-           foreach (CheckBox box in BiomeCheckboxes)
+            foreach (CheckBox box in BiomeCheckboxes)
             {
                 if (box.Text.ToUpper() != biome.ToUpper() || !box.Checked)
                     continue;
 
-                if (Webhooks.Webhooks.Count <= 0 && string.IsNullOrEmpty(privateserverlink))
+                if (Webhooks.Webhooks.Count <= 0 || string.IsNullOrEmpty(privateserverlink) || string.IsNullOrEmpty(userid))
                     return;
 
                 int color = GetBiomeStuff(biome.ToUpper(), checkBox22.Checked, checkBox21.Checked, out bool ping);
@@ -267,7 +270,7 @@ namespace Sol_s_RNG_Biome_Detector
                     mention = "@everyone";
                 }
 
-                _ = Webhooks.PostToWebhooks(biome, mention, ping, privateserverlink, color, userid, checkBox31.Checked);
+                _ = Webhooks.PostToWebhooks(biome, mention, ping, privateserverlink, color, GetUsername(userid), checkBox31.Checked);
 
                 PrintLogs("Sent Webhook!");
 
@@ -302,7 +305,7 @@ namespace Sol_s_RNG_Biome_Detector
                 if (Webhooks.Webhooks.Count > 0)
                     await Webhooks.StartStopWebhooks(true, TimeSpan.Zero, SessionBiomes, SessionRare);
 
-                _ = BiomeDetector.Biomes(this, textBox1);
+                _ = Detector.Biomes(this, textBox1);
                 UpdateRunningStatus(true, pictureBox13);
                 return;
             }
@@ -362,7 +365,7 @@ namespace Sol_s_RNG_Biome_Detector
             for (int i = 0; i < count; i++)
             {
                 userIds[i] = PrivateServers.Servers[i].UserId.Trim();
-                accounts[i] = await Webhooks.GetUsername(userIds[i]);
+                accounts[i] = PrivateServers.GetUsername(userIds[i]);
             }
 
             if (version != AccountRefreshVersion)
@@ -372,9 +375,10 @@ namespace Sol_s_RNG_Biome_Detector
 
             for (int i = 0; i < count; i++)
             {
-                string biome = BiomeDetector.LastBiomebyUser(userIds[i]);
+                string biome = Detector.CurrentBiomeByUserA(userIds[i]);
 
-                output.AppendLine($"{accounts[i]}: {biome}");
+                string enabled = PrivateServers.Servers[i].Enabled ? "" : "(Disabled)";
+                output.AppendLine($"{accounts[i]}: {biome} {enabled}");
             }
 
             if (version != AccountRefreshVersion)
@@ -455,7 +459,7 @@ namespace Sol_s_RNG_Biome_Detector
             label50.Text = Settings.Data.TotalGlitched.ToString();
 
             label78.Text = Settings.Data.TotalBlazingSun.ToString(); // Blazing Sun -> Incinerator
-            label16.Text = Settings.Data.TotalIncinerator.ToString(); 
+            label16.Text = Settings.Data.TotalIncinerator.ToString();
 
             label3.Text = SessionGlobals.ToString();
             label4.Text = TotalGlobals.ToString();
@@ -598,7 +602,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalIncinerator++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xff0000;
+                        return 0xfe0101;
                     }
 
                 default:
@@ -692,7 +696,6 @@ namespace Sol_s_RNG_Biome_Detector
 
             TotalGlobals = Settings.Data.TotalGlobalsRolled;
             label4.Text = Settings.Data.TotalGlobalsRolled.ToString();
-
         }
 
         private string FormatSessionTime(TimeSpan time)
@@ -816,11 +819,6 @@ namespace Sol_s_RNG_Biome_Detector
             tabControl.SelectedTab = tabPage9;
         }
 
-        private void button17_Click(object sender, EventArgs e)
-        {
-            _ = PrivateServers.RefreshList(listBox2);
-            tabControl.SelectedTab = tabPage10;
-        }
 
         private void button18_Click(object sender, EventArgs e)
         {
@@ -847,7 +845,7 @@ namespace Sol_s_RNG_Biome_Detector
             tabControl.SelectedTab = tabPage9;
         }
 
-        private void button19_Click(object sender, EventArgs e)
+        private async void button19_Click(object sender, EventArgs e)
         {
             string link = textBox5.Text.Trim();
             string userId = textBox6.Text.Trim();
@@ -882,7 +880,7 @@ namespace Sol_s_RNG_Biome_Detector
                 PrivateServers.EditingIndex = -1;
             }
 
-            _ = PrivateServers.RefreshList(listBox2);
+            await PrivateServers.RefreshList(listBox2);
 
             textBox5.Clear();
             textBox6.Clear();
@@ -914,7 +912,7 @@ namespace Sol_s_RNG_Biome_Detector
             _ = UpdateAccountTextBox();
         }
 
-        private void button24_Click(object sender, EventArgs e)
+        private async void button24_Click(object sender, EventArgs e)
         {
             if (listBox2.SelectedIndex == -1)
             {
@@ -931,7 +929,7 @@ namespace Sol_s_RNG_Biome_Detector
                 return;
 
             PrivateServers.Remove(listBox2.SelectedIndex);
-            _ = PrivateServers.RefreshList(listBox2);
+            await PrivateServers.RefreshList(listBox2);
 
             _ = UpdateAccountTextBox();
         }
@@ -1057,9 +1055,6 @@ namespace Sol_s_RNG_Biome_Detector
 
         private async void checkBox29_CheckedChanged(object sender, EventArgs e)
         {
-            if (!checkBox29.Checked)
-                return;
-
             while (checkBox29.Checked)
             {
                 if (Start_Stop && UntilAFK.ElapsedMilliseconds > AFKDelay)
@@ -1067,8 +1062,8 @@ namespace Sol_s_RNG_Biome_Detector
                     if (!checkBox29.Checked || !Start_Stop)
                         continue;
 
-                    AntiAFK.SendActivity();
                     UntilAFK.Restart();
+                    AntiAFK.SendActivity();
                 }
                 else
                 {
@@ -1148,7 +1143,7 @@ namespace Sol_s_RNG_Biome_Detector
             string stat = result.Rarity.ToString();
             bool native = result.bIsNative;
 
-            await Webhooks.PostAuraToWebhooks(aura, userid, checkBox31.Checked, true, $"<@{textBox8.Text}>", stat, native, biome);
+            await Webhooks.PostAuraToWebhooks(aura, GetUsername(userid), checkBox31.Checked, true, $"<@{textBox8.Text}>", stat, native, biome);
 
             PrintLogs($"Sent Aura Webhook: {aura}");
 
@@ -1203,9 +1198,11 @@ namespace Sol_s_RNG_Biome_Detector
             tabControl.SelectedTab = tabPage8;
         }
 
-        private void button17_Click_1(object sender, EventArgs e) // view a
+        private async void button17_Click_1(object sender, EventArgs e) // view a
         {
             tabControl.SelectedTab = tabPage10;
+            await PrivateServers.RefreshList(listBox2);
+            await UpdateAccountTextBox();
         }
 
         private void button9_Click_2(object sender, EventArgs e)
@@ -1219,6 +1216,70 @@ namespace Sol_s_RNG_Biome_Detector
         {
             Webhooks.RefreshList(listBox1);
             tabControl.SelectedTab = tabPage8;
+        }
+
+        public string GetUsername(string userId)
+        {
+            return PrivateServers.GetUsername(userId);
+        }
+
+        public bool AccEnabled(string userId)
+        {
+            int i = PrivateServers.FindUser(userId);
+
+            return i != -1 && PrivateServers.Get(i).Enabled;
+        }
+
+        private async void button28_Click(object sender, EventArgs e) // disable account 
+        {
+            if (listBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select an account first", "Vortex", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            PrivateServer.Entry entry = PrivateServers.Get(listBox2.SelectedIndex);
+
+            if (!entry.Enabled)
+            {
+                MessageBox.Show("Cannot disable an disabled Account!", "Vortex", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            entry.Enabled = false;
+
+            string status = entry.Enabled ? "" : "(Disabled)";
+
+            listBox2.Items[listBox2.SelectedIndex] = $"User: {entry.Username} {status} | Private Server configured";
+
+            PrivateServers.Save();
+
+            await UpdateAccountTextBox();
+        }
+
+        private async void button29_Click(object sender, EventArgs e) // enable account
+        {
+            if (listBox2.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select an account first", "Vortex", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            PrivateServer.Entry entry = PrivateServers.Get(listBox2.SelectedIndex);
+
+            if (entry.Enabled)
+            {
+                MessageBox.Show("Cannot enable an enabled Account!", "Vortex", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            entry.Enabled = true;
+
+            listBox2.Items[listBox2.SelectedIndex] = $"User: {entry.Username} | Private Server configured";
+
+            PrivateServers.Save();
+
+            await UpdateAccountTextBox();
         }
     }
 }

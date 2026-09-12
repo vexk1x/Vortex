@@ -9,18 +9,20 @@ namespace Sol_s_RNG_Biome_Detector
         {
             public string UserId { get; set; } = "";
             public string Link { get; set; } = "";
+            public string Username { get; set; } = "";
+            public bool Enabled { get; set; } = true;
         }
 
         public List<Entry> Servers = new List<Entry>();
 
         public int EditingIndex = -1;
 
-        public void Load(ListBox listBox)
+        public async Task Load(ListBox listBox)
         {
             Servers.Clear();
             Servers.AddRange(Settings.Data.PrivateServers);
 
-            _ = RefreshList(listBox);
+            await RefreshList(listBox);
         }
 
         public void Save()
@@ -35,24 +37,12 @@ namespace Sol_s_RNG_Biome_Detector
 
             for (int i = 0; i < Servers.Count; i++)
             {
-                listBox.Items.Add($"User: {await GetUsername(Servers[i].UserId)} | Private Server configured");
+                Servers[i].Username = await RobloxAPI.GetUsername(Servers[i].UserId);
+
+                string status = Servers[i].Enabled ? "" : "(Disabled)";
+
+                listBox.Items.Add($"User: {Servers[i].Username}{status} | Private Server configured");
             }
-        }
-
-        public static async Task<string> GetUsername(string userid)
-        {
-            using HttpClient client = new HttpClient();
-
-            string json = await client.GetStringAsync($"https://users.roblox.com/v1/users/{userid}");
-
-            using JsonDocument document = JsonDocument.Parse(json);
-
-            string? username = document.RootElement.GetProperty("name").GetString();
-
-            if (string.IsNullOrWhiteSpace(username))
-                return userid;
-
-            return username;
         }
 
         public bool IsValidUserId(string userId)
@@ -94,6 +84,9 @@ namespace Sol_s_RNG_Biome_Detector
 
         public void Update(int index, string userId, string link)
         {
+            if (Servers[index].UserId != userId)
+                Servers[index].Username = "";
+
             Servers[index].UserId = userId;
             Servers[index].Link = link;
 
@@ -121,6 +114,22 @@ namespace Sol_s_RNG_Biome_Detector
             }
 
             return "";
+        }
+
+        public string GetUsername(string userid)
+        {
+            foreach (Entry entry in Servers)
+            {
+                if (entry.UserId != userid)
+                    continue;
+
+                if (!string.IsNullOrWhiteSpace(entry.Username))
+                    return entry.Username;
+
+                return userid;
+            }
+
+            return userid;
         }
     }
 }

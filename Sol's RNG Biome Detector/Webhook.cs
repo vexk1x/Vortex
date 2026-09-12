@@ -176,20 +176,16 @@ namespace Sol_s_RNG_Biome_Detector
 
         }
 
-        public async Task PostToWebhooks(string Biome, string whatping, bool ping, string pslink, int color, string userid, bool includeuser)
+        public async Task PostToWebhooks(string biome, string whatping, bool ping, string pslink, int color, string username, bool includeuser)
         {
             List<Task> tasks = new List<Task>();
-            string username = "";
-            string tempuser = "";
+            string found_by = "";
 
-            if (includeuser)
-            {
-                tempuser = await GetUsername(userid);
-                username = $"`Found by: {tempuser}`";
-            }
+            if (includeuser && !string.IsNullOrWhiteSpace(username))
+                found_by = $"`Found by: {username}`";
 
             foreach (string webhook in Webhooks)
-                tasks.Add(PostToWebhook(webhook, Biome, whatping, ping, pslink, color, username));
+                tasks.Add(PostToWebhook(webhook, biome, whatping, ping, pslink, color, found_by));
 
             await Task.WhenAll(tasks);
         }
@@ -238,20 +234,6 @@ namespace Sol_s_RNG_Biome_Detector
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task<string> GetUsername(string userid)
-        {
-            string json = await client.GetStringAsync($"https://users.roblox.com/v1/users/{userid}");
-
-            using JsonDocument document = JsonDocument.Parse(json);
-
-            string? username = document.RootElement.GetProperty("name").GetString();
-
-            if (string.IsNullOrWhiteSpace(username))
-                return userid;
-
-            return username;
-        }
-
         public async Task PostAuraToWebhook(string webhook, string aura, string rolledby, bool ping, string DiscordUserId, string rarity, bool native, string frombiome)
         {
 
@@ -285,23 +267,19 @@ namespace Sol_s_RNG_Biome_Detector
             response.EnsureSuccessStatusCode();
         }
 
-        public async Task PostAuraToWebhooks(string aura, string userid, bool includeuser, bool ping, string DiscordUserId, string rarity, bool native, string frombiome)
+        public async Task PostAuraToWebhooks(string aura, string username, bool includeuser, bool ping, string userid, string rarity, bool native, string frombiome)
         {
             List<Task> tasks = new List<Task>();
-            string username = "";
-            string rolledby = "";
+            string rolled_by = "";
 
-            if (includeuser)
-                username = await GetUsername(userid);
-
-            if (!string.IsNullOrWhiteSpace(username))
-                rolledby = $"`Rolled by {username}`";
+            if (includeuser && !string.IsNullOrWhiteSpace(username))
+                rolled_by = $"`Rolled by {username}`";
 
             if (!string.IsNullOrWhiteSpace(rarity))
                 rarity = Int64.Parse(rarity).ToString("N0", CultureInfo.InvariantCulture);
 
             foreach (string webhook in Webhooks)
-                tasks.Add(PostAuraToWebhook(webhook, aura, rolledby, ping, DiscordUserId, rarity, native, frombiome));
+                tasks.Add(PostAuraToWebhook(webhook, aura, rolled_by, ping, userid, rarity, native, frombiome));
 
             await Task.WhenAll(tasks);
         }
