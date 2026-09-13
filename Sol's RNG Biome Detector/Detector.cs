@@ -387,6 +387,7 @@ class Detector
 
     public static string CurrentBiomeByUserA(string userId)
     {
+
         if (!clients.TryGetValue(userId, out RobloxClient? client))
             return "Inactive";
 

@@ -12,27 +12,6 @@ namespace Sol_s_RNG_Biome_Detector
         private static readonly string folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vortex");
         private static readonly string file = Path.Combine(folder, "settings.json");
 
-        private static readonly string oldfolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Bloom");
-        private static readonly string oldfile = Path.Combine(oldfolder, "settings.json");
-
-
-        public static void Rename()
-        {
-            try
-            {
-                if (!Directory.Exists(folder) && Directory.Exists(oldfolder))
-                {
-                    Directory.Move(oldfolder, folder);
-                }
-                if (!File.Exists(file) && File.Exists(oldfile))
-                {
-                    File.Move(oldfile, file);
-                }
-            }
-            catch
-            {
-            }
-        }
 
         public static void Save()
         {
