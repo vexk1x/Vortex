@@ -9,6 +9,8 @@ namespace Sol_s_RNG_Biome_Detector
 {
     public partial class Form1 : Form
     {
+        private const string Version = "1.0.4";
+
         private static int TotalRare = 0;
         private static int TotalBiomes = 0;
 
@@ -71,15 +73,8 @@ namespace Sol_s_RNG_Biome_Detector
         {
             InitializeComponent();
 
-            this.Size = new Size(735, 480);
+            this.Size = new Size(735, 500);
             FormBorderStyle = FormBorderStyle.None;
-            panelContent.MouseDown += titleBar_MouseDown;
-
-
-            foreach (TabPage page in tabControl.TabPages)
-            {
-                page.MouseDown += titleBar_MouseDown;
-            }
 
             CheckBox CYBERSPACE = new CheckBox();
             CYBERSPACE.Checked = true;
@@ -165,11 +160,27 @@ namespace Sol_s_RNG_Biome_Detector
                 label42,
                 label99,
             ];
+
+            Gui.DrawGui(this, tabControl, BiomeCheckboxes, BiomeStats, panelSidebar, panelContent, SidebarButtons, TabBoxes, TabLabels);
         }
 
         private async void Form1_Load(object sender, EventArgs e)
         {
-            Settings.Rename();
+            panelContent.MouseDown += titleBar_MouseDown;
+
+
+            foreach (TabPage page in tabControl.TabPages)
+            {
+                page.MouseDown += titleBar_MouseDown;
+            }
+
+            await CheckForUpdates();
+
+            UpdateRunningStatus(false, pictureBox13);
+
+            RegisterHotKey(Handle, HOTKEY_F1, 0, (uint)Keys.F1);
+            RegisterHotKey(Handle, HOTKEY_F2, 0, (uint)Keys.F2);
+            RegisterHotKey(Handle, HOTKEY_F3, 0, (uint)Keys.F3);
 
             LoadingSettings = true;
 
@@ -196,14 +207,6 @@ namespace Sol_s_RNG_Biome_Detector
             textBox9.WordWrap = false;
             textBox9.ScrollBars = ScrollBars.Vertical;
 
-            Gui.DrawGui(this, tabControl, BiomeCheckboxes, BiomeStats, panelSidebar, panelContent, SidebarButtons, TabBoxes, TabLabels);
-
-            RegisterHotKey(Handle, HOTKEY_F1, 0, (uint)Keys.F1);
-            RegisterHotKey(Handle, HOTKEY_F2, 0, (uint)Keys.F2);
-            RegisterHotKey(Handle, HOTKEY_F3, 0, (uint)Keys.F3);
-
-            UpdateRunningStatus(false, pictureBox13);
-
             label17.ForeColor = ColorTranslator.FromHtml("#0e00ff");
             label19.ForeColor = ColorTranslator.FromHtml("#ff00bd");
             label20.ForeColor = ColorTranslator.FromHtml("#2a2a2a");
@@ -219,6 +222,8 @@ namespace Sol_s_RNG_Biome_Detector
             _ = MatchAura.initAuras();
 
             _ = UpdateAccountTextBox();
+
+            label18.Text = $"Ver: {Version} (V)";
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -230,12 +235,83 @@ namespace Sol_s_RNG_Biome_Detector
             base.OnFormClosing(e);
         }
 
+        private async Task CheckForUpdates()
+        {
+            panelSidebar.Hide();
+
+            Panel updatepanel = new Panel();
+            updatepanel.Dock = DockStyle.Fill;
+            updatepanel.BackColor = Color.FromArgb(17, 18, 24);
+            
+            this.Controls.Add(updatepanel);
+            updatepanel.BringToFront();
+
+            updatepanel.MouseDown += titleBar_MouseDown;
+
+            Label updatelabel = new Label();
+            updatelabel.Location = new Point(updatepanel.Width / 2 - 50, updatepanel.Height / 2);
+            updatepanel.Controls.Add(updatelabel);
+            updatelabel.BringToFront();
+            updatelabel.Visible = true;
+            updatelabel.TabIndex = 0;
+            updatelabel.AutoSize = true;
+
+            updatelabel.Text = "Checking for updates";
+
+            UpdateSelf update = new UpdateSelf();
+
+            var result = await update.CheckForUpdates(Version);
+
+            if (!result.updateavailable)
+            {
+                updatelabel.Text = "No update found!";
+                await Task.Delay(3000);
+                await Revert(updatelabel, updatepanel);
+                
+                return;
+            }
+
+            updatelabel.Text = $"Found update! {Version} -> {result.latestversion}, Deleting old Versions...";
+
+            await update.WipeOldDownloads();
+
+            updatelabel.Text = $"Deleted old versions, Downloading latest now. Please have patience.";
+
+            var success = await update.DownloadUpdate(result.latesturl, result.sha);
+
+            if (!success.success)
+            {
+                updatelabel.Text = "Failed to download the update, please update manually.";
+                await Task.Delay(3000);
+                await Revert(updatelabel, updatepanel);
+
+                return;
+            }
+
+            updatelabel.Text = "Downloaded update, Will run soon.";
+            await Task.Delay(2000);
+
+            await update.RunUpdate(success.path);
+
+            await Revert(updatelabel, updatepanel);
+
+            Environment.Exit(0);
+        }
+
+        private async Task Revert(Label disposel, Panel disposep)
+        {
+            disposel.Dispose();
+            disposep.Dispose();
+            panelSidebar.Show();
+        }
+
         public void PrintLogs(string log)
         {
             textBox1.AppendText($"[{DateTime.Now:HH:mm:ss}] {log}{Environment.NewLine}");
             textBox1.SelectionStart = textBox1.Text.Length;
             textBox1.ScrollToCaret();
         }
+
 
         public void FoundNewBiome(string biome, string privateserverlink, string userid)
         {
@@ -247,7 +323,7 @@ namespace Sol_s_RNG_Biome_Detector
                 if (Webhooks.Webhooks.Count <= 0 || string.IsNullOrEmpty(privateserverlink) || string.IsNullOrEmpty(userid))
                     return;
 
-                int color = GetBiomeStuff(biome.ToUpper(), checkBox22.Checked, checkBox21.Checked, out bool ping);
+                var result = HandleBiomeStuff(biome.ToUpper(), checkBox22.Checked, checkBox21.Checked);
 
                 string mention = "";
 
@@ -270,7 +346,7 @@ namespace Sol_s_RNG_Biome_Detector
                     mention = "@everyone";
                 }
 
-                _ = Webhooks.PostToWebhooks(biome, mention, ping, privateserverlink, color, GetUsername(userid), checkBox31.Checked);
+                _ = Webhooks.PostToWebhooks(biome, mention, result.ping, privateserverlink, result.colorcode, GetUsername(userid), checkBox31.Checked);
 
                 PrintLogs("Sent Webhook!");
 
@@ -377,8 +453,10 @@ namespace Sol_s_RNG_Biome_Detector
             {
                 string biome = Detector.CurrentBiomeByUserA(userIds[i]);
 
+                
                 string enabled = PrivateServers.Servers[i].Enabled ? "" : "(Disabled)";
                 output.AppendLine($"{accounts[i]}: {biome} {enabled}");
+                
             }
 
             if (version != AccountRefreshVersion)
@@ -465,9 +543,9 @@ namespace Sol_s_RNG_Biome_Detector
             label4.Text = TotalGlobals.ToString();
         }
 
-        private int GetBiomeStuff(string Biome, bool onlyrareping, bool treatsingasrare, out bool ping)
+        private (int colorcode, bool ping) HandleBiomeStuff(string Biome, bool onlyrareping, bool treatsingasrare)
         {
-            ping = onlyrareping ? false : true;
+            bool ping = onlyrareping ? false : true;
 
             switch (Biome)
             {
@@ -476,7 +554,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalNormal++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x4e4e4e;
+                        return (0x4e4e4e, ping);
                     }
 
                 case "WINDY":
@@ -484,7 +562,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalWindy++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xc2f2ff;
+                        return (0xc2f2ff, ping);
                     }
 
                 case "SNOWY":
@@ -492,7 +570,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalSnowy++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xb6cbd1;
+                        return (0xb6cbd1, ping);
                     }
 
                 case "RAINY":
@@ -500,7 +578,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalRainy++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x0000ff;
+                        return (0x0000ff, ping);
                     }
 
                 case "SAND STORM":
@@ -508,7 +586,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalSandStorm++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xffbb00;
+                        return (0xffbb00, ping);
                     }
 
                 case "HELL":
@@ -516,7 +594,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalHell++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x770a0a;
+                        return (0x770a0a, ping);
                     }
 
                 case "STARFALL":
@@ -524,7 +602,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalStarfall++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x3b3abc;
+                        return (0x3b3abc, ping);
                     }
 
                 case "HEAVEN":
@@ -532,7 +610,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalHeaven++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xf4fb01;
+                        return (0xf4fb01, ping);
                     }
 
                 case "CORRUPTION":
@@ -540,7 +618,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalCorruption++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x310387;
+                        return (0x310387, ping);
                     }
 
                 case "NULL":
@@ -548,7 +626,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalNull++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0x000000;
+                        return (0x000000, ping);
                     }
 
                 case "SINGULARITY":
@@ -560,7 +638,7 @@ namespace Sol_s_RNG_Biome_Detector
                         if (treatsingasrare)
                             ping = true;
 
-                        return 0xbf6c00;
+                        return (0xbf6c00, ping);
                     }
 
                 case "CYBERSPACE":
@@ -569,7 +647,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Save();
                         UpdateStats(true);
                         ping = true;
-                        return 0x08043f;
+                        return (0x08043f, ping);
                     }
 
                 case "DREAMSPACE":
@@ -578,7 +656,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Save();
                         UpdateStats(true);
                         ping = true;
-                        return 0xe500ff;
+                        return (0xe500ff, ping);
                     }
 
                 case "GLITCHED":
@@ -587,7 +665,7 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Save();
                         UpdateStats(true);
                         ping = true;
-                        return 0x212121;
+                        return (0x212121, ping);
                     }
 
                 case "BLAZING SUN":
@@ -595,18 +673,18 @@ namespace Sol_s_RNG_Biome_Detector
                         Settings.Data.TotalBlazingSun++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xfaff00;
+                        return (0xfaff00, ping);
                     }
                 case "INCINERATOR":
                     {
                         Settings.Data.TotalIncinerator++;
                         Settings.Save();
                         UpdateStats(false);
-                        return 0xfe0101;
+                        return (0xfe0101, ping);
                     }
 
                 default:
-                    return 0xFFFFFF;
+                    return (0xFFFFFF, false);
             }
         }
 
@@ -1143,7 +1221,7 @@ namespace Sol_s_RNG_Biome_Detector
             string stat = result.Rarity.ToString();
             bool native = result.bIsNative;
 
-            await Webhooks.PostAuraToWebhooks(aura, GetUsername(userid), checkBox31.Checked, true, $"<@{textBox8.Text}>", stat, native, biome);
+            await Webhooks.PostAuraToWebhooks(aura, GetUsername(userid), checkBox31.Checked, checkBox33.Checked, $"<@{textBox8.Text}>", stat, native, biome);
 
             PrintLogs($"Sent Aura Webhook: {aura}");
 

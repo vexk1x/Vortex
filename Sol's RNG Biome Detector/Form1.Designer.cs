@@ -1088,7 +1088,7 @@
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(508, 349);
+            label4.Location = new Point(508, 334);
             label4.Name = "label4";
             label4.Size = new Size(13, 15);
             label4.TabIndex = 47;
@@ -1097,7 +1097,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(508, 334);
+            label3.Location = new Point(508, 311);
             label3.Name = "label3";
             label3.Size = new Size(13, 15);
             label3.TabIndex = 46;
@@ -1106,7 +1106,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(339, 349);
+            label2.Location = new Point(339, 334);
             label2.Name = "label2";
             label2.Size = new Size(117, 15);
             label2.TabIndex = 45;
@@ -1115,7 +1115,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(339, 334);
+            label1.Location = new Point(339, 311);
             label1.Name = "label1";
             label1.Size = new Size(152, 15);
             label1.TabIndex = 44;
@@ -1395,7 +1395,7 @@
             // 
             label15.AutoSize = true;
             label15.ForeColor = Color.Black;
-            label15.Location = new Point(232, 378);
+            label15.Location = new Point(232, 375);
             label15.Name = "label15";
             label15.Size = new Size(13, 15);
             label15.TabIndex = 7;
@@ -1415,7 +1415,7 @@
             // 
             label13.AutoSize = true;
             label13.ForeColor = SystemColors.ActiveCaptionText;
-            label13.Location = new Point(29, 382);
+            label13.Location = new Point(29, 375);
             label13.Name = "label13";
             label13.Size = new Size(148, 15);
             label13.TabIndex = 5;
@@ -1435,7 +1435,7 @@
             // 
             label11.AutoSize = true;
             label11.ForeColor = Color.Black;
-            label11.Location = new Point(508, 382);
+            label11.Location = new Point(508, 375);
             label11.Name = "label11";
             label11.Size = new Size(13, 15);
             label11.TabIndex = 3;
@@ -1445,7 +1445,7 @@
             // 
             label10.AutoSize = true;
             label10.ForeColor = SystemColors.ActiveCaptionText;
-            label10.Location = new Point(339, 382);
+            label10.Location = new Point(339, 375);
             label10.Name = "label10";
             label10.Size = new Size(113, 15);
             label10.TabIndex = 2;
