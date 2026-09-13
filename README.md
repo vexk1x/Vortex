@@ -7,7 +7,7 @@ Vortex is a free and open-source project for the Roblox game Sol's RNG. It has f
 Either download the latest version from [here](https://github.com/vexk1x/Vortex/releases)
 or 
 
-clone/download the source code and run
+clone/download the repository, cd into the folder that has the solution file and run:
 ```C#
 dotnet publish "Sol's RNG Biome Detector\Sol's RNG Biome Detector.csproj" -c Release -r win-x64 --self-contained false -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
