@@ -16,7 +16,7 @@ dotnet publish "Sol's RNG Biome Detector\Sol's RNG Biome Detector.csproj" -c Rel
 
 # Is it safe to use?
 
-Yes, Vortex is safe to use. It's not a virus. If you don't trust the releases, then read 'How to Download' on how to build it yourself.
+Yes, Vortex is safe to use. It's not malware. If you don't trust the releases, then read 'How to Download' on how to build it yourself.
 
 # I found a bug and want to report it
 
