@@ -1,0 +1,1586 @@
+[
+    {
+        "Name": "Nothing",
+        "Rarity": 1,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 1
+    },
+    {
+        "Name": "Common",
+        "Rarity": 2,
+        "NativeBiome": "",
+        "NativeRarity": 2
+    },
+    {
+        "Name": "Uncommon",
+        "Rarity": 4,
+        "NativeBiome": "",
+        "NativeRarity": 4
+    },
+    {
+        "Name": "Good",
+        "Rarity": 5,
+        "NativeBiome": "",
+        "NativeRarity": 5
+    },
+    {
+        "Name": "Natural",
+        "Rarity": 8,
+        "NativeBiome": "",
+        "NativeRarity": 8
+    },
+    {
+        "Name": "Rare",
+        "Rarity": 16,
+        "NativeBiome": "",
+        "NativeRarity": 16
+    },
+    {
+        "Name": "Divinus",
+        "Rarity": 32,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 6
+    },
+    {
+        "Name": "Crystallized",
+        "Rarity": 64,
+        "NativeBiome": "",
+        "NativeRarity": 64
+    },
+    {
+        "Name": "Dizzy",
+        "Rarity": 123,
+        "NativeBiome": "",
+        "NativeRarity": 123
+    },
+    {
+        "Name": "Rage",
+        "Rarity": 128,
+        "NativeBiome": "",
+        "NativeRarity": 128
+    },
+    {
+        "Name": "Topaz",
+        "Rarity": 150,
+        "NativeBiome": "",
+        "NativeRarity": 150
+    },
+    {
+        "Name": "Ruby",
+        "Rarity": 350,
+        "NativeBiome": "",
+        "NativeRarity": 350
+    },
+    {
+        "Name": "Forbidden",
+        "Rarity": 403,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 202
+    },
+    {
+        "Name": "Emerald",
+        "Rarity": 500,
+        "NativeBiome": "",
+        "NativeRarity": 500
+    },
+    {
+        "Name": "Gilded",
+        "Rarity": 512,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 128
+    },
+    {
+        "Name": "Ink",
+        "Rarity": 700,
+        "NativeBiome": "",
+        "NativeRarity": 700
+    },
+    {
+        "Name": "Jackpot",
+        "Rarity": 777,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 194
+    },
+    {
+        "Name": "Sapphire",
+        "Rarity": 800,
+        "NativeBiome": "",
+        "NativeRarity": 800
+    },
+    {
+        "Name": "Aquamarine",
+        "Rarity": 900,
+        "NativeBiome": "",
+        "NativeRarity": 900
+    },
+    {
+        "Name": "Wind",
+        "Rarity": 900,
+        "NativeBiome": "Windy",
+        "NativeRarity": 300
+    },
+    {
+        "Name": "Diaboli",
+        "Rarity": 1004,
+        "NativeBiome": "",
+        "NativeRarity": 1004
+    },
+    {
+        "Name": "Penumbra",
+        "Rarity": 1010,
+        "NativeBiome": "",
+        "NativeRarity": 1010
+    },
+    {
+        "Name": "Umbra",
+        "Rarity": 1010,
+        "NativeBiome": "",
+        "NativeRarity": 1010
+    },
+    {
+        "Name": "Precious",
+        "Rarity": 1024,
+        "NativeBiome": "",
+        "NativeRarity": 1024
+    },
+    {
+        "Name": "Hydrogen",
+        "Rarity": 1111,
+        "NativeBiome": "",
+        "NativeRarity": 1111
+    },
+    {
+        "Name": "Atomic",
+        "Rarity": 1180,
+        "NativeBiome": "",
+        "NativeRarity": 1180
+    },
+    {
+        "Name": "Glock",
+        "Rarity": 1700,
+        "NativeBiome": "",
+        "NativeRarity": 1700
+    },
+    {
+        "Name": "Magnetic",
+        "Rarity": 2048,
+        "NativeBiome": "",
+        "NativeRarity": 2048
+    },
+    {
+        "Name": "Ash",
+        "Rarity": 2300,
+        "NativeBiome": "",
+        "NativeRarity": 2300
+    },
+    {
+        "Name": "Glacier",
+        "Rarity": 2304,
+        "NativeBiome": "Snowy",
+        "NativeRarity": 768
+    },
+    {
+        "Name": "Player",
+        "Rarity": 3000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 1500
+    },
+    {
+        "Name": "Flora",
+        "Rarity": 3700,
+        "NativeBiome": "",
+        "NativeRarity": 3700
+    },
+    {
+        "Name": "Cola",
+        "Rarity": 3999,
+        "NativeBiome": "",
+        "NativeRarity": 3999
+    },
+    {
+        "Name": "Sidereum",
+        "Rarity": 4096,
+        "NativeBiome": "",
+        "NativeRarity": 4096
+    },
+    {
+        "Name": "Bleeding",
+        "Rarity": 4444,
+        "NativeBiome": "",
+        "NativeRarity": 4444
+    },
+    {
+        "Name": "Flutter",
+        "Rarity": 5000,
+        "NativeBiome": "",
+        "NativeRarity": 5000
+    },
+    {
+        "Name": "Targeted",
+        "Rarity": 5000,
+        "NativeBiome": "",
+        "NativeRarity": 5000
+    },
+    {
+        "Name": "Flushed",
+        "Rarity": 6900,
+        "NativeBiome": "",
+        "NativeRarity": 6900
+    },
+    {
+        "Name": "Hazard",
+        "Rarity": 7000,
+        "NativeBiome": "",
+        "NativeRarity": 1400
+    },
+    {
+        "Name": "Doodle",
+        "Rarity": 7500,
+        "NativeBiome": "",
+        "NativeRarity": 7500
+    },
+    {
+        "Name": "Quartz",
+        "Rarity": 8192,
+        "NativeBiome": "",
+        "NativeRarity": 8192
+    },
+    {
+        "Name": "Honey",
+        "Rarity": 8335,
+        "NativeBiome": "",
+        "NativeRarity": 8335
+    },
+    {
+        "Name": "Lost Soul",
+        "Rarity": 9200,
+        "NativeBiome": "",
+        "NativeRarity": 9200
+    },
+    {
+        "Name": "Atomic_Ribonucleic",
+        "Rarity": 4,
+        "NativeBiome": "",
+        "NativeRarity": 4
+    },
+    {
+        "Name": "Lucidity",
+        "Rarity": 100,
+        "NativeBiome": "Dreamspace",
+        "NativeRarity": 100
+    },
+    {
+        "Name": "Undead",
+        "Rarity": 12000,
+        "NativeBiome": "Hell",
+        "NativeRarity": 2000
+    },
+    {
+        "Name": "Corrosive",
+        "Rarity": 12000,
+        "NativeBiome": "",
+        "NativeRarity": 2400
+    },
+    {
+        "Name": "Kawaii",
+        "Rarity": 12300,
+        "NativeBiome": "",
+        "NativeRarity": 12300
+    },
+    {
+        "Name": "Rage_Heated",
+        "Rarity": 12800,
+        "NativeBiome": "",
+        "NativeRarity": 12800
+    },
+    {
+        "Name": "Leak",
+        "Rarity": 14000,
+        "NativeBiome": "",
+        "NativeRarity": 14000
+    },
+    {
+        "Name": "Powered",
+        "Rarity": 16384,
+        "NativeBiome": "",
+        "NativeRarity": 16384
+    },
+    {
+        "Name": "Crowned",
+        "Rarity": 20000,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 5000
+    },
+    {
+        "Name": "Marsh",
+        "Rarity": 25000,
+        "NativeBiome": "",
+        "NativeRarity": 25000
+    },
+    {
+        "Name": "Copper",
+        "Rarity": 29000,
+        "NativeBiome": "",
+        "NativeRarity": 29000
+    },
+    {
+        "Name": "Watt",
+        "Rarity": 32768,
+        "NativeBiome": "",
+        "NativeRarity": 32768
+    },
+    {
+        "Name": "Aquatic",
+        "Rarity": 40000,
+        "NativeBiome": "",
+        "NativeRarity": 40000
+    },
+    {
+        "Name": "Solar",
+        "Rarity": 50000,
+        "NativeBiome": "",
+        "NativeRarity": 50000
+    },
+    {
+        "Name": "Lunar",
+        "Rarity": 50000,
+        "NativeBiome": "",
+        "NativeRarity": 50000
+    },
+    {
+        "Name": "Starlight",
+        "Rarity": 50000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 10000
+    },
+    {
+        "Name": "Star Rider",
+        "Rarity": 50000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 10000
+    },
+    {
+        "Name": "Pleiades",
+        "Rarity": 65358,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 65358
+    },
+    {
+        "Name": "Flushed_Lobotomy",
+        "Rarity": 69000,
+        "NativeBiome": "",
+        "NativeRarity": 69000
+    },
+    {
+        "Name": "Hazard_Rays",
+        "Rarity": 70000,
+        "NativeBiome": "Corruption",
+        "NativeRarity": 14000
+    },
+    {
+        "Name": "Nautilus",
+        "Rarity": 70000,
+        "NativeBiome": "",
+        "NativeRarity": 70000
+    },
+    {
+        "Name": "Permafrost",
+        "Rarity": 73500,
+        "NativeBiome": "Snowy",
+        "NativeRarity": 24500
+    },
+    {
+        "Name": "Pulsar",
+        "Rarity": 83345,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 83345
+    },
+    {
+        "Name": "Constella",
+        "Rarity": 86988,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 86988
+    },
+    {
+        "Name": "Flow",
+        "Rarity": 87000,
+        "NativeBiome": "Windy",
+        "NativeRarity": 29000
+    },
+    {
+        "Name": "Stormal",
+        "Rarity": 90000,
+        "NativeBiome": "Windy",
+        "NativeRarity": 30000
+    },
+    {
+        "Name": "Arcadia",
+        "Rarity": 1000,
+        "NativeBiome": "Dreamspace",
+        "NativeRarity": 1000
+    },
+    {
+        "Name": "Fault",
+        "Rarity": 3000,
+        "NativeBiome": "Glitched",
+        "NativeRarity": 3000
+    },
+    {
+        "Name": "Exotic",
+        "Rarity": 99999,
+        "NativeBiome": "",
+        "NativeRarity": 99999
+    },
+    {
+        "Name": "Diaboli_Void",
+        "Rarity": 100400,
+        "NativeBiome": "",
+        "NativeRarity": 100400
+    },
+    {
+        "Name": "Comet",
+        "Rarity": 120000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 24000
+    },
+    {
+        "Name": "Divinus_Angel",
+        "Rarity": 120000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 24000
+    },
+    {
+        "Name": "Jade",
+        "Rarity": 125000,
+        "NativeBiome": "",
+        "NativeRarity": 125000
+    },
+    {
+        "Name": "Spectre",
+        "Rarity": 140000,
+        "NativeBiome": "",
+        "NativeRarity": 140000
+    },
+    {
+        "Name": "Jazz",
+        "Rarity": 160000,
+        "NativeBiome": "",
+        "NativeRarity": 160000
+    },
+    {
+        "Name": "Aether",
+        "Rarity": 180000,
+        "NativeBiome": "",
+        "NativeRarity": 180000
+    },
+    {
+        "Name": "Bounded",
+        "Rarity": 200000,
+        "NativeBiome": "",
+        "NativeRarity": 200000
+    },
+    {
+        "Name": "Lantern",
+        "Rarity": 333333,
+        "NativeBiome": "",
+        "NativeRarity": 333333
+    },
+    {
+        "Name": "Celestial",
+        "Rarity": 350000,
+        "NativeBiome": "",
+        "NativeRarity": 350000
+    },
+    {
+        "Name": "Vortex",
+        "Rarity": 399999,
+        "NativeBiome": "Windy",
+        "NativeRarity": 133333
+    },
+    {
+        "Name": "Terror",
+        "Rarity": 400000,
+        "NativeBiome": "",
+        "NativeRarity": 400000
+    },
+    {
+        "Name": "Hope",
+        "Rarity": 488725,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 97745
+    },
+    {
+        "Name": "Raven",
+        "Rarity": 500000,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 500000
+    },
+    {
+        "Name": "Warlock",
+        "Rarity": 666000,
+        "NativeBiome": "",
+        "NativeRarity": 666000
+    },
+    {
+        "Name": "Undead_Devil",
+        "Rarity": 666666,
+        "NativeBiome": "Hell",
+        "NativeRarity": 111111
+    },
+    {
+        "Name": "Kyawthuite",
+        "Rarity": 850000,
+        "NativeBiome": "",
+        "NativeRarity": 850000
+    },
+    {
+        "Name": "Reverie",
+        "Rarity": 10000,
+        "NativeBiome": "Dreamspace",
+        "NativeRarity": 10000
+    },
+    {
+        "Name": "Arcane",
+        "Rarity": 1000000,
+        "NativeBiome": "",
+        "NativeRarity": 1000000
+    },
+    {
+        "Name": "Starlight_Kunzite",
+        "Rarity": 1000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 200000
+    },
+    {
+        "Name": "Gothic",
+        "Rarity": 1000001,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 1000001
+    },
+    {
+        "Name": "Magnetic_Reverse Polarity",
+        "Rarity": 1024000,
+        "NativeBiome": "",
+        "NativeRarity": 1024000
+    },
+    {
+        "Name": "Undefined",
+        "Rarity": 1111000,
+        "NativeBiome": "Null",
+        "NativeRarity": 1111
+    },
+    {
+        "Name": "Rage_Brawler",
+        "Rarity": 1280000,
+        "NativeBiome": "",
+        "NativeRarity": 1280000
+    },
+    {
+        "Name": "Symbiosis",
+        "Rarity": 1331201,
+        "NativeBiome": "Corruption",
+        "NativeRarity": 266240
+    },
+    {
+        "Name": "Astral",
+        "Rarity": 1336000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 267200
+    },
+    {
+        "Name": "Cosmos",
+        "Rarity": 1520000,
+        "NativeBiome": "",
+        "NativeRarity": 1520000
+    },
+    {
+        "Name": "Obsidian",
+        "Rarity": 1750000,
+        "NativeBiome": "",
+        "NativeRarity": 1750000
+    },
+    {
+        "Name": "Archmage",
+        "Rarity": 1766000,
+        "NativeBiome": "",
+        "NativeRarity": 1766000
+    },
+    {
+        "Name": "Player_Respawn",
+        "Rarity": 1999000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 999999
+    },
+    {
+        "Name": "Gravitational",
+        "Rarity": 2000000,
+        "NativeBiome": "",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Bounded_Unbound",
+        "Rarity": 2000000,
+        "NativeBiome": "",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Buggify",
+        "Rarity": 2000000,
+        "NativeBiome": "",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Flowed",
+        "Rarity": 2121121,
+        "NativeBiome": "Null",
+        "NativeRarity": 2121
+    },
+    {
+        "Name": "Virtual",
+        "Rarity": 2500000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 1250000
+    },
+    {
+        "Name": "Vega",
+        "Rarity": 2580000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 2580000
+    },
+    {
+        "Name": "Parasite",
+        "Rarity": 3000000,
+        "NativeBiome": "Corruption",
+        "NativeRarity": 600000
+    },
+    {
+        "Name": "Orion",
+        "Rarity": 3000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 600000
+    },
+    {
+        "Name": "Apatite",
+        "Rarity": 3133133,
+        "NativeBiome": "",
+        "NativeRarity": 3133133
+    },
+    {
+        "Name": "Savior",
+        "Rarity": 3200000,
+        "NativeBiome": "",
+        "NativeRarity": 3200000
+    },
+    {
+        "Name": "Shiftlock",
+        "Rarity": 3325000,
+        "NativeBiome": "Null",
+        "NativeRarity": 3325
+    },
+    {
+        "Name": "Evanescent",
+        "Rarity": 3360000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 840000
+    },
+    {
+        "Name": "Alice",
+        "Rarity": 3500000,
+        "NativeBiome": "",
+        "NativeRarity": 3500000
+    },
+    {
+        "Name": "Bejeweled",
+        "Rarity": 3600000,
+        "NativeBiome": "",
+        "NativeRarity": 3600000
+    },
+    {
+        "Name": "Aquatic_Flame",
+        "Rarity": 4000000,
+        "NativeBiome": "",
+        "NativeRarity": 4000000
+    },
+    {
+        "Name": "Poseidon",
+        "Rarity": 4000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 1000000
+    },
+    {
+        "Name": "Metabytes",
+        "Rarity": 4000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Wraith",
+        "Rarity": 4100000,
+        "NativeBiome": "",
+        "NativeRarity": 4100000
+    },
+    {
+        "Name": "Zeus",
+        "Rarity": 4500000,
+        "NativeBiome": "",
+        "NativeRarity": 4500000
+    },
+    {
+        "Name": "Solar_Solstice",
+        "Rarity": 5000000,
+        "NativeBiome": "",
+        "NativeRarity": 5000000
+    },
+    {
+        "Name": "Galaxy",
+        "Rarity": 5000000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 1000000
+    },
+    {
+        "Name": "Lunar_Full Moon",
+        "Rarity": 5000000,
+        "NativeBiome": "",
+        "NativeRarity": 5000000
+    },
+    {
+        "Name": "Anima",
+        "Rarity": 5730000,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 5730000
+    },
+    {
+        "Name": "Twilight",
+        "Rarity": 6000000,
+        "NativeBiome": "",
+        "NativeRarity": 6000000
+    },
+    {
+        "Name": "Astronaut",
+        "Rarity": 6117186,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 6117186
+    },
+    {
+        "Name": "Origin",
+        "Rarity": 6500000,
+        "NativeBiome": "",
+        "NativeRarity": 6500000
+    },
+    {
+        "Name": "Hades",
+        "Rarity": 6666666,
+        "NativeBiome": "Hell",
+        "NativeRarity": 1111111
+    },
+    {
+        "Name": "Celestial_Divine",
+        "Rarity": 7000000,
+        "NativeBiome": "",
+        "NativeRarity": 7000000
+    },
+    {
+        "Name": "Anubis",
+        "Rarity": 7200000,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 1800000
+    },
+    {
+        "Name": "Refraction",
+        "Rarity": 7242000,
+        "NativeBiome": "",
+        "NativeRarity": 7242000
+    },
+    {
+        "Name": "Faith",
+        "Rarity": 7250000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 1450000
+    },
+    {
+        "Name": "Hyper-Volt",
+        "Rarity": 7500000,
+        "NativeBiome": "",
+        "NativeRarity": 7500000
+    },
+    {
+        "Name": "Velocity",
+        "Rarity": 7630000,
+        "NativeBiome": "",
+        "NativeRarity": 7630000
+    },
+    {
+        "Name": "Nautilus_Lost",
+        "Rarity": 7700000,
+        "NativeBiome": "",
+        "NativeRarity": 7700000
+    },
+    {
+        "Name": "Divinus_Guardian",
+        "Rarity": 7777777,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 1555555
+    },
+    {
+        "Name": "Outlaw",
+        "Rarity": 8000000,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Spectre_Requiem",
+        "Rarity": 8222000,
+        "NativeBiome": "",
+        "NativeRarity": 8222000
+    },
+    {
+        "Name": "Soultorn",
+        "Rarity": 8333333,
+        "NativeBiome": "",
+        "NativeRarity": 8333333
+    },
+    {
+        "Name": "Harnessed",
+        "Rarity": 8500000,
+        "NativeBiome": "",
+        "NativeRarity": 8500000
+    },
+    {
+        "Name": "Nihility",
+        "Rarity": 9000000,
+        "NativeBiome": "Null",
+        "NativeRarity": 9000
+    },
+    {
+        "Name": "Helios",
+        "Rarity": 9000000,
+        "NativeBiome": "",
+        "NativeRarity": 9000000
+    },
+    {
+        "Name": "Stargazer",
+        "Rarity": 9200000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 1840000
+    },
+    {
+        "Name": "Jade_Purity",
+        "Rarity": 9250000,
+        "NativeBiome": "",
+        "NativeRarity": 9250000
+    },
+    {
+        "Name": "Amethyst",
+        "Rarity": 9333700,
+        "NativeBiome": "",
+        "NativeRarity": 9333700
+    },
+    {
+        "Name": "Starscourge",
+        "Rarity": 10000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 2000000
+    },
+    {
+        "Name": "Sharkyn",
+        "Rarity": 10000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 2500000
+    },
+    {
+        "Name": "Guardian",
+        "Rarity": 10000000,
+        "NativeBiome": "",
+        "NativeRarity": 10000000
+    },
+    {
+        "Name": "Empty",
+        "Rarity": 11111111,
+        "NativeBiome": "Null",
+        "NativeRarity": 11111111
+    },
+    {
+        "Name": "Melodic",
+        "Rarity": 11300000,
+        "NativeBiome": "",
+        "NativeRarity": 11300000
+    },
+    {
+        "Name": "Sailor",
+        "Rarity": 12000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 3000000
+    },
+    {
+        "Name": "Graffiti",
+        "Rarity": 12000000,
+        "NativeBiome": "",
+        "NativeRarity": 12000000
+    },
+    {
+        "Name": "Imaginary",
+        "Rarity": 12200200,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 12200200
+    },
+    {
+        "Name": "Hurricane",
+        "Rarity": 13500000,
+        "NativeBiome": "Windy",
+        "NativeRarity": 4500000
+    },
+    {
+        "Name": "Sirius",
+        "Rarity": 14000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 2800000
+    },
+    {
+        "Name": "Arcane_Legacy",
+        "Rarity": 15000000,
+        "NativeBiome": "",
+        "NativeRarity": 15000000
+    },
+    {
+        "Name": "Icarus",
+        "Rarity": 15660000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 3132000
+    },
+    {
+        "Name": "Lullaby",
+        "Rarity": 17000000,
+        "NativeBiome": "",
+        "NativeRarity": 17000000
+    },
+    {
+        "Name": "Chromatic",
+        "Rarity": 20000000,
+        "NativeBiome": "",
+        "NativeRarity": 20000000
+    },
+    {
+        "Name": "Plasma",
+        "Rarity": 20600000,
+        "NativeBiome": "",
+        "NativeRarity": 20600000
+    },
+    {
+        "Name": "Oculus",
+        "Rarity": 23233340,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 4646668
+    },
+    {
+        "Name": "Aviator",
+        "Rarity": 24000000,
+        "NativeBiome": "Windy",
+        "NativeRarity": 8000000
+    },
+    {
+        "Name": "Ruby_Brimstone",
+        "Rarity": 24060000,
+        "NativeBiome": "",
+        "NativeRarity": 24060000
+    },
+    {
+        "Name": "Apothesis",
+        "Rarity": 24691356,
+        "NativeBiome": "",
+        "NativeRarity": 24691356
+    },
+    {
+        "Name": "Centurion",
+        "Rarity": 25000000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 25000000
+    },
+    {
+        "Name": "Blizzard",
+        "Rarity": 27315000,
+        "NativeBiome": "Snowy",
+        "NativeRarity": 9105000
+    },
+    {
+        "Name": "Arcane_Dark",
+        "Rarity": 30000000,
+        "NativeBiome": "",
+        "NativeRarity": 30000000
+    },
+    {
+        "Name": "Flora_Forest",
+        "Rarity": 32800000,
+        "NativeBiome": "",
+        "NativeRarity": 32800000
+    },
+    {
+        "Name": "Ethereal",
+        "Rarity": 35000000,
+        "NativeBiome": "",
+        "NativeRarity": 35000000
+    },
+    {
+        "Name": "Virtual_Fatal Error",
+        "Rarity": 40413000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 20206500
+    },
+    {
+        "Name": "Juxtaposition",
+        "Rarity": 40440400,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 40440400
+    },
+    {
+        "Name": "Overseer",
+        "Rarity": 45000000,
+        "NativeBiome": "",
+        "NativeRarity": 45000000
+    },
+    {
+        "Name": "Exotic_Apex",
+        "Rarity": 49999500,
+        "NativeBiome": "",
+        "NativeRarity": 49999500
+    },
+    {
+        "Name": "Matrix",
+        "Rarity": 50000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 25000000
+    },
+    {
+        "Name": "Runic",
+        "Rarity": 50000000,
+        "NativeBiome": "",
+        "NativeRarity": 50000000
+    },
+    {
+        "Name": "Sentinel",
+        "Rarity": 60000000,
+        "NativeBiome": "",
+        "NativeRarity": 60000000
+    },
+    {
+        "Name": "Twilight_Iridescent Memory",
+        "Rarity": 60000000,
+        "NativeBiome": "",
+        "NativeRarity": 60000000
+    },
+    {
+        "Name": "Antivirus",
+        "Rarity": 62500000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 31250000
+    },
+    {
+        "Name": "Dominion",
+        "Rarity": 70000000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 14000000
+    },
+    {
+        "Name": "Starborn",
+        "Rarity": 72000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 14400000
+    },
+    {
+        "Name": "Melodic_Serenade",
+        "Rarity": 77000000,
+        "NativeBiome": "",
+        "NativeRarity": 77000000
+    },
+    {
+        "Name": "Sailor_Flying Dutchman",
+        "Rarity": 80000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 20000000
+    },
+    {
+        "Name": "Carriage",
+        "Rarity": 80000000,
+        "NativeBiome": "",
+        "NativeRarity": 80000000
+    },
+    {
+        "Name": "Aquaria",
+        "Rarity": 80000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 20000000
+    },
+    {
+        "Name": "Virtual_Full Control",
+        "Rarity": 80000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 40000000
+    },
+    {
+        "Name": "Harnessed_Elements",
+        "Rarity": 85000000,
+        "NativeBiome": "",
+        "NativeRarity": 85000000
+    },
+    {
+        "Name": "Hellbound",
+        "Rarity": 85000000,
+        "NativeBiome": "Hell",
+        "NativeRarity": 14166666
+    },
+    {
+        "Name": "Runic_Wilt",
+        "Rarity": 87388744,
+        "NativeBiome": "",
+        "NativeRarity": 87388744
+    },
+    {
+        "Name": "Virtual_WorldWide",
+        "Rarity": 87500000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 43750000
+    },
+    {
+        "Name": "Atomic_Nucleus",
+        "Rarity": 92118000,
+        "NativeBiome": "",
+        "NativeRarity": 92118000
+    },
+    {
+        "Name": "Quartz_Rose",
+        "Rarity": 97500000,
+        "NativeBiome": "",
+        "NativeRarity": 97500000
+    },
+    {
+        "Name": "Chromatic_Genesis",
+        "Rarity": 99999999,
+        "NativeBiome": "",
+        "NativeRarity": 99999999
+    },
+    {
+        "Name": "Starscourge_Radiant",
+        "Rarity": 100000000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 20000000
+    },
+    {
+        "Name": "Spectraflow",
+        "Rarity": 100000000,
+        "NativeBiome": "",
+        "NativeRarity": 100000000
+    },
+    {
+        "Name": "Lily",
+        "Rarity": 112000000,
+        "NativeBiome": "",
+        "NativeRarity": 112000000
+    },
+    {
+        "Name": "Sharkyn_Hammerhead",
+        "Rarity": 120000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 30000000
+    },
+    {
+        "Name": "Overture",
+        "Rarity": 150000000,
+        "NativeBiome": "",
+        "NativeRarity": 150000000
+    },
+    {
+        "Name": "Bounded_Aichmalotos",
+        "Rarity": 170000000,
+        "NativeBiome": "",
+        "NativeRarity": 170000000
+    },
+    {
+        "Name": "Symphony",
+        "Rarity": 175000000,
+        "NativeBiome": "",
+        "NativeRarity": 175000000
+    },
+    {
+        "Name": "Twilight_Withering Grace",
+        "Rarity": 180000000,
+        "NativeBiome": "",
+        "NativeRarity": 180000000
+    },
+    {
+        "Name": "Felled",
+        "Rarity": 180000000,
+        "NativeBiome": "Hell",
+        "NativeRarity": 30000000
+    },
+    {
+        "Name": "Impeached",
+        "Rarity": 200000000,
+        "NativeBiome": "Corruption",
+        "NativeRarity": 40000000
+    },
+    {
+        "Name": "Raven_Plague",
+        "Rarity": 200000000,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 200000000
+    },
+    {
+        "Name": "Lumenpool",
+        "Rarity": 220000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 55000000
+    },
+    {
+        "Name": "Hyper-Volt_Ever-Storm",
+        "Rarity": 225000000,
+        "NativeBiome": "",
+        "NativeRarity": 225000000
+    },
+    {
+        "Name": "Virtual Memory",
+        "Rarity": 232232232,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 116116116
+    },
+    {
+        "Name": "Astral_Zodiac",
+        "Rarity": 267200000,
+        "NativeBiome": "Starfall",
+        "NativeRarity": 53440000
+    },
+    {
+        "Name": "Prophecy",
+        "Rarity": 275649430,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 55129886
+    },
+    {
+        "Name": "Exotic_Void",
+        "Rarity": 299999999,
+        "NativeBiome": "",
+        "NativeRarity": 299999999
+    },
+    {
+        "Name": "Overture_History",
+        "Rarity": 300000000,
+        "NativeBiome": "",
+        "NativeRarity": 300000000
+    },
+    {
+        "Name": "Bloodlust",
+        "Rarity": 300000000,
+        "NativeBiome": "Hell",
+        "NativeRarity": 50000000
+    },
+    {
+        "Name": "Maelstrom",
+        "Rarity": 309999999,
+        "NativeBiome": "Windy",
+        "NativeRarity": 103333333
+    },
+    {
+        "Name": "Dreamer",
+        "Rarity": 315000000,
+        "NativeBiome": "",
+        "NativeRarity": 315000000
+    },
+    {
+        "Name": "Perpetual",
+        "Rarity": 315000000,
+        "NativeBiome": "",
+        "NativeRarity": 315000000
+    },
+    {
+        "Name": "Lotusfall",
+        "Rarity": 320000000,
+        "NativeBiome": "",
+        "NativeRarity": 320000000
+    },
+    {
+        "Name": "Cytokinesis",
+        "Rarity": 330400472,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 165200236
+    },
+    {
+        "Name": "Jazz_Orchestra",
+        "Rarity": 336870912,
+        "NativeBiome": "",
+        "NativeRarity": 336870912
+    },
+    {
+        "Name": "Archangel",
+        "Rarity": 350000000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 70000000
+    },
+    {
+        "Name": "Atlas",
+        "Rarity": 360000000,
+        "NativeBiome": "Sandstorm",
+        "NativeRarity": 90000000
+    },
+    {
+        "Name": "Flora_Evergreen",
+        "Rarity": 370073730,
+        "NativeBiome": "",
+        "NativeRarity": 370073730
+    },
+    {
+        "Name": "Chillsear",
+        "Rarity": 375000000,
+        "NativeBiome": "Snowy",
+        "NativeRarity": 125000000
+    },
+    {
+        "Name": "Celestial_Eclipse",
+        "Rarity": 384400000,
+        "NativeBiome": "",
+        "NativeRarity": 384400000
+    },
+    {
+        "Name": "Abyssal Hunter",
+        "Rarity": 400000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 100000000
+    },
+    {
+        "Name": "Gargantua",
+        "Rarity": 430000000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 86000000
+    },
+    {
+        "Name": "Apostolos",
+        "Rarity": 444000000,
+        "NativeBiome": "The Citadel Of Orders",
+        "NativeRarity": 222000000
+    },
+    {
+        "Name": "Unknown",
+        "Rarity": 444444444,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 444444444
+    },
+    {
+        "Name": "Kyawthuite_Remembrance",
+        "Rarity": 450000000,
+        "NativeBiome": "",
+        "NativeRarity": 450000000
+    },
+    {
+        "Name": "Ruins",
+        "Rarity": 500000000,
+        "NativeBiome": "",
+        "NativeRarity": 500000000
+    },
+    {
+        "Name": "Matrix_Overdrive",
+        "Rarity": 503000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 251500000
+    },
+    {
+        "Name": "Sailor_Admiral",
+        "Rarity": 540000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 135000000
+    },
+    {
+        "Name": "Elude",
+        "Rarity": 555555555,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 555555555
+    },
+    {
+        "Name": "Sophyra",
+        "Rarity": 570000000,
+        "NativeBiome": "",
+        "NativeRarity": 570000000
+    },
+    {
+        "Name": "Matrix_Reality",
+        "Rarity": 601020102,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 300510051
+    },
+    {
+        "Name": "Sloth",
+        "Rarity": 650000000,
+        "NativeBiome": "",
+        "NativeRarity": 650000000
+    },
+    {
+        "Name": "Prologue",
+        "Rarity": 666616111,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 666616111
+    },
+    {
+        "Name": "Pythios",
+        "Rarity": 666666666,
+        "NativeBiome": "Hell",
+        "NativeRarity": 111111111
+    },
+    {
+        "Name": "Sovereign",
+        "Rarity": 750000000,
+        "NativeBiome": "",
+        "NativeRarity": 750000000
+    },
+    {
+        "Name": "Ruins_Withered",
+        "Rarity": 800000000,
+        "NativeBiome": "",
+        "NativeRarity": 800000000
+    },
+    {
+        "Name": "Aegis",
+        "Rarity": 825000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 412500000
+    },
+    {
+        "Name": "Eisveil",
+        "Rarity": 830000000,
+        "NativeBiome": "Snowy",
+        "NativeRarity": 276666666
+    },
+    {
+        "Name": "Dreamscape",
+        "Rarity": 850000000,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 850000000
+    },
+    {
+        "Name": "Poseidon_Atlantis",
+        "Rarity": 850000000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 212500000
+    },
+    {
+        "Name": "Ascendant",
+        "Rarity": 935000000,
+        "NativeBiome": "Heaven",
+        "NativeRarity": 187000000
+    },
+    {
+        "Name": "Nyctophobia",
+        "Rarity": 1011111010,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 1011111010
+    },
+    {
+        "Name": "Pixelation",
+        "Rarity": 1073741824,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 536870912
+    },
+    {
+        "Name": "Luminosity",
+        "Rarity": 1200000000,
+        "NativeBiome": "",
+        "NativeRarity": 1200000000
+    },
+    {
+        "Name": "Breakthrough",
+        "Rarity": 1999999999,
+        "NativeBiome": "",
+        "NativeRarity": 1999999999
+    },
+    {
+        "Name": "Equinox",
+        "Rarity": 2500000000,
+        "NativeBiome": "",
+        "NativeRarity": 2500000000
+    },
+    {
+        "Name": "Memory",
+        "Rarity": 100,
+        "NativeBiome": "",
+        "NativeRarity": 100
+    },
+    {
+        "Name": "Neferkhaf",
+        "Rarity": 1000,
+        "NativeBiome": "",
+        "NativeRarity": 1000
+    },
+    {
+        "Name": "Fragments of the Crimson Moon",
+        "Rarity": 1000,
+        "NativeBiome": "",
+        "NativeRarity": 1000
+    },
+    {
+        "Name": "Meta",
+        "Rarity": 10000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 10000
+    },
+    {
+    	"Name": "Illusionary",
+        "Rarity": 10000000,
+        "NativeBiome": "Cyberspace",
+        "NativeRarity": 10000000
+    },
+    {
+        "Name": "Glitch",
+        "Rarity": 12210110,
+        "NativeBiome": "Glitched",
+        "NativeRarity": 12210110
+    },
+    {
+        "Name": "Borealis",
+        "Rarity": 13333333,
+        "NativeBiome": "Dreamspace",
+        "NativeRarity": 13333333
+    },
+    {
+        "Name": "Projection",
+        "Rarity": 197000000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 197000000
+    },
+    {
+        "Name": "Point_Zero",
+        "Rarity": 521121900,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 521121900
+    },
+    {
+        "Name": "Leviathan",
+        "Rarity": 1730400000,
+        "NativeBiome": "Rainy",
+        "NativeRarity": 1730400000
+    },
+    {
+        "Name": "Dream Catcher",
+        "Rarity": 2222222222,
+        "NativeBiome": "",
+        "NativeRarity": 2222222222
+    },
+    {
+        "Name": "Pool Party",
+        "Rarity": 972000000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 486000000
+    },
+    {
+        "Name": "Craptropica",
+        "Rarity": 1334221000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 667110500
+    },
+    {
+        "Name": "Taverna",
+        "Rarity": 1444444444,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 722222222
+    },
+    {
+        "Name": "Centaurus",
+        "Rarity": 3000000000,
+        "NativeBiome": "Incinerator",
+        "NativeRarity": 1500000000
+    }
+]
