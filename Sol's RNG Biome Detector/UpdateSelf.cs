@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Text.Json;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -88,6 +88,9 @@ namespace Sol_s_RNG_Biome_Detector
         {
             string allfolders = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vortex", "Versions");
 
+			if (!Directory.Exists(allfolders))
+				return;
+
             foreach (string folder in Directory.GetDirectories(allfolders))
             {
                 try
@@ -102,9 +105,14 @@ namespace Sol_s_RNG_Biome_Detector
         
         public async Task RunUpdate(string path)
         {
-            string exepath = Path.Combine(path, "Vortex.exe");
+			try 
+			{
+            	string exepath = Path.Combine(path, "Vortex.exe");
 
-            Process.Start(new ProcessStartInfo { FileName = exepath, UseShellExecute = true});
+            	Process.Start(new ProcessStartInfo { FileName = exepath, UseShellExecute = true});
+			}
+
+			catch {return;}
         }
     }
 }
