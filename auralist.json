@@ -1200,12 +1200,6 @@
         "NativeRarity": 175000000
     },
     {
-        "Name": "Twilight_Withering Grace",
-        "Rarity": 180000000,
-        "NativeBiome": "",
-        "NativeRarity": 180000000
-    },
-    {
         "Name": "Felled",
         "Rarity": 180000000,
         "NativeBiome": "Hell",
@@ -1342,6 +1336,12 @@
         "Rarity": 400000000,
         "NativeBiome": "Rainy",
         "NativeRarity": 100000000
+    },
+    {
+        "Name": "Twilight_Withering Grace",
+        "Rarity": 422656000,
+        "NativeBiome": "",
+        "NativeRarity": 422656000
     },
     {
         "Name": "Gargantua",
@@ -1542,7 +1542,7 @@
         "NativeRarity": 197000000
     },
     {
-        "Name": "Point Zero",
+        "Name": "Gravitational_Point Zero",
         "Rarity": 521121900,
         "NativeBiome": "Singularity",
         "NativeRarity": 521121900
