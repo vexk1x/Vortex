@@ -1542,7 +1542,7 @@
         "NativeRarity": 197000000
     },
     {
-        "Name": "Point_Zero",
+        "Name": "Point_:_Zero",
         "Rarity": 521121900,
         "NativeBiome": "Singularity",
         "NativeRarity": 521121900
@@ -1560,27 +1560,39 @@
         "NativeRarity": 2222222222
     },
     {
-        "Name": "Pool Party",
-        "Rarity": 972000000,
-        "NativeBiome": "Incinerator",
-        "NativeRarity": 486000000
+        "Name": "Eden",
+        "Rarity": 1,
+        "NativeBiome": "Limbo",
+        "NativeRarity": 1
     },
     {
-        "Name": "Craptropica",
-        "Rarity": 1334221000,
-        "NativeBiome": "Incinerator",
-        "NativeRarity": 667110500
-    },
-    {
-        "Name": "Taverna",
-        "Rarity": 1444444444,
-        "NativeBiome": "Incinerator",
-        "NativeRarity": 722222222
-    },
-    {
-        "Name": "Centaurus",
+        "Name": "Monarch",
         "Rarity": 3000000000,
-        "NativeBiome": "Incinerator",
-        "NativeRarity": 1500000000
+        "NativeBiome": "Corruption",
+        "NativeRarity": 3000000000
+    },
+    {
+        "Name": "Oblivion",
+        "Rarity": 1000,
+        "NativeBiome": "",
+        "NativeRarity": 1000
+    },
+    {
+        "Name": "Oppression",
+        "Rarity": 2220000000,
+        "NativeBiome": "Glitched",
+        "NativeRarity": 2220000000
+    },
+    {
+        "Name": "Astraios",
+        "Rarity": 1750000000,
+        "NativeBiome": "Singularity",
+        "NativeRarity": 1750000000
+    },
+    {
+        "Name": "Dreammetric",
+        "Rarity": 320000000,
+        "NativeBiome": "Dreamspace",
+        "NativeRarity": 320000000        
     }
 ]
