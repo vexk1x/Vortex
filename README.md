@@ -50,7 +50,7 @@ or
 clone/download this repository and cd into the folder containing Vortex.slnx and run:
 
 ```
-dotnet publish "Vortex\Vortex.slnx" -c Release -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+dotnet publish "Vortex\Vortex.csproj" -c Release -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 ```
 
 ## I found a bug and want to report it
