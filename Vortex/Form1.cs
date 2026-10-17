@@ -89,7 +89,7 @@ namespace Vortex
                     Color.FromArgb(100, 181, 69, 215), // Dreamspace (peak biome)
                     Color.FromArgb(100, 62, 59, 63), // Glitched
                     Color.FromArgb(101, 176, 83), // Lost Forest
-                    Color.FromArgb(94, 37, 158),
+                    Color.FromArgb(94, 37, 158), // Radiant Forest
                     //Color.FromArgb(100, 255, 248, 137), // Blazing Sun
                     //Color.FromArgb(95, 255, 83, 57) // Incinerator
                 };
@@ -2161,12 +2161,13 @@ namespace Vortex
 
         public bool UpdateBiomeStats(string biome)
         {
-            int index = Array.FindIndex(CurrentBiomes, name => name.Equals(biome, StringComparison.OrdinalIgnoreCase));
+            CheckBox cb = GetCheckBox(biome);
 
-            if (index == -1)
+            if (cb is null)
                 return false;
 
-            bool rare = index >= 10;
+            bool rare = string.Equals(cb.Tag as string, "Rare", StringComparison.OrdinalIgnoreCase);
+            int index = BiomeCheckboxes.IndexOf(cb);
 
             StatsCounter[index].Text = (int.Parse(StatsCounter[index].Text) + 1).ToString();
             SessionTotalCounter[0].Text = (int.Parse(SessionTotalCounter[0].Text) + 1).ToString();
@@ -2180,6 +2181,11 @@ namespace Vortex
 
             SaveSettings();
             return rare;
+        }
+
+        private CheckBox GetCheckBox(string biome)
+        {
+            return BiomeCheckboxes.Find(cb => cb.Text.Equals(biome, StringComparison.OrdinalIgnoreCase));
         }
 
         public void UpdateAuraStats()

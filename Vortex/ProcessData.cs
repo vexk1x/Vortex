@@ -42,7 +42,7 @@ namespace Vortex
             if (!form.BiomeSelected(biome) || Webhook.Webhooks.Count == 0 || string.IsNullOrWhiteSpace(privateserver))
                 return;
 
-            bool ping = rare && (biome != "Singularity" || Settings.Data.TreatSingularityAsRare);
+            bool ping = rare;
 
             string mention = "";
 
