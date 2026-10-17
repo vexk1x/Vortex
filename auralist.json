@@ -1542,7 +1542,7 @@
         "NativeRarity": 197000000
     },
     {
-        "Name": "Gravitational_PointZero",
+        "Name": "Gravitational_PointZero ",
         "Rarity": 521121900,
         "NativeBiome": "Singularity",
         "NativeRarity": 521121900
@@ -1579,9 +1579,9 @@
     },
     {
         "Name": "Oppression",
-        "Rarity": 2220000000,
+        "Rarity": 220000000,
         "NativeBiome": "Glitched",
-        "NativeRarity": 2220000000
+        "NativeRarity": 220000000
     },
     {
         "Name": "Astraios",
