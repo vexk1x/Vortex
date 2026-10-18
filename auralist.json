@@ -188,8 +188,8 @@
     {
         "Name": "Flora",
         "Rarity": 3700,
-        "NativeBiome": "",
-        "NativeRarity": 3700
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 1850
     },
     {
         "Name": "Cola",
@@ -212,8 +212,8 @@
     {
         "Name": "Flutter",
         "Rarity": 5000,
-        "NativeBiome": "",
-        "NativeRarity": 5000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 2500
     },
     {
         "Name": "Targeted",
@@ -314,8 +314,8 @@
     {
         "Name": "Marsh",
         "Rarity": 25000,
-        "NativeBiome": "",
-        "NativeRarity": 25000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 12500
     },
     {
         "Name": "Copper",
@@ -452,8 +452,8 @@
     {
         "Name": "Jade",
         "Rarity": 125000,
-        "NativeBiome": "",
-        "NativeRarity": 125000
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 62500
     },
     {
         "Name": "Spectre",
@@ -482,8 +482,8 @@
     {
         "Name": "Lantern",
         "Rarity": 333333,
-        "NativeBiome": "",
-        "NativeRarity": 333333
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 166666
     },
     {
         "Name": "Celestial",
@@ -516,6 +516,18 @@
         "NativeRarity": 500000
     },
     {
+        "Name": "Artifact",
+        "Rarity": 500000,
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 250000
+    },
+    {
+        "Name": "Veylune",
+        "Rarity": 555000,
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 277500
+    },
+    {
         "Name": "Warlock",
         "Rarity": 666000,
         "NativeBiome": "",
@@ -530,8 +542,8 @@
     {
         "Name": "Kyawthuite",
         "Rarity": 850000,
-        "NativeBiome": "",
-        "NativeRarity": 850000
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 425000
     },
     {
         "Name": "Reverie",
@@ -626,8 +638,8 @@
     {
         "Name": "Buggify",
         "Rarity": 2000000,
-        "NativeBiome": "",
-        "NativeRarity": 2000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 1000000
     },
     {
         "Name": "Flowed",
@@ -866,8 +878,8 @@
     {
         "Name": "Jade_Purity",
         "Rarity": 9250000,
-        "NativeBiome": "",
-        "NativeRarity": 9250000
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 4625000
     },
     {
         "Name": "Amethyst",
@@ -1010,8 +1022,8 @@
     {
         "Name": "Flora_Forest",
         "Rarity": 32800000,
-        "NativeBiome": "",
-        "NativeRarity": 32800000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 16400000
     },
     {
         "Name": "Ethereal",
@@ -1052,8 +1064,8 @@
     {
         "Name": "Runic",
         "Rarity": 50000000,
-        "NativeBiome": "",
-        "NativeRarity": 50000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 25000000
     },
     {
         "Name": "Sentinel",
@@ -1130,8 +1142,8 @@
     {
         "Name": "Runic_Wilt",
         "Rarity": 87388744,
-        "NativeBiome": "",
-        "NativeRarity": 87388744
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 43694372
     },
     {
         "Name": "Virtual_WorldWide",
@@ -1172,8 +1184,8 @@
     {
         "Name": "Lily",
         "Rarity": 112000000,
-        "NativeBiome": "",
-        "NativeRarity": 112000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 56000000
     },
     {
         "Name": "Sharkyn_Hammerhead",
@@ -1280,8 +1292,8 @@
     {
         "Name": "Perpetual",
         "Rarity": 315000000,
-        "NativeBiome": "",
-        "NativeRarity": 315000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 157500000
     },
     {
         "Name": "Lotusfall",
@@ -1316,8 +1328,8 @@
     {
         "Name": "Flora_Evergreen",
         "Rarity": 370073730,
-        "NativeBiome": "",
-        "NativeRarity": 370073730
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 185036865
     },
     {
         "Name": "Chillsear",
@@ -1364,14 +1376,20 @@
     {
         "Name": "Kyawthuite_Remembrance",
         "Rarity": 450000000,
-        "NativeBiome": "",
-        "NativeRarity": 450000000
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 225000000
+    },
+    {
+        "Name": "Hasuen",
+        "Rarity": 485000000,
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 242500000
     },
     {
         "Name": "Ruins",
         "Rarity": 500000000,
-        "NativeBiome": "",
-        "NativeRarity": 500000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 250000000
     },
     {
         "Name": "Matrix_Overdrive",
@@ -1430,8 +1448,8 @@
     {
         "Name": "Ruins_Withered",
         "Rarity": 800000000,
-        "NativeBiome": "",
-        "NativeRarity": 800000000
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 400000000
     },
     {
         "Name": "Aegis",
@@ -1492,6 +1510,12 @@
         "Rarity": 2500000000,
         "NativeBiome": "",
         "NativeRarity": 2500000000
+    },
+    {
+        "Name": "Tree House",
+        "Rarity": 3800000000,
+        "NativeBiome": "Lost Forest",
+        "NativeRarity": 1900000000
     },
     {
         "Name": "Memory",
