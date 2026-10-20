@@ -456,6 +456,12 @@
         "NativeRarity": 62500
     },
     {
+        "Name": "true Jade",
+        "Rarity": 10250000,
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 10250000
+    },
+    {
         "Name": "Spectre",
         "Rarity": 140000,
         "NativeBiome": "",
@@ -544,6 +550,12 @@
         "Rarity": 850000,
         "NativeBiome": "The Radiant Forest",
         "NativeRarity": 425000
+    },
+    {
+        "Name": "true Kyawthuite",
+        "Rarity": 850000,
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 850000
     },
     {
         "Name": "Reverie",
@@ -765,6 +777,12 @@
         "Name": "Twilight",
         "Rarity": 6000000,
         "NativeBiome": "",
+        "NativeRarity": 6000000
+    },
+    {
+        "Name": "true Twilight",
+        "Rarity": 6000000,
+        "NativeBiome": "The Radiant Forest",
         "NativeRarity": 6000000
     },
     {
@@ -1618,6 +1636,12 @@
         "Rarity": 320000000,
         "NativeBiome": "Dreamspace",
         "NativeRarity": 320000000        
+    },
+    {
+        "Name": "Tomorrow",
+        "Rarity": 0,
+        "NativeBiome": "The Radiant Forest",
+        "NativeRarity": 0
     },
     {
         "Name": "Hellborn",
