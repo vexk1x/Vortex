@@ -103,6 +103,16 @@ namespace Vortex.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap halloween_biomes_box {
+            get {
+                object obj = ResourceManager.GetObject("halloween_biomes_box", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Layout {
             get {
                 object obj = ResourceManager.GetObject("Layout", resourceCulture);

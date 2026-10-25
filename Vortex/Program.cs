@@ -4,14 +4,27 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Windows.Forms.VisualStyles;
 
 namespace Vortex
 {
     internal static class Program
     {
         [STAThread]
-        private static void Main()
+        private static void Main(string[] args)
         {
+
+            if (args.Length == 3 && args[0] == "--update")
+            {
+                int pid;
+
+                if (int.TryParse(args[1], out pid))
+                {
+                    AutoUpdate.ApplyUpdate(pid, args[2]);
+                    return;
+                }
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());

@@ -11,9 +11,11 @@ using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net.Http;
 
 
 namespace Vortex
@@ -23,8 +25,8 @@ namespace Vortex
         // Why are you even reading this
 
         // VERSION
-        private static readonly Version @Version = new Version("1.0.6"); 
-        public static readonly string _Version = $"Vortex v{@Version} - Early Release";
+        private static readonly Version @Version = new Version("1.0.7"); 
+        public static readonly string _Version = $"Vortex v{@Version}";
 
 
         // Public 
@@ -37,10 +39,10 @@ namespace Vortex
         public static List<Label> SessionTotalCounter = new List<Label>();
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RichTextBox logs { get; set; } = null!;
+        public RichTextBox logs { get; set; } = null;
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public RichTextBox AccountsList { get; set; } = null!;
+        public RichTextBox AccountsList { get; set; } = null;
 
         public static long Auras_MinPingRarity { get; set; } = -1;
         public static long Auras_NotificationID { get; set; } = -1;
@@ -48,51 +50,16 @@ namespace Vortex
         public static bool Auras_Notifications { get; set; } = false;
 
 
+
         public static Action<string, Color> _PrintLogs = (log, color) => // ts lwk peak
         {
             Instance.PrintLogs(log, color);
         };
 
-        public static readonly string[] CurrentBiomes = {
-            "Normal",
-            "Windy",
-            "Snowy",
-            "Rainy",
-            "Sand Storm",
-            "Hell",
-            "Starfall",
-            "Heaven",
-            "Corruption",
-            "Null",
-            "Singularity",
-            "Cyberspace",
-            "Dreamspace",
-            "Glitched",
-            "Lost Forest", // misplaced but it doesn't really matter since as of rn there isnt much info about these 2 forest biomes.
-            "Radiant Forest"
-        }; // Blazing Sun & Incinerator are invalid as of rn // maybe i'll add a list on my github so older versions are able to detect newer biomes aswell, that would also mean i'd have to add colors etc
+        public static List<string> CurrentBiomes = new List<string>();
 
-        public static readonly Color[] Colors =
-                {
-                    Color.FromArgb(100, 134, 134, 134), // Normal
-                    Color.FromArgb(100, 185, 244, 255), // Windy
-                    Color.FromArgb(100, 202, 238, 255), // Snowy
-                    Color.FromArgb(100, 10, 92, 216), // Rainy
-                    Color.FromArgb(100, 202, 173, 57), // Sand Storm
-                    Color.FromArgb(100, 156, 44, 44), // Hell
-                    Color.FromArgb(100, 28, 74, 255), // Starfall
-                    Color.FromArgb(100, 222, 207, 71), // Heaven
-                    Color.FromArgb(100, 77, 15, 73), // Corruption
-                    Color.FromArgb(100, 0, 0, 0), // Null
-                    Color.FromArgb(100, 172, 103, 0), // Singularity
-                    Color.FromArgb(100, 19, 53, 91), // Cyberspace
-                    Color.FromArgb(100, 181, 69, 215), // Dreamspace (peak biome)
-                    Color.FromArgb(100, 62, 59, 63), // Glitched
-                    Color.FromArgb(101, 176, 83), // Lost Forest
-                    Color.FromArgb(94, 37, 158), // Radiant Forest
-                    //Color.FromArgb(100, 255, 248, 137), // Blazing Sun
-                    //Color.FromArgb(95, 255, 83, 57) // Incinerator
-                };
+        public static List<Color> Colors = new List<Color>();
+                
 
         // Private
 
@@ -157,10 +124,14 @@ namespace Vortex
         private CheckBox cSingularityRare;
         private CheckBox cIncludeUsername;
         private ListBox lbListBox;
+        private ListBox lbOpenAccountsList;
+        private CheckBox DisableTheAccountThatDisconnected;
 
 
         public Form1()
         {
+            Opacity = 0;
+
             InitializeComponent();
 
             DoubleBuffered = true;
@@ -189,6 +160,14 @@ namespace Vortex
 
             StartPosition = FormStartPosition.CenterScreen;
 
+            InitializeGeneral();
+            LoadOldData();
+        }
+
+        private async void Form1_Load(object sender, EventArgs e)
+        {
+            await LoadColorsAndBiomes();
+
             // Gui stuff
             LoadFont();
 
@@ -204,10 +183,7 @@ namespace Vortex
             DrawTitlebar();
 
             ApplySidebarFont(false, "");
-        }
 
-        private async void Form1_Load(object sender, EventArgs e)
-        {
             lbListBox.BackColor = Theme_Backcolor; // idk why but it kept bugging out sometimes so i added this.
             lbListBox.ForeColor = Theme_Forecolor;
 
@@ -220,12 +196,39 @@ namespace Vortex
             RefreshAccountsList();
 
             await auras;
+
+            Opacity = 0.99; // hidden until gui finished loading
+
+            AutoUpdate.__SetVersion(@Version);
+
+            try
+            {
+                bool IsNewUpdateAvailable = await AutoUpdate.UpdateAvailable();
+
+                if (!IsNewUpdateAvailable)
+                    return;
+
+                PrintLogs("New Update Available", Color.Green);
+
+                DialogResult result =
+                    MessageBox.Show("A new Update is Available, would you like to Update?", "Vortex", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result != DialogResult.Yes)
+                    return;
+
+                PrintLogs("Attempting to Update.", Color.Green);
+                await AutoUpdate.DownloadUpdate();
+
+            }
+            catch (Exception ex)
+            {
+                PrintLogs(ex.Message, Color.Red);
+            }
         }
 
         private async void Form1_Close(object sender, EventArgs e)
         {
             SaveSettings();
-            await Webhooks.StartStopWebhook(false, GetSessionTime(), int.Parse(SessionTotalCounter[0].Text), int.Parse(SessionTotalCounter[1].Text));
             Application.Exit();
         }
 
@@ -297,7 +300,6 @@ namespace Vortex
 
         private void InitializePanels()
         {
-            InitializeGeneral();
             InitializeBiomes();
             InitializeAuras();
             InitializeWebhook();
@@ -542,7 +544,7 @@ namespace Vortex
                 set.RegAntiAfk(AntiAFK.Checked);
                
             };
-
+            /*
             CheckBox AllowMultipleInstances = new CheckBox()
             {
                 ForeColor = Theme_Forecolor,
@@ -554,6 +556,15 @@ namespace Vortex
             AllowMultipleInstances.CheckedChanged += delegate // Todo: Add AllowMultipleInstances (prob never coming at my update rate) Expect it by 2028
             {
 
+            };
+            */
+
+            DisableTheAccountThatDisconnected = new CheckBox()
+            {
+                ForeColor = Theme_Forecolor,
+                Anchor = AnchorStyles.Top | AnchorStyles.Left,
+                Text = "Disable an Account when disconnecting from a Private Server",
+                AutoSize = true
             };
 
             TimeSpan time = SessionTime.Elapsed;
@@ -572,17 +583,12 @@ namespace Vortex
 
             StatusBox.Click += (sender, e) =>
             {
-                PictureBox box = sender as PictureBox;
-
-                PictureRunningState = !PictureRunningState;
-
-                set.SetRunning(PictureRunningState);
-
-                box.Image = PictureRunningState ? Properties.Resources.Enabled : Properties.Resources.Base;
+                StatusClicked(sender, e);
             };
 
             General.Controls.Add(StatusBox);
             // General.Controls.Add(AllowMultipleInstances);
+            General.Controls.Add(DisableTheAccountThatDisconnected);
             General.Controls.Add(AntiAFK);
             General.Controls.Add(Uptime);
             
@@ -599,7 +605,9 @@ namespace Vortex
 
             // AllowMultipleInstances.Location = new Point(StartX, General.Top + AllowMultipleInstances.Height);4
 
-            AntiAFK.Location = new Point(StartX, AllowMultipleInstances.Bottom + AntiAFK.Height);
+            DisableTheAccountThatDisconnected.Location = new Point(StartX, General.Top + DisableTheAccountThatDisconnected.Height);
+
+            AntiAFK.Location = new Point(StartX, DisableTheAccountThatDisconnected.Bottom + AntiAFK.Height);
 
             Uptime.Location = new Point(StartX, General.Bottom - Uptime.ClientSize.Height);
 
@@ -607,14 +615,14 @@ namespace Vortex
 
             ClickMe.Location = new Point((StatusBox.ClientSize.Width - ClickMe.Width) / 2 - 14, (StatusBox.ClientSize.Height - ClickMe.Height * -4) / 2 - 10); // bs
 
-            ClickMe.Click += (_, _) =>
+            ClickMe.Click += (_, __) =>
             {
-                StatusClicked(StatusBox, null!);
+                StatusClicked(StatusBox, null);
             };
 
-            StatusLabel.Click += (_, _) =>
+            StatusLabel.Click += (_, __) =>
             {
-                StatusClicked(StatusBox, null!);
+                StatusClicked(StatusBox, null);
             };
         }
 
@@ -626,7 +634,8 @@ namespace Vortex
 
             set.SetRunning(PictureRunningState);
 
-            box.Image = PictureRunningState ? Properties.Resources.Enabled : Properties.Resources.Base;
+            if (box != null)
+                box.Image = PictureRunningState ? Properties.Resources.Enabled : Properties.Resources.Base;
         }
 
         public async Task UpdateUptime(CancellationToken ct)
@@ -672,26 +681,29 @@ namespace Vortex
             int NextX = 10; // Pos X
             int NextY = 55; // Pos Y
 
-            string[] splitby = { "Sand Storm", "Null", "Glitched" }; // Common, Uncommon, Rare after that follows event
+            string[] splitby = { "Sand Storm", "Null", "Glitched", "The Radiant Forest" }; // Common, Uncommon, Rare after that follows event
 
             // bool containsevent = true;
 
-            for (int i = 0; i < CurrentBiomes.Length; i++)
+            for (int i = 0; i < CurrentBiomes.Count; i++)
             {
                 CreateBiomeCheckbox(Biomes, CurrentBiomes[i], NextX, NextY, Colors[i]);
 
                 NextX += 112;
 
-                if (CurrentBiomes[i] == splitby[0] || CurrentBiomes[i] == splitby[1] || CurrentBiomes[i] == splitby[2])
+                if (CurrentBiomes[i] == splitby[0] || CurrentBiomes[i] == splitby[1] || CurrentBiomes[i] == splitby[2] || CurrentBiomes[i] == splitby[3]) // this is kind of ass
                 {
                     NextX = 10;
-                    NextY += 125;
+                    NextY += 92;
                 }
             }
 
+            
             CreateBiomeBox(Biomes, Properties.Resources.Common_Biomes, "Normal", "Sand Storm");
             CreateBiomeBox(Biomes, Properties.Resources.Uncommon_Biomes, "Hell", "Null");
             CreateBiomeBox(Biomes, Properties.Resources.Rare_Biomes, "Singularity", "Glitched");
+            CreateBiomeBox(Biomes, Properties.Resources.Uncommon_Biomes, "Lost Forest", "The Radiant Forest");
+            // CreateBiomeBox(Biomes, Properties.Resources.halloween_biomes_box, "Graveyard", "Blood Moon");
 
             Panels.Add(Biomes);
             Controls.Add(Biomes);
@@ -720,12 +732,15 @@ namespace Vortex
                 case "Glitched":
                     CheckBoxHandle(cb);
                     break;
-                case "Radiant Forest":
+                case "The Radiant Forest":
                     CheckBoxHandle(cb);
                     break;
             }
 
-            cb.CheckedChanged += delegate { SaveSettings(); };
+            cb.CheckedChanged += delegate 
+            { 
+                SaveSettings(); 
+            };
 
             if (!cb.Checked)
                 cb.Checked = true;
@@ -1151,11 +1166,23 @@ namespace Vortex
                 Text = editing == -1 ? "" : Webhooks.Get(editing)
             };
 
+            Label Tut = new Label()
+            {
+                AutoSize = true,
+                ForeColor = Theme_Forecolor,
+                Text = "Add a Webhook.",
+                Location = new Point(Link.Width / 2 - 10, Link.Bottom + 15)
+            };
+
             Button Apply = new Button()
             {
                 Text = "Apply",
                 Size = new Size(150, 30),
-                Location = new Point(20, 90)
+                Location = new Point(20, 390),
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Apply.Click += delegate
@@ -1199,6 +1226,7 @@ namespace Vortex
             AddWebhook.Controls.Add(Link);
             AddWebhook.Controls.Add(Apply);
             AddWebhook.Controls.Add(Return);
+            AddWebhook.Controls.Add(Tut);
             AddWebhook.BringToFront();
         }
 
@@ -1223,7 +1251,11 @@ namespace Vortex
             {
                 Text = "Edit",
                 Size = new Size(100, 30),
-                Location = new Point(20, 280)
+                Location = new Point(20, 280),
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Edit.Click += delegate
@@ -1240,7 +1272,11 @@ namespace Vortex
             {
                 Text = "Remove",
                 Size = new Size(100, 30),
-                Location = new Point(130, 280)
+                Location = new Point(130, 280),
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Remove.Click += delegate
@@ -1259,7 +1295,11 @@ namespace Vortex
             {
                 Text = "Test Webhook",
                 Size = new Size(200, 30),
-                Location = new Point(240, 280)
+                Location = new Point(240, 280),
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Test.Click += delegate
@@ -1438,13 +1478,13 @@ namespace Vortex
                 var Label = StatsLabel(cb.Text, cb.ForeColor);
 
                 Label.Item1.Location = new Point(StartX, StartY);
-                Label.Item2.Location = new Point(Label.Item1.Right + 10, StartY);
+                Label.Item2.Location = new Point(Label.Item1.Right + 50, StartY);
 
                 StartY += 30;
 
                 if (cb.Text.ToUpper() == "NULL")
                 {
-                    StartX = 250;
+                    StartX = 270;
                     StartY = 15;
                 }
 
@@ -1465,7 +1505,7 @@ namespace Vortex
                 var Result = StatsLabel(LText[i], Theme_Forecolor);
 
                 Result.Item1.Location = new Point(PosX, PosY);
-                Result.Item2.Location = new Point(Result.Item1.Right + Result.Item2.ClientSize.Width + 20, PosY);
+                Result.Item2.Location = new Point(Result.Item1.Right + Result.Item2.ClientSize.Width + 30, PosY);
 
                 PosY += 25;
 
@@ -1506,7 +1546,7 @@ namespace Vortex
 
             return (StatLabel, Counter);
         }
-       
+
 
         private void InitializeAccounts()
         {
@@ -1535,43 +1575,14 @@ namespace Vortex
                 FlatAppearance = { BorderSize = 0 }
             };
 
-            AddAccounts.Click += (sender, e) => MiniAddAccounts();
-
-            Button ViewAccounts = new Button()
+            AddAccounts.Click += delegate
             {
-                BackgroundImage = Properties.Resources.Deselected_Button,
-                BackgroundImageLayout = ImageLayout.Stretch,
-                Text = "View Accounts",
-                Size = new Size(150, 40),
-                ForeColor = Theme_Forecolor,
-                Location = new Point(StartX, StartY + AddAccounts.Bottom),
-                FlatStyle = FlatStyle.Flat,
-                FlatAppearance = { BorderSize = 0}
-            };
-
-            ViewAccounts.Click += (sender, e) => MiniViewAccount();
-
-            AccountsList = new RichTextBox()
-            {
-                ForeColor = Theme_Forecolor,
-                BackColor = Theme_Backcolor,
-                ReadOnly = true,
-                Size = new Size(Accounts.Width, (int)(Accounts.Height / 1.5f)),
-                Location = new Point(1, (int)(Accounts.ClientSize.Height / 3))
-            };
-
-            Label LabelAccountsList = new Label()
-            {
-                ForeColor = Theme_Forecolor,
-                AutoSize = true,
-                Text = "Accounts List: ",
-                Location = new Point(AccountsList.Left, AccountsList.Top - 15)
+                MiniAddAccounts();
             };
 
             Accounts.Controls.Add(AddAccounts);
-            Accounts.Controls.Add(ViewAccounts);
-            Accounts.Controls.Add(AccountsList);
-            Accounts.Controls.Add(LabelAccountsList);
+
+            MiniViewAccount(Accounts);
         }
 
         private void MiniAddAccounts(int editing = -1)
@@ -1679,6 +1690,7 @@ namespace Vortex
 
                 await AccountData.RefreshList(AccountBox);
                 RefreshAccountsList();
+
                 AddAccounts.Dispose();
             };
 
@@ -1698,35 +1710,56 @@ namespace Vortex
             RefreshAccountsList();
         }
 
-        private void MiniViewAccount()
+        private void MiniViewAccount(Panel Account)
         {
             Panel ViewAccounts = new Panel()
             {
                 BackColor = Theme_Backcolor,
-                Dock = DockStyle.Fill,
-                Size = PanelSize
+                Location = new Point(0, (int)(Account.ClientSize.Height * 0.2f)),
+                Size = new Size(Account.ClientSize.Width, (int)(Account.ClientSize.Height * 0.8f)),
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
 
-            Controls.Add(ViewAccounts);
+            Account.Controls.Add(ViewAccounts);
 
             int StartX = 20;
+
+            Label LabelAccountsList = new Label()
+            {
+                Text = "Accounts List:",
+                ForeColor = Theme_Forecolor,
+                AutoSize = true,
+                Location = new Point(StartX, 5)
+            };
 
             ListBox list = new ListBox()
             {
                 ForeColor = Theme_Forecolor,
                 BackColor = Theme_Backcolor,
-                Size = new Size(500, 250),
-                Location = new Point(StartX, 15)
+                BorderStyle = BorderStyle.FixedSingle,
+                Location = new Point(StartX, 25),
+                Size = new Size(ViewAccounts.ClientSize.Width - 40, ViewAccounts.ClientSize.Height - 85),
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right
             };
 
-            for (int i = 0; i < AccountData.Servers.Count; i++)
-                list.Items.Add(AccountData.GetUsername(AccountData.Servers[i].UserId) + (AccountData.Servers[i].Enabled ? "" : " (Disabled)"));
+            lbOpenAccountsList = list;
+
+            ViewAccounts.Disposed += delegate
+            {
+                if (lbOpenAccountsList == list)
+                    lbOpenAccountsList = null;
+            };
 
             Button Edit = new Button()
             {
                 Text = "Edit",
                 Size = new Size(100, 30),
-                Location = new Point(StartX, 280)
+                Location = new Point(StartX, ViewAccounts.ClientSize.Height - 45),
+                Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Edit.Click += delegate
@@ -1734,16 +1767,19 @@ namespace Vortex
                 if (list.SelectedIndex == -1)
                     return;
 
-                int index = list.SelectedIndex;
-                ViewAccounts.Dispose();
-                MiniAddAccounts(index);
+                MiniAddAccounts(list.SelectedIndex);
             };
 
             Button Enable = new Button()
             {
                 Text = "Enable / Disable",
                 Size = new Size(130, 30),
-                Location = new Point(130, 280)
+                Location = new Point(130, ViewAccounts.ClientSize.Height - 45),
+                Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Enable.Click += delegate
@@ -1752,9 +1788,10 @@ namespace Vortex
                     return;
 
                 Accounts.Entry entry = AccountData.Get(list.SelectedIndex);
+
                 entry.Enabled = !entry.Enabled;
+
                 AccountData.Save();
-                list.Items[list.SelectedIndex] = AccountData.GetUsername(entry.UserId) + (entry.Enabled ? "" : " (Disabled)");
                 RefreshAccountsList();
             };
 
@@ -1762,7 +1799,12 @@ namespace Vortex
             {
                 Text = "Remove",
                 Size = new Size(100, 30),
-                Location = new Point(270, 280)
+                Location = new Point(270, ViewAccounts.ClientSize.Height - 45),
+                Anchor = AnchorStyles.Left | AnchorStyles.Bottom,
+                BackgroundImage = Properties.Resources.Deselected_Button,
+                BackgroundImageLayout = ImageLayout.Stretch,
+                FlatStyle = FlatStyle.Flat,
+                FlatAppearance = { BorderSize = 0 }
             };
 
             Remove.Click += delegate
@@ -1776,34 +1818,16 @@ namespace Vortex
                     return;
 
                 AccountData.Remove(index);
-                list.Items.RemoveAt(index);
                 RefreshAccountsList();
             };
 
-            Button Return = new Button()
-            {
-                BackgroundImage = Properties.Resources.Deselected_Button,
-                BackgroundImageLayout = ImageLayout.Stretch,
-                Text = "Return",
-                Size = new Size(150, 30),
-                ForeColor = Theme_Forecolor,
-                Location = new Point(StartX, 350),
-                FlatStyle = FlatStyle.Flat,
-                FlatAppearance = { BorderSize = 0 },
-            };
-
-            Return.Click += delegate
-            {
-                ViewAccounts.Dispose();
-            };
-
+            ViewAccounts.Controls.Add(LabelAccountsList);
             ViewAccounts.Controls.Add(list);
             ViewAccounts.Controls.Add(Edit);
             ViewAccounts.Controls.Add(Enable);
             ViewAccounts.Controls.Add(Remove);
-            ViewAccounts.Controls.Add(Return);
 
-            ViewAccounts.BringToFront();
+            RefreshAccountsList();
         }
 
         private void InitializeUI()
@@ -1959,7 +1983,7 @@ namespace Vortex
 
             ApplyTheme(this);
 
-            for (int i = 0; i < Colors.Length; i++)
+            for (int i = 0; i < Colors.Count; i++)
             {
                 try
                 {
@@ -2142,17 +2166,66 @@ namespace Vortex
             return AccountData.GetForUser(userId);
         }
 
+        public void DisableAccount(string UserId)
+        {
+
+            if (!DisableTheAccountThatDisconnected.Checked)
+                return;
+
+            int idx = AccountData.FindUser(UserId);
+
+            if (idx == -1)
+                return;
+
+            Accounts.Entry entry = AccountData.Get(idx);
+
+            if (!entry.Enabled)
+                return;
+
+            entry.Enabled = false;
+            AccountData.Save();
+            RefreshAccountsList();
+
+            string username = AccountData.GetUsername(UserId);
+
+            Webhook.PostDisconnectToWebhooks(username, UserId);
+            _PrintLogs($"Stopped detecting for {username} ({UserId}) due to disconnecting", Color.DarkRed);
+        }
+
         private void RefreshAccountsList()
         {
-            AccountsList.Clear();
+            if (lbOpenAccountsList == null || lbOpenAccountsList.IsDisposed)
+                return;
 
-            foreach (Accounts.Entry entry in AccountData.Servers)
-                AccountsList.AppendText(AccountData.GetUsername(entry.UserId) + (entry.Enabled ? "" : " (Disabled)") + Environment.NewLine);
+            int SelectedIndex = lbOpenAccountsList.SelectedIndex;
+
+            lbOpenAccountsList.BeginUpdate();
+
+            try
+            {
+                lbOpenAccountsList.Items.Clear();
+
+                for (int i = 0; i < AccountData.Servers.Count; i++)
+                {
+                    Accounts.Entry entry = AccountData.Servers[i];
+
+                    string username = AccountData.GetUsername(entry.UserId);
+
+                    lbOpenAccountsList.Items.Add(username + (entry.Enabled ? "" : " (Disabled)"));
+                }
+
+                if (SelectedIndex >= 0 && SelectedIndex < lbOpenAccountsList.Items.Count)
+                    lbOpenAccountsList.SelectedIndex = SelectedIndex;
+            }
+            finally
+            {
+                lbOpenAccountsList.EndUpdate();
+            }
         }
 
         public bool BiomeSelected(string biome)
         {
-            for (int i = 0; i < CurrentBiomes.Length; i++)
+            for (int i = 0; i < CurrentBiomes.Count; i++)
                 if (CurrentBiomes[i].Equals(biome, StringComparison.OrdinalIgnoreCase))
                     return BiomeCheckboxes[i].Checked;
 
@@ -2193,6 +2266,87 @@ namespace Vortex
             SessionTotalCounter[2].Text = (int.Parse(SessionTotalCounter[2].Text) + 1).ToString();
             SessionTotalCounter[3].Text = (int.Parse(SessionTotalCounter[3].Text) + 1).ToString();
             SaveSettings();
+        }
+
+        private async Task LoadColorsAndBiomes()
+        {
+            try
+            {
+                HttpClient client = new HttpClient();
+
+                string Color_url = "https://raw.githubusercontent.com/vexk1x/Vortex/main/Get/colors.json";
+                string Biome_url = "https://raw.githubusercontent.com/vexk1x/Vortex/main/Get/biomes.json";
+
+                string json = await client.GetStringAsync(Color_url);
+
+                List<int[]> values = JsonSerializer.Deserialize<List<int[]>>(json) ?? new List<int[]>(); // if list is null, create a new one
+
+                Colors = values.Select(c => Color.FromArgb(c[0], c[1], c[2], c[3])).ToList();
+
+
+                json = await client.GetStringAsync(Biome_url);
+
+                CurrentBiomes = JsonSerializer.Deserialize<List<string>>(json);
+
+                if (Colors is null || Colors.Count == 0 || CurrentBiomes is null || CurrentBiomes.Count == 0 || Colors.Count != CurrentBiomes.Count)
+                {
+                    _PrintLogs("Couldn't load biomes.json or colors.json from the github", Color.Red);
+                    LoadOldData();
+                    return;
+                }
+
+                _PrintLogs("Loaded colors and biomes from Github", Color.Green);
+            }
+            catch
+            {
+                _PrintLogs("Couldn't load biomes.json or colors.json from the github", Color.Red);
+                LoadOldData();
+            }
+        }
+
+        private void LoadOldData()
+        {
+            Colors = new List<Color>()
+                    {
+                        Color.FromArgb(100, 134, 134, 134), // Normal
+                        Color.FromArgb(100, 185, 244, 255), // Windy
+                        Color.FromArgb(100, 202, 238, 255), // Snowy
+                        Color.FromArgb(100, 10, 92, 216), // Rainy
+                        Color.FromArgb(100, 202, 173, 57), // Sand Storm
+                        Color.FromArgb(100, 156, 44, 44), // Hell
+                        Color.FromArgb(100, 28, 74, 255), // Starfall
+                        Color.FromArgb(100, 222, 207, 71), // Heaven
+                        Color.FromArgb(100, 77, 15, 73), // Corruption
+                        Color.FromArgb(100, 0, 0, 0), // Null
+                        Color.FromArgb(100, 172, 103, 0), // Singularity
+                        Color.FromArgb(100, 19, 53, 91), // Cyberspace
+                        Color.FromArgb(100, 181, 69, 215), // Dreamspace (peak biome)
+                        Color.FromArgb(100, 62, 59, 63), // Glitched
+                        Color.FromArgb(101, 176, 83), // Lost Forest
+                        Color.FromArgb(94, 37, 158), // Radiant Forest
+                        //Color.FromArgb(100, 255, 248, 137), // Blazing Sun
+                        //Color.FromArgb(95, 255, 83, 57) // Incinerator
+                    };
+
+            CurrentBiomes = new List<string>()
+                    {
+                        "Normal",
+                        "Windy",
+                        "Snowy",
+                        "Rainy",
+                        "Sand Storm",
+                        "Hell",
+                        "Starfall",
+                        "Heaven",
+                        "Corruption",
+                        "Null",
+                        "Singularity",
+                        "Cyberspace",
+                        "Dreamspace",
+                        "Glitched",
+                        "Lost Forest", // kinda misplaced but kinda not? i personally dont mind the 2 new forest biomes being placed differently, they are incredible
+                        "The Radiant Forest"
+                    };
         }
 
         // Flaming hell

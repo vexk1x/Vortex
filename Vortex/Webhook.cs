@@ -5,11 +5,13 @@ using System.Globalization;
 using System.IO.Ports;
 using System.Linq;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static Vortex.AuraMatcher;
 
 
 namespace Vortex
@@ -292,6 +294,50 @@ namespace Vortex
 
             foreach (string webhook in Webhooks)
                 tasks.Add(_PostBiomeToWebhook(webhook, biome, whatping, ping, privateserverlink, color, found_by));
+
+            await Task.WhenAll(tasks);
+        }
+
+        public static async Task _PostDisconnectToWebhook(string webhook, string username, string UserId)
+        {
+            var embed = new
+            {
+                title = $"DISCONNECTED | DETECTION STOPPED",
+                description = $"** Detection for User {username} ({UserId}) has Stopped due to leaving the Sol's Rng Private Server. **",
+                color = 0xFF0000,
+
+                footer = new
+                {
+                    text = $"{Form1._Version}  | https://github.com/vexk1x/Vortex/releases"
+                },
+                timestamp = DateTime.UtcNow.ToString("o")
+            };
+
+            var payload = new
+            {
+                embeds = new[] { embed }
+            };
+
+            string json = JsonSerializer.Serialize(payload);
+
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            string url = webhook.Contains("?") ? webhook + "&wait=true" : webhook + "?wait=true";
+
+            HttpResponseMessage response = await client.PostAsync(url, content);
+
+            response.EnsureSuccessStatusCode();
+
+            content.Dispose();
+            response.Dispose();
+        }
+
+        public static async Task PostDisconnectToWebhooks(string username, string UserId)
+        {
+            List<Task> tasks = new List<Task>();
+
+            foreach (string webhook in Webhooks)
+                tasks.Add(_PostDisconnectToWebhook(webhook, username, UserId));
 
             await Task.WhenAll(tasks);
         }

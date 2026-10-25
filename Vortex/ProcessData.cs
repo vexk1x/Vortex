@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Vortex
 {
@@ -10,11 +11,11 @@ namespace Vortex
 
         public static Color GetColor(string Biome)
         {
-            string[] BiomeCopy = Form1.CurrentBiomes;
+            List<string> BiomeCopy = Form1.CurrentBiomes;
 
-            Color[] ColorCopy = Form1.Colors;
+            List<Color> ColorCopy = Form1.Colors;
 
-            for (int i = 0; i < BiomeCopy.Length; i++)
+            for (int i = 0; i < BiomeCopy.Count; i++)
             {
                 if (BiomeCopy[i].ToUpper() == Biome.ToUpper())
                     return ColorCopy[i]; // index 1 in BiomeCopy corresponds to Normal, index 1 in ColorCopy corresponds to the Color for the biome normal. (better for logs)

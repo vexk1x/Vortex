@@ -29,15 +29,16 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            SuspendLayout();
+            this.SuspendLayout();
             // 
             // Form1
             // 
-            ClientSize = new Size(284, 261);
-            Icon = (Icon)resources.GetObject("$this.Icon");
-            Name = "Form1";
-            Text = "Vortex";
-            ResumeLayout(false);
+            this.ClientSize = new System.Drawing.Size(284, 261);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Form1";
+            this.Text = "Vortex";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

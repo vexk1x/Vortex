@@ -53,6 +53,9 @@ namespace Vortex
 
                 foreach (RobloxClient client in currentClients)
                 {
+                    if (!form.AccEnabled(client.UserId))
+                        continue;
+
                     try
                     {
                         string newData = ReadNewData(client);
@@ -257,6 +260,15 @@ namespace Vortex
         {
             string followup = "\"largeImage\":{\"hoverText\":\"";
             string data = client.Buffer + newData;
+
+            if (data.IndexOf("Client:Disconnect", StringComparison.Ordinal) >= 0)
+            {
+                client.Buffer = "";
+
+                form.DisableAccount(client.UserId);
+
+                return;
+            }
 
             client.Buffer = "";
 

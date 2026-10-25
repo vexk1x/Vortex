@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Drawing;
 
 namespace Vortex
 {
@@ -91,14 +86,15 @@ namespace Vortex
 
         public async Task SendActivity(CancellationToken t)
         {
-            using PeriodicTimer timer = new PeriodicTimer(TimeSpan.FromMinutes(15));
-
             await SendOnce();
 
             try
             {
-                while (await timer.WaitForNextTickAsync(t))
+                while (!t.IsCancellationRequested)
+                    await Task.Delay(TimeSpan.FromMinutes(5), t); // 5mins now
                     await SendOnce();
+
+                await SendOnce(); // For good measure
             }
             catch (OperationCanceledException) when (t.IsCancellationRequested)
             {
@@ -121,9 +117,7 @@ namespace Vortex
                 if (window == IntPtr.Zero)
                     continue;
 
-                var Result = FocusRoblox(window);
-
-                if (!Result.Result)
+                if (!await FocusRoblox(window))
                     continue;
 
                 await Task.Delay(200);
@@ -131,9 +125,7 @@ namespace Vortex
                 if (GetForegroundWindow() != window)
                     continue;
 
-                var Result2 = SendSpace(window);
-
-                if (!Result2.Result)
+                if (!await SendSpace(window))
                     continue;
 
                 await Task.Delay(250);

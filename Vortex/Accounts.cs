@@ -77,11 +77,13 @@ namespace Vortex
 
         public void Add(string userId, string link)
         {
-            Servers.Add(new Entry
+            Servers.Add(
+            new Entry
             {
                 UserId = userId,
                 Link = link
-            });
+            }
+            );
 
             Save();
         }

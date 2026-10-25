@@ -7,7 +7,10 @@ Vortex is a Biome/Aura Detector (Whatever you call it) for the Roblox Game "Sol'
 Vortex contains features like:
 
 * AntiAfk
-> Prevents you from being sent into what's known as a "Ghost PS" by pressing space in each Roblox Window every 15 minutes.
+> Prevents you from being sent into what's known as a "Ghost PS" by pressing space in each Roblox Window every 5 Minutes.
+
+* Disable Account once it leaves the Private Server
+> Once an account is detected to disconnect from the private server via Joining another Server, Joining a ghost ps or disconnecting, the detection for that specific account is disabled. TO RE-ENABLE, HEAD TO ACCOUNTS TAB CLICK ON THE ACCOUNT AND PRESS ENABLE.
 
 * Aura Notifications
 > Sends Details about you currently equipped aura (Name, Rarity, from what biome you got it and Native Rarity is supported aswell)
@@ -50,7 +53,7 @@ or
 clone/download this repository and cd into the folder containing Vortex.slnx and run:
 
 ```
-dotnet publish "Vortex\Vortex.csproj" -c Release -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
+    msbuild "Vortex\Vortex.csproj" /p:Configuration=Release
 ```
 
 ## I found a bug and want to report it
