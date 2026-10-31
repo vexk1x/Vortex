@@ -53,19 +53,26 @@ namespace Vortex
 
                 foreach (RobloxClient client in currentClients)
                 {
-                    if (!form.AccEnabled(client.UserId))
-                        continue;
-
                     try
                     {
+                        if (!form.AccEnabled(client.UserId))
+                        {
+                            using (FileStream fstream = new FileStream(
+                                client.LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete))
+                            {
+                                client.ReadPosition = fstream.Length;
+                                client.Buffer = "";
+                            }
+                        }
+
                         string newData = ReadNewData(client);
 
                         if (!string.IsNullOrEmpty(newData))
                             ProcessNewData(client, newData, form);
                     }
-                    catch (IOException e)
+                    catch
                     {
-                        Form1._PrintLogs($"Client Read Error: {e.Message}", Color.DarkRed);
+                        continue;
                     }
                 }
 

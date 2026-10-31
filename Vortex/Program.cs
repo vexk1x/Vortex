@@ -16,9 +16,7 @@ namespace Vortex
 
             if (args.Length == 3 && args[0] == "--update")
             {
-                int pid;
-
-                if (int.TryParse(args[1], out pid))
+                if (int.TryParse(args[1], out int pid))
                 {
                     AutoUpdate.ApplyUpdate(pid, args[2]);
                     return;
@@ -89,6 +87,9 @@ namespace Vortex
 
                 ctRunningMain = new CancellationTokenSource();
                 _ = RegRunning(ctRunningMain);
+
+                if (ctAntiAfk != null && !ctAntiAfk.IsCancellationRequested)
+                    RegAntiAfk(true);
             }
             else
             {
@@ -112,6 +113,9 @@ namespace Vortex
                     return;
 
                 ctAntiAfk = new CancellationTokenSource();
+
+                if (ctRunningMain == null)
+                    return;
 
                 AntiAfk afk = new AntiAfk();
 

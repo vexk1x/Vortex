@@ -703,7 +703,7 @@ namespace Vortex
             CreateBiomeBox(Biomes, Properties.Resources.Uncommon_Biomes, "Hell", "Null");
             CreateBiomeBox(Biomes, Properties.Resources.Rare_Biomes, "Singularity", "Glitched");
             CreateBiomeBox(Biomes, Properties.Resources.Uncommon_Biomes, "Lost Forest", "The Radiant Forest");
-            // CreateBiomeBox(Biomes, Properties.Resources.halloween_biomes_box, "Graveyard", "Blood Moon");
+            CreateBiomeBox(Biomes, Properties.Resources.halloween_biomes_box, "Blood Rain", "Pumpkin Moon");
 
             Panels.Add(Biomes);
             Controls.Add(Biomes);
@@ -837,7 +837,7 @@ namespace Vortex
             {
                 ForeColor = Color.Red,
                 BackColor = Color.Transparent,
-                Text = "! Invalid Input", // rlly like this, displayes !invalid input if u enter a string that cant be parsed.
+                Text = "! Invalid Input", // rlly like this, displays !invalid input if u enter a string that cant be parsed.
                 Location = new Point(MinPingRarity.Location.X + MinPingRarity.ClientSize.Width, lMinPingRarity.Location.Y),
             };
 
@@ -1374,12 +1374,10 @@ namespace Vortex
                 ForeColor = Theme_Forecolor,
                 BackColor = Color.Transparent,
                 Text = "Credits:\n\n\n" + // awesome people 
-                "vexk1x (vexk1x) - Developer\n\n" +
                 "Fiko (fiko2022) - Macro Tester, Tutorial Video, Assets and ideas\n\n" +
                 "2119 (211nine) - Macro Tester, Server Creator\n\n" +
                 "ultra (ultranekrosma) - Lead Macro Tester, ideas\n\n" +
                 "Raiko (ggraiko) - Macro Tester\n\n" +
-                "dxv (idkdxv) - Macro Tester, ideas\n\n" +
                 "Koni (koninosk) - Macro Tester\n\n" +
                 "Lacrimosa - Macro Tester, Feedback, ideas",
                 Location = new Point(20, 30),
@@ -1486,6 +1484,11 @@ namespace Vortex
                 {
                     StartX = 270;
                     StartY = 15;
+                }
+                
+                if (cb.Text.ToUpper() == "GLITCHED")
+                {
+                    StartY = 150;
                 }
 
                 Stats.Controls.Add(Label.Item1);
@@ -2326,6 +2329,9 @@ namespace Vortex
                         Color.FromArgb(94, 37, 158), // Radiant Forest
                         //Color.FromArgb(100, 255, 248, 137), // Blazing Sun
                         //Color.FromArgb(95, 255, 83, 57) // Incinerator
+                        Color.FromArgb(89, 18, 0), // Blood Rain
+                        Color.FromArgb(88, 103, 100), // Graveyard
+                        Color.FromArgb(168, 87, 15), // Pumpkin Moon
                     };
 
             CurrentBiomes = new List<string>()
@@ -2345,7 +2351,10 @@ namespace Vortex
                         "Dreamspace",
                         "Glitched",
                         "Lost Forest", // kinda misplaced but kinda not? i personally dont mind the 2 new forest biomes being placed differently, they are incredible
-                        "The Radiant Forest"
+                        "The Radiant Forest",
+                        "Blood Rain", // ev
+                        "Graveyard", // ev
+                        "Pumpkin Moon" // ev
                     };
         }
 
@@ -2371,7 +2380,10 @@ namespace Vortex
             Settings.Data.Dreamspace = BiomeCheckboxes[12].Checked;
             Settings.Data.Glitched = BiomeCheckboxes[13].Checked;
             Settings.Data.LostForest = BiomeCheckboxes[14].Checked;
-            Settings.Data.RadiantForest = BiomeCheckboxes[15].Checked;
+            Settings.Data.TheRadiantForest = BiomeCheckboxes[15].Checked;
+            Settings.Data.BloodRain = BiomeCheckboxes[16].Checked;
+            Settings.Data.Graveyard = BiomeCheckboxes[17].Checked;
+            Settings.Data.PumpkinMoon = BiomeCheckboxes[18].Checked;
 
             Settings.Data.TotalNormal = int.Parse(StatsCounter[0].Text);
             Settings.Data.TotalWindy = int.Parse(StatsCounter[1].Text);
@@ -2388,7 +2400,10 @@ namespace Vortex
             Settings.Data.TotalDreamspace = int.Parse(StatsCounter[12].Text);
             Settings.Data.TotalGlitched = int.Parse(StatsCounter[13].Text);
             Settings.Data.TotalLostForest = int.Parse(StatsCounter[14].Text);
-            Settings.Data.TotalRadiantForest = int.Parse(StatsCounter[15].Text);
+            Settings.Data.TotalTheRadiantForest = int.Parse(StatsCounter[15].Text);
+            Settings.Data.TotalBloodRain = int.Parse(StatsCounter[16].Text);
+            Settings.Data.TotalGraveyard = int.Parse(StatsCounter[17].Text);
+            Settings.Data.TotalPumpkinMoon = int.Parse(StatsCounter[18].Text);
 
             Settings.Data.TotalGlobalsRolled = int.Parse(SessionTotalCounter[3].Text);
             Settings.Data.TotalBiomes = int.Parse(SessionTotalCounter[4].Text);
@@ -2444,7 +2459,10 @@ namespace Vortex
             BiomeCheckboxes[12].Checked = Settings.Data.Dreamspace;
             BiomeCheckboxes[13].Checked = Settings.Data.Glitched;
             BiomeCheckboxes[14].Checked = Settings.Data.LostForest;
-            BiomeCheckboxes[15].Checked = Settings.Data.RadiantForest;
+            BiomeCheckboxes[15].Checked = Settings.Data.TheRadiantForest;
+            BiomeCheckboxes[16].Checked = Settings.Data.BloodRain;
+            BiomeCheckboxes[17].Checked = Settings.Data.Graveyard;
+            BiomeCheckboxes[18].Checked = Settings.Data.PumpkinMoon;
 
             StatsCounter[0].Text = Settings.Data.TotalNormal.ToString();
             StatsCounter[1].Text = Settings.Data.TotalWindy.ToString();
@@ -2461,7 +2479,10 @@ namespace Vortex
             StatsCounter[12].Text = Settings.Data.TotalDreamspace.ToString();
             StatsCounter[13].Text = Settings.Data.TotalGlitched.ToString();
             StatsCounter[14].Text = Settings.Data.TotalLostForest.ToString();
-            StatsCounter[15].Text = Settings.Data.TotalRadiantForest.ToString();
+            StatsCounter[15].Text = Settings.Data.TotalTheRadiantForest.ToString();
+            StatsCounter[16].Text = Settings.Data.TotalBloodRain.ToString();
+            StatsCounter[17].Text = Settings.Data.TotalGraveyard.ToString();
+            StatsCounter[18].Text = Settings.Data.TotalPumpkinMoon.ToString();
 
             SessionTotalCounter[3].Text = Settings.Data.TotalGlobalsRolled.ToString();
             SessionTotalCounter[4].Text = Settings.Data.TotalBiomes.ToString();

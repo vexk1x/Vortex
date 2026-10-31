@@ -139,7 +139,10 @@ namespace Vortex
             public bool Dreamspace { get; set; } = true;
             public bool Glitched { get; set; } = true;
             public bool LostForest { get; set; } = true;
-            public bool RadiantForest { get; set; } = true;
+            public bool TheRadiantForest { get; set; } = true;
+            public bool BloodRain { get; set; } = true;
+            public bool Graveyard { get; set; } = true;
+            public bool PumpkinMoon { get; set; } = true;
 
             public bool TreatSingularityAsRare { get; set; } = false;
             public bool OnlyPingForRare { get; set; } = false;
@@ -173,7 +176,10 @@ namespace Vortex
             public int TotalDreamspace { get; set; } = 0;
             public int TotalGlitched { get; set; } = 0;
             public int TotalLostForest { get; set; } = 0;
-            public int TotalRadiantForest { get; set; } = 0;
+            public int TotalTheRadiantForest { get; set; } = 0;
+            public int TotalBloodRain { get; set; } = 0;
+            public int TotalGraveyard { get; set; } = 0;
+            public int TotalPumpkinMoon { get; set; } = 0;
 
             public bool IncludeUsername { get; set; } = false;
 
